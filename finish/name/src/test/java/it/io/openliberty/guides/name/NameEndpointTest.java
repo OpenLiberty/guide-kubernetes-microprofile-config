@@ -82,7 +82,7 @@ public class NameEndpointTest {
      * @return Response object with the response from the specified URL.
      */
     private Response getResponse(String url) {
-        return client.target(url).request().get();
+        return client.target(url).request().header("Authorization", "Basic Ym9iOmJvYnB3ZA==").get();
     }
 
     /**
