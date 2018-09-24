@@ -1,0 +1,136 @@
+// INSTRUCTION: Please remove all comments that start INSTRUCTION prior to commit. Most comments should be removed, although not the copyright.
+// INSTRUCTION: The copyright statement must appear at the top of the file
+//
+// Copyright (c) 2018 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//     IBM Corporation
+//
+:projectid: mpconfig-kubernetes
+:page-layout: guide
+:page-duration: 15 minutes
+:page-releasedate: 2018-09-24
+:page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
+:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'Microprofile', 'mpConfig', 'ConfigMaps', 'Secrets']
+:page-permalink: /guides/{projectid}
+:page-related-guides: ['docker', 'istio', 'kubernetes']
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
+= Configure microservices with ConfigMaps and Secrets
+
+[.hidden]
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+
+Explore how to externalize configuration using MicroProfile Config and configure your microservices using Kubernetes ConfigMaps and Secrets.
+
+:minikube-ip: 192.168.99.100
+:kube: Kubernetes
+:name-api: http://[hostname]:31000/api/name
+:ping-api: http://[hostname]:32000/api/ping
+
+// =================================================================================================
+// What you'll learn
+// =================================================================================================
+
+== What you'll learn
+You will learn how to externalize and inject configuration properties for microservices using MicroProfile Config, and then how to provide the configuration by creating {kube} ConfigMaps and Secrets.
+
+// =================================================================================================
+// Getting Started
+// =================================================================================================
+
+include::{common-includes}/gitclone.adoc[]
+
+== Deploy the name and ping applications
+
+There are two applications that you will deploy -- `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the start directory and run the following command.
+
+```
+mvn package
+```
+
+When the build succeeds, run the following command to deploy the necessary {kube} resources to serve the applications.
+
+```
+kubectl apply -f kubernetes.yaml
+```
+
+When this command finishes, navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
+
+Next, navigate to `{ping-api}/name-service` and you will see `pong`.
+
+== Modify name application
+
+First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be "Hello!". Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member in the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
+
+[source, java, indent=0]
+----
+include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
+----
+
+== Modify ping application
+
+Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd` respectively. They will take the values of the environment variables `USERNAME` and `PASSWORD`.
+
+[source, java, indent=0]
+----
+include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
+----
+
+== Create ConfigMap and Secret
+
+Environment variables can be set in a container using ConfigMaps and Secrets. Create a ConfigMap to configure the greeting by using the following `kubectl` command.
+
+```
+kubectl create configmap greeting-config --from-literal greeting=Greetings...
+```
+
+Create a Secret to configure the credentials that `ping` will use to authenticate against `name` by using the following `kubectl` command.
+
+```
+kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
+```
+
+A Secret is similar to a ConfigMap, the main difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret, additionally when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker does not accidently see any sensitive data. They do not provide any encryption by default, that it something you will either need to do yourself or find an alternate option to configure.
+
+== Update {kube} resources
+
+Next, update your {kube} Deployments in `kubernetes.yaml` to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
+
+[source, java, indent=0]
+----
+include::finish/kubernetes.yaml[]
+----
+
+== Deploy your changes
+
+Rebuild the application using `mvn package`.
+
+```
+mvn package
+```
+
+Run the following command to deploy your changes to the {kube} cluster.
+
+```
+kubectl apply -f kubernetes.yaml
+```
+
+Navigate to `{name-api}` and you will see that the greeting message has changed from `Hello!` to `Greetings...`. Verify that `{ping-api}/name-service` is working as intended, if it is not then you may have misconfigured the credentials.
+
+// =================================================================================================
+// finish
+// =================================================================================================
+
+== Great work! You're done!
+
+You have used MicroProfile Config to externalize the configuration of two microservices, and then you configured them by creating a ConfigMap and Secret in your {kube} cluster.
+
+// Include the below from the guides-common repo to tell users how they can contribute to the guide
+include::{common-includes}/finish.adoc[]
+
+// DO NO CREATE ANYMORE SECTIONS AT THIS POINT
+// Related guides will be added in automatically here if you included them in ":page-related-guides"
