@@ -9,7 +9,7 @@
 // Contributors:
 //     IBM Corporation
 //
-:projectid: mpconfig-kubernetes
+:projectid: kubernetes-microprofile-config
 :page-layout: guide
 :page-duration: 15 minutes
 :page-releasedate: 2018-09-24
@@ -19,7 +19,7 @@
 :page-related-guides: ['docker', 'istio', 'kubernetes']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Configure microservices with ConfigMaps and Secrets
+= Use Kubernetes to configure your microservices
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
@@ -46,7 +46,7 @@ include::{common-includes}/gitclone.adoc[]
 
 == Deploy the name and ping applications
 
-There are two applications that you will deploy -- `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the start directory and run the following command.
+There are two applications that you will deploy -- `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start/` directory and run the following command.
 
 ```
 mvn package
@@ -58,13 +58,13 @@ When the build succeeds, run the following command to deploy the necessary {kube
 kubectl apply -f kubernetes.yaml
 ```
 
-When this command finishes, navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
+When this command finishes, wait for the pods to be in the Ready state then navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the ip address or hostname of your {kube} cluster. By default it will be `{minikube-ip}` for MiniKube and `localhost` for Docker Desktop. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
 
-Next, navigate to `{ping-api}/name-service` and you will see `pong`.
+Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 == Modify name application
 
-First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be "Hello!". Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member in the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
+First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
 
 [source, java, indent=0]
 ----
@@ -82,10 +82,12 @@ include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[
 
 == Create ConfigMap and Secret
 
-Environment variables can be set in a container using ConfigMaps and Secrets. Create a ConfigMap to configure the greeting by using the following `kubectl` command.
+There are several ways to configure an environment variable in a docker container. You can set it directly in `Dockerfile` by using the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the enviornment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+
+Create a ConfigMap to configure the greeting by using the following `kubectl` command.
 
 ```
-kubectl create configmap greeting-config --from-literal greeting=Greetings...
+kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
 
 Create a Secret to configure the credentials that `ping` will use to authenticate against `name` by using the following `kubectl` command.
@@ -113,13 +115,34 @@ Rebuild the application using `mvn package`.
 mvn package
 ```
 
-Run the following command to deploy your changes to the {kube} cluster.
+Run the following commands to deploy your changes to the {kube} cluster.
 
 ```
+kubectl delete -f kubernetes.yaml
 kubectl apply -f kubernetes.yaml
 ```
 
 Navigate to `{name-api}` and you will see that the greeting message has changed from `Hello!` to `Greetings...`. Verify that `{ping-api}/name-service` is working as intended, if it is not then you may have misconfigured the credentials.
+
+== Testing the microservices
+
+Run the tests by running the following command and appropriately substituting `[hostname]` for the correct value.
+
+```
+mvn verify -Ddockerfile.skip=true -Dcluster.ip=[hostname]
+```
+
+The tests check that `name` responds with a container name, and they check that `ping` responds with `pong` on success and that it gracefully handles a bad response.
+
+== Tearing down the {kube} resources
+
+To remove all of the resource created during this guide, run the following commands to delete all of the resource created during the course of this guide.
+
+```
+kubectl delete -f kubernetes.yaml
+kubectl delete configmap greeting-config
+kubectl delete secret name-credentials
+```
 
 // =================================================================================================
 // finish
