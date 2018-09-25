@@ -94,11 +94,15 @@ Create a ConfigMap to configure the greeting by using the following `kubectl` co
 kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
 
+This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `meeting` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs that you want stored in this ConfigMap. There are other options available such as `--from-file` and `--from-env-file` to allow for more versatility with respect to what you want to configure. More details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI Documentation].
+
 Create a Secret to configure the credentials that `ping` will use to authenticate against `name` by using the following `kubectl` command.
 
 ```
 kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
+
+This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you are creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and a secrets to store public/private key pairs.
 
 A Secret is similar to a ConfigMap, the main difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret, additionally when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker does not accidently see any sensitive data. They do not provide any encryption by default, that is something you will either need to do yourself or find an alternate option to configure.
 
