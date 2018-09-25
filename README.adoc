@@ -19,7 +19,7 @@
 :page-related-guides: ['docker', 'istio', 'kubernetes']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Use Kubernetes to configure your microservices
+= Configure microservices with Kubernetes
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
@@ -36,7 +36,9 @@ Explore how to externalize configuration using MicroProfile Config and configure
 // =================================================================================================
 
 == What you'll learn
-You will learn how to externalize and inject configuration properties for microservices using MicroProfile Config, and then how to provide the configuration by creating {kube} ConfigMaps and Secrets.
+The https://openliberty.io/guides/microprofile-config.html[MicroProfile Config guide] teaches you how to externalize configuration from your application, but it is not immediately clear why this is beneficial to you when developing your microservices. You will learn how to externalize your configuration, and provide the configuration values by creating environment variables. By using MicroProfile Config to handle your configuration, it provides useful annotations that you may use to inject configured values into your code whether those values come from environment variables or elsewhere.
+
+Furthermore, you will learn how to set these environment variables using ConfigMaps and Secrets. These are resources provided by {kube} that act as a data source for your environment variables. By creating a ConfigMap or Secret, they can be used to set environment variables for any number of containers as you see fit.
 
 // =================================================================================================
 // Getting Started
@@ -66,6 +68,7 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
 
+Update the name resource class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file:
 [source, java, indent=0]
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
@@ -73,8 +76,9 @@ include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[
 
 == Modify ping application
 
-Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd` respectively. They will take the values of the environment variables `USERNAME` and `PASSWORD`.
+Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd` respectively. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
 
+Update the ping resource class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file:
 [source, java, indent=0]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
@@ -96,16 +100,19 @@ Create a Secret to configure the credentials that `ping` will use to authenticat
 kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
 
-A Secret is similar to a ConfigMap, the main difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret, additionally when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker does not accidently see any sensitive data. They do not provide any encryption by default, that it something you will either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap, the main difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret, additionally when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker does not accidently see any sensitive data. They do not provide any encryption by default, that is something you will either need to do yourself or find an alternate option to configure.
 
 == Update {kube} resources
 
 Next, update your {kube} Deployments in `kubernetes.yaml` to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
 
+Update the kubernetes resources in the `kubernetes.yaml` file:
 [source, java, indent=0]
 ----
 include::finish/kubernetes.yaml[]
 ----
+
+Under the yaml for the containers, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources such as a ConfigMap, Secret, information about the cluster, and the pod's required resources. In this example `configMapKeyRef` is used to get the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` is used to get the values `username` and `password` from the Secret `name-credentials`.
 
 == Deploy your changes
 
@@ -134,9 +141,37 @@ mvn verify -Ddockerfile.skip=true -Dcluster.ip=[hostname]
 
 The tests check that `name` responds with a container name, and they check that `ping` responds with `pong` on success and that it gracefully handles a bad response.
 
+Once the tests succeed, you should see output similar to the following in your console.
+
+[source, role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.name.NameEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.542 sec - in it.io.openliberty.guides.name.NameEndpointTest
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+----
+
+[source, role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.ping.PingEndpointTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.761 sec - in it.io.openliberty.guides.ping.PingEndpointTest
+
+Results :
+
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+----
+
 == Tearing down the {kube} resources
 
-To remove all of the resource created during this guide, run the following commands to delete all of the resource created during the course of this guide.
+To remove all of the resources created during this guide, run the following commands to delete all of the resources that you created.
 
 ```
 kubectl delete -f kubernetes.yaml
