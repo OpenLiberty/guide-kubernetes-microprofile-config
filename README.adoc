@@ -36,9 +36,17 @@ Explore how to externalize configuration using MicroProfile Config and configure
 // =================================================================================================
 
 == What you'll learn
-The https://openliberty.io/guides/microprofile-config.html[MicroProfile Config guide] teaches you how to externalize configuration from your application. It may not be immediately clear why this is beneficial to you when developing your microservices. You will learn how to externalize your configuration, and provide the configuration values by creating environment variables. By using MicroProfile Config to handle your configuration, it provides useful annotations that you may use to inject configured values into your code. These values can come from environment variables or elsewhere.
+The https://openliberty.io/guides/microprofile-config.html[Configuring microservices guide] teaches you how to externalize configuration from your application. It may not be immediately clear why this is beneficial to you when developing your microservices, but {kube} provides some tools that allow you to conveniently configure your microservices with a setup such as the one described. You will learn how to externalize your configuration, and provide the configuration values by creating environment variables. By using MicroProfile Config to handle your configuration, it provides useful annotations that you may use to inject configured values into your code. These values can come from environment variables or elsewhere.
 
 Furthermore, you'll learn how to set these environment variables using ConfigMaps and Secrets. These resources are provided by {kube} that act as a data source for your environment variables. By creating a ConfigMap or Secret, they can be used to set environment variables for any number of containers as you see fit.
+
+== Prerequesites
+
+Some basic knowledge of {kube} is assumed for this guide, and you should have a {kube} cluster available for your use. All the prerequesite knowledge is covered in the https://openliberty.io/guides/kubernetes.html[Deploying microservices to Kubernetes] guide. If you need a {kube} cluster to work with, we recommend using Docker Desktop or Minikube. Alternatively, you can provision a cluster from a cloud provider of your choice or use an existing cluster. If you choose to go with one of the local single-node clusters, you can find information on setting up Docker Desktop or Minikube at these URLs:
+
+* https://docs.docker.com/docker-for-windows/#kubernetes
+* https://docs.docker.com/docker-for-mac/#kubernetes
+* https://github.com/kubernetes/minikube
 
 // =================================================================================================
 // Getting Started
@@ -48,7 +56,7 @@ include::{common-includes}/gitclone.adoc[]
 
 == Deploy the name and ping applications
 
-There are two applications that you will deploy -- `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start/` directory and run the following command.
+There are two applications that you will deploy -- `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start` directory and run the following command.
 
 ```
 mvn package
@@ -86,7 +94,7 @@ include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[
 
 == Create ConfigMap and Secret
 
-There are several ways to configure an environment variable in a docker container. You can set it directly in `Dockerfile` by using the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the enviornment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a docker container. You can set it directly in `Dockerfile` by using the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the greeting by using the following `kubectl` command.
 
@@ -116,7 +124,7 @@ Update the kubernetes resources in the `kubernetes.yaml` file:
 include::finish/kubernetes.yaml[]
 ----
 
-Under the yaml for the containers, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, information about the cluster, and the pod's required resources. In this example `configMapKeyRef` is used to get the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` is used to get the values `username` and `password` from the Secret `name-credentials`.
+In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, information about the cluster, and the pod's required resources. In this example `configMapKeyRef` is used to get the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` is used to get the values `username` and `password` from the Secret `name-credentials`.
 
 == Deploy your changes
 
