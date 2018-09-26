@@ -30,6 +30,9 @@ Explore how to externalize configuration using MicroProfile Config and configure
 :kube: Kubernetes
 :name-api: http://[hostname]:31000/api/name
 :ping-api: http://[hostname]:32000/api/ping
+:win: Windows
+:mac: Mac
+:linux: Linux
 
 // =================================================================================================
 // What you'll learn
@@ -40,19 +43,24 @@ The https://openliberty.io/guides/microprofile-config.html[Configuring microserv
 
 Furthermore, you'll learn how to set these environment variables using ConfigMaps and Secrets. These resources are provided by {kube} that act as a data source for your environment variables. By creating a ConfigMap or Secret, they can be used to set environment variables for any number of containers as you see fit.
 
-== Prerequesites
+// =================================================================================================
+// Prerequisites
+// =================================================================================================
 
-Some basic knowledge of {kube} is assumed for this guide, and you should have a {kube} cluster available for your use. All the prerequesite knowledge is covered in the https://openliberty.io/guides/kubernetes.html[Deploying microservices to Kubernetes] guide. If you need a {kube} cluster to work with, we recommend using Docker Desktop or Minikube. Alternatively, you can provision a cluster from a cloud provider of your choice or use an existing cluster. If you choose to go with one of the local single-node clusters, you can find information on setting up Docker Desktop or Minikube at these URLs:
+include::{common-includes}/kube-prereq.adoc[]
 
-* https://docs.docker.com/docker-for-windows/#kubernetes
-* https://docs.docker.com/docker-for-mac/#kubernetes
-* https://github.com/kubernetes/minikube
 
 // =================================================================================================
 // Getting Started
 // =================================================================================================
 
 include::{common-includes}/gitclone.adoc[]
+
+// =================================================================================================
+// Starting/Preparing Cluster
+// =================================================================================================
+
+include::{common-includes}/kube-start.adoc[]
 
 == Deploy the name and ping applications
 
