@@ -18,6 +18,7 @@ spec:
         image: name:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
+        # Set the GREETING environment variable
         env:
         - name: GREETING
           valueFrom:
@@ -45,6 +46,7 @@ spec:
         image: ping:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
+        # Set the USERNAME and PASSWORD environment variables
         env:
         - name: USERNAME
           valueFrom:
