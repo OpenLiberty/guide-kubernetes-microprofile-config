@@ -19,7 +19,7 @@
 :page-related-guides: ['docker', 'istio', 'kubernetes']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Configuring microservices with Kubernetes
+= Configuring microservices running in Kubernetes
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
@@ -76,7 +76,22 @@ When the build succeeds, run the following command to deploy the necessary {kube
 kubectl apply -f kubernetes.yaml
 ```
 
-When this command finishes, wait for the pods to be in the Ready state then navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the ip address or hostname of your {kube} cluster. By default it will be `{minikube-ip}` for MiniKube and `localhost` for Docker Desktop. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
+When this command finishes, wait for the pods to be in the Ready state. Run the following command to view the status of the pods.
+
+```
+kubectl get pods
+```
+
+When they are ready the output will look similar to the following output.
+
+[source, role="no_copy"]
+----
+NAME                               READY     STATUS    RESTARTS   AGE
+name-deployment-6bd97d9bf6-6d2cj   1/1       Running   0          34s
+ping-deployment-645767664f-7gnxf   1/1       Running   0          34s
+----
+
+Then navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the ip address or hostname of your {kube} cluster. By default it will be `{minikube-ip}` for MiniKube and `localhost` for Docker Desktop. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
 
 Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
@@ -132,7 +147,7 @@ Update the kubernetes resources in the `kubernetes.yaml` file:
 include::finish/kubernetes.yaml[]
 ----
 
-In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, information about the cluster, and the pod's required resources. In this example `configMapKeyRef` is used to get the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` is used to get the values `username` and `password` from the Secret `name-credentials`.
+In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example `configMapKeyRef` is used to get the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` is used to get the values `username` and `password` from the Secret `name-credentials`.
 
 == Deploy your changes
 
