@@ -37,8 +37,13 @@ import io.openliberty.guides.ping.client.UnknownUrlException;
 @Path("")
 public class PingResource {
 
-    private String username = "bob";
-    private String password = "bobpwd";
+    @Inject
+    @ConfigProperty(name = "USERNAME")
+    private String username;
+
+    @Inject
+    @ConfigProperty(name = "PASSWORD")
+    private String password;
 
     @GET
     @Path("/{hostname}")
@@ -50,7 +55,7 @@ public class PingResource {
                             .register(UnknownUrlException.class)
                             .build(NameClient.class);
             nameClient.getContainerName(getAuthHeader());
-            return "pong";
+            return "pong\n";
         } catch (ProcessingException ex) {
             // Checking if UnknownHostException is nested inside and rethrowing if not.
             if (this.isUnknownHostException(ex)) {
