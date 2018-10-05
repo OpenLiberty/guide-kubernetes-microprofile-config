@@ -61,12 +61,6 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-rs-extension-providers</artifactId>
-                <version>3.1.11</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-rs-client</artifactId>
                 <version>3.1.11</version>
                 <scope>test</scope>
