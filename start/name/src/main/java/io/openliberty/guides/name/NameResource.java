@@ -26,17 +26,13 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class NameResource {
 
     @Inject
-    @ConfigProperty(name = "GREETING")
-    private String greeting;
-
-    @Inject
     @ConfigProperty(name = "HOSTNAME")
     private String hostname;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getContainerName() {
-        return greeting + " I'm container " + hostname + "\n";
+        return "Hello! I'm container " + hostname + "\n";
     }
     
 }

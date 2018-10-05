@@ -37,13 +37,8 @@ import io.openliberty.guides.ping.client.UnknownUrlException;
 @Path("")
 public class PingResource {
 
-    @Inject
-    @ConfigProperty(name = "USERNAME")
-    private String username;
-
-    @Inject
-    @ConfigProperty(name = "PASSWORD")
-    private String password;
+    private String username = "bob";
+    private String password = "bobpwd";
 
     @GET
     @Path("/{hostname}")
