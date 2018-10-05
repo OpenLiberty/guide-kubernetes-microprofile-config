@@ -55,7 +55,7 @@ public class PingResource {
                             .register(UnknownUrlException.class)
                             .build(NameClient.class);
             nameClient.getContainerName(getAuthHeader());
-            return "pong";
+            return "pong\n";
         } catch (ProcessingException ex) {
             // Checking if UnknownHostException is nested inside and rethrowing if not.
             if (this.isUnknownHostException(ex)) {

@@ -15,8 +15,6 @@ package it.io.openliberty.guides.name;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.security.KeyManagementException;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
@@ -46,7 +44,11 @@ public class NameEndpointTest {
     public void setup() {
         response = null;
         client = ClientBuilder.newBuilder()
-                    .hostnameVerifier(new HostnameVerifier() { public boolean verify(String hostname, SSLSession session) { return true; } })
+                    .hostnameVerifier(new HostnameVerifier() {
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    })
                     .build();
     }
 
@@ -64,7 +66,8 @@ public class NameEndpointTest {
         
         String containerName = greeting.substring(greeting.lastIndexOf(" ") + 1);
         containerName = (containerName.equals("null")) ? null : containerName;
-        assertNotNull("Container name should not be null but it was. The service is robably not running inside a container", containerName);
+        assertNotNull("Container name should not be null but it was. The service is robably not running inside a container",
+            containerName);
     }
 
     /**
@@ -77,7 +80,11 @@ public class NameEndpointTest {
      * @return Response object with the response from the specified URL.
      */
     private Response getResponse(String url) {
-        return client.target(url).request().header("Authorization", "Basic Ym9iOmJvYnB3ZA==").get();
+        return client
+            .target(url)
+            .request()
+            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .get();
     }
 
     /**
