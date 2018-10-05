@@ -14,8 +14,6 @@ package it.io.openliberty.guides.ping;
 
 import static org.junit.Assert.assertEquals;
 
-import java.security.KeyManagementException;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
@@ -48,7 +46,11 @@ public class PingEndpointTest {
     public void setup() {
         response = null;
         client = ClientBuilder.newBuilder()
-                    .hostnameVerifier(new HostnameVerifier() { public boolean verify(String hostname, SSLSession session) { return true; } })
+                    .hostnameVerifier(new HostnameVerifier() {
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    })
                     .build();
     }
 
@@ -64,7 +66,7 @@ public class PingEndpointTest {
         this.assertResponse(clusterUrl, response);
         
         String expected = "pong";
-        String actual = response.readEntity(String.class);
+        String actual = response.readEntity(String.class).trim();
         assertEquals("Should have receieved pong", expected, actual);
     }
     
@@ -74,9 +76,15 @@ public class PingEndpointTest {
         response = this.getResponse(clusterUrl + invalidServiceName);
         this.assertResponse(clusterUrl, response);
         
-        String expected = "Bad response from " + invalidServiceName + "\nCheck the console log for more info.";
+        String expected = "Bad response from "
+            + invalidServiceName
+            + "\nCheck the console log for more info.";
         String actual = response.readEntity(String.class);
-        assertEquals("Should have received a bad response from " + invalidServiceName + ", but didn't. Is " + invalidServiceName + " a running Kuberentes service?", expected, actual);
+        assertEquals("Should have received a bad response from "
+            + invalidServiceName
+            + ", but didn't. Is "
+            + invalidServiceName + " a running Kuberentes service?",
+            expected, actual);
     }
 
     /**

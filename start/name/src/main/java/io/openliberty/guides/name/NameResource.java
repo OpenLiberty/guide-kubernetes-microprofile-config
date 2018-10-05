@@ -32,7 +32,7 @@ public class NameResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getContainerName() {
-        return "Hello! I'm container " + hostname;
+        return "Hello! I'm container " + hostname + "\n";
     }
     
 }
