@@ -2,8 +2,25 @@ language: java
 before_script:
 - unset _JAVA_OPTIONS
 - cd finish
+- sudo mount --make-rshared /
+- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+- chmod +x kubectl
+- sudo ln -s $(pwd)/kubectl /usr/local/bin/kubectl
+- wget https://github.com/kubernetes/minikube/releases/download/v0.28.2/minikube-linux-amd64 -O minikube
+- chmod +x minikube
+- sudo ln -s $(pwd)/minikube /usr/local/bin/minikube
+- sudo minikube start --vm-driver=none --bootstrapper=localkube
 script:
-- mvn clean package -Ddockerfile.skip=true
+- mvn package
+- kubectl create configmap greeting-config --from-literal message=Greetings...
+- kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
+- kubectl apply -f kubernetes.yaml
+- sleep 120
+- kubectl get pods
+- echo `minikube ip`
+- mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip`
+- kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep name)
+- kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep ping)
 notifications:
   slack:
     template:
