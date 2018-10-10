@@ -1,4 +1,9 @@
+sudo: required
 language: java
+services:
+- docker
+env:
+- CHANGE_MINIKUBE_NONE_USER=true
 before_script:
 - unset _JAVA_OPTIONS
 - cd finish
