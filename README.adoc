@@ -93,7 +93,19 @@ name-deployment-6bd97d9bf6-6d2cj   1/1       Running   0          34s
 ping-deployment-645767664f-7gnxf   1/1       Running   0          34s
 ----
 
-After the pods are running, navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. By default, it will be `{minikube-ip}` for MiniKube and `localhost` for Docker Desktop. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
+After the pods are ready, you will make requests to your services.
+
+****
+[system]#*{win} | {mac}*#
+
+The default hostname for Docker Desktop is `localhost`.
+
+[system]#*{linux}*#
+
+The default hostname for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
+****
+
+Navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
 
 Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
