@@ -39,11 +39,11 @@ Explore how to externalize configuration using MicroProfile Config and configure
 // =================================================================================================
 
 == What you'll learn
-You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful since configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}, this allows for easier deployment to different environments.
+You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}; this allows for easier deployment to different environments.
 
-By using MicroProfile Config to handle your configuration, it provides useful annotations that you may use to inject configured values into your code. These values can come from any config sources, such as environment variables. If you want to learn more about MicroProfile Config read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices] guide.
+MicroProfile Config provides useful annotations that you can use to inject configured values into your code. These values can come from any config sources, such as environment variables. To learn more about MicroProfile Config, read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices] guide.
 
-Furthermore, you'll learn how to set these environment variables using ConfigMaps and Secrets. These resources are provided by {kube} that act as a data source for your environment variables. By creating a ConfigMap or Secret, they can be used to set environment variables for any number of containers as you see fit.
+Furthermore, you'll learn how to set these environment variables with ConfigMaps and Secrets. These resources are provided by {kube} and act as a data source for your environment variables. You can use a ConfigMap or Secret to set environment variables for any number of containers.
 
 // =================================================================================================
 // Prerequisites
@@ -66,7 +66,7 @@ include::{common-includes}/kube-start.adoc[]
 
 == Deploy the name and ping applications
 
-There are two applications that you will deploy -- `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start` directory and run the following command.
+You'll deploy two applications, `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start` directory and run the following command.
 
 ```
 mvn package
@@ -84,7 +84,7 @@ When this command finishes, wait for the pods to be in the Ready state. Run the 
 kubectl get pods
 ```
 
-When they are ready the output will look similar to the following output.
+When the pods are ready, the output shows `1/1` for READY and `Running` for STATUS."
 
 [source, role="no_copy"]
 ----
@@ -93,7 +93,7 @@ name-deployment-6bd97d9bf6-6d2cj   1/1       Running   0          34s
 ping-deployment-645767664f-7gnxf   1/1       Running   0          34s
 ----
 
-Then navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the ip address or hostname of your {kube} cluster. By default it will be `{minikube-ip}` for MiniKube and `localhost` for Docker Desktop. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
+After the pods are running, navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. By default, it will be `{minikube-ip}` for MiniKube and `localhost` for Docker Desktop. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
 
 Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
@@ -119,37 +119,36 @@ include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[
 
 == Create ConfigMap and Secret
 
-There are several ways to configure an environment variable in a docker container. You can set it directly in `Dockerfile` by using the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a docker container. You can set it directly in `Dockerfile` with the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
-Create a ConfigMap to configure the greeting by using the following `kubectl` command.
+Create a ConfigMap to configure the greeting with the following `kubectl` command.
 
 ```
 kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
 
-This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `meeting` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs that you want stored in this ConfigMap. There are other options available such as `--from-file` and `--from-env-file` to allow for more versatility with respect to what you want to configure. More details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI Documentation].
+This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `meeting` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
 
-Create a Secret to configure the credentials that `ping` will use to authenticate against `name` by using the following `kubectl` command.
+Create a Secret to configure the credentials that `ping` will use to authenticate against `name` with the following `kubectl` command.
 
 ```
 kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
 
-This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and a secrets to store public/private key pairs.
+This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
 
-A Secret is similar to a ConfigMap, the main difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. They don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
 == Update {kube} resources
 
 Next, update your {kube} Deployments in `kubernetes.yaml` to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
 
-Update the kubernetes resources in the `kubernetes.yaml` file:
 [source, java, indent=0]
 ----
 include::finish/kubernetes.yaml[]
 ----
 
-In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example `configMapKeyRef` is used to get the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` is used to get the values `username` and `password` from the Secret `name-credentials`.
+In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example `configMapKeyRef` gets the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
 
 == Deploy your changes
 
@@ -166,11 +165,11 @@ kubectl delete -f kubernetes.yaml
 kubectl apply -f kubernetes.yaml
 ```
 
-Navigate to `{name-api}` and you will see that the greeting message has changed from `Hello!` to `Greetings...`. Verify that `{ping-api}/name-service` is working as intended, if it is not then you may have misconfigured the credentials.
+Navigate to `{name-api}` and you will see that the greeting message has changed from `Hello!` to `Greetings...`. Verify that `{ping-api}/name-service` is working as intended. If it is not, then check the configuration of the credentials.
 
 == Testing the microservices
 
-Run the tests by running the following command and appropriately substituting `[hostname]` for the correct value.
+Run the tests by running the following command and substituting `[hostname]` for the correct value.
 
 ```
 mvn verify -Ddockerfile.skip=true -Dcluster.ip=[hostname]
@@ -178,7 +177,7 @@ mvn verify -Ddockerfile.skip=true -Dcluster.ip=[hostname]
 
 The tests check that `name` responds with a container name, and they check that `ping` responds with `pong` on success and that it gracefully handles a bad response.
 
-Once the tests succeed, you should see output similar to the following in your console.
+After the tests succeed, you should see output similar to the following in your console.
 
 [source, role="no_copy"]
 ----
@@ -208,7 +207,7 @@ Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 
 == Tearing down the {kube} resources
 
-To remove all of the resources created during this guide, run the following commands to delete all of the resources that you created.
+Run the following commands to delete all the resources that you created.
 
 ```
 kubectl delete -f kubernetes.yaml
