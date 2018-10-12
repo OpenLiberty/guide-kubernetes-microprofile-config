@@ -16,7 +16,7 @@
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
 :page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'Microprofile', 'Config', 'ConfigMaps', 'Secrets']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['kubernetes', 'microprofile-config']
+:page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 = Configuring microservices running in Kubernetes
@@ -66,7 +66,7 @@ include::{common-includes}/kube-start.adoc[]
 
 == Deploying the microservices
 
-The two microservices you will deploy are called `name` and `ping`. The `name` microservice simply displays a brief greeting and the name of the container that it runs in. The `ping` microservice simply pings the {kube} Service that encapsulates the pod running the `name` microservice. This demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
+The two microservices you will deploy are called `name` and `ping`. The `name` microservice displays a brief greeting and the name of the container that it runs in. The `ping` microservice pings the {kube} Service that encapsulates the pod running the `name` microservice. This demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
 
 ```
 mvn package
@@ -121,7 +121,7 @@ First, inject the greeting configuration into the resource:
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=greeting]
 ----
 
-Next, update the response to use the configured greeting:
+Next, update the response to use the configured greeting in the `getContainerName` method:
 [source, java, indent=0]
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=response]
