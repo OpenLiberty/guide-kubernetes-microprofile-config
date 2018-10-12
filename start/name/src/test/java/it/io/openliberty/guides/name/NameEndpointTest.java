@@ -66,8 +66,19 @@ public class NameEndpointTest {
         
         String containerName = greeting.substring(greeting.lastIndexOf(" ") + 1);
         containerName = (containerName.equals("null")) ? null : containerName;
-        assertNotNull("Container name should not be null but it was. The service is robably not running inside a container",
+        assertNotNull("Container name should not be null but it was. The service is probably not running inside a container",
             containerName);
+    }
+
+    @Test
+    public void testGreetingMessage() {
+        response = this.getResponse(clusterUrl);
+        this.assertResponse(clusterUrl, response);
+
+        String responseText = response.readEntity(String.class);
+        String expected = System.getProperty("name.message");
+        String actual = responseText.substring(0, responseText.indexOf(" "));
+        assertEquals(expected, actual);
     }
 
     /**

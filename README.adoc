@@ -200,7 +200,7 @@ Navigate to `{name-api}` and you will see that the greeting message has changed 
 Run the integration tests against a cluster running with a hostname of localhost:
 
 ```
-mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost
+mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost -Dname.message=Greetings...
 ```
 
 [system]#*{linux}*#
@@ -208,12 +208,12 @@ mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost
 Run the integration tests against a cluster running at Minikube's IP address:
 
 ```
-mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip`
+mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dname.message=Greetings...
 ```
 ****
 
 
-The tests check that the `name` service responds with a container name, and they check that the `ping` service returns with a `pong` response on success and that it gracefully handles a bad response.
+The tests check that the `name` service responds with a container name and that the message in the response matches the configured message. The tests for the  `ping` verify that the service returns with a `pong` response on success and that it gracefully handles a bad response. If the credentials are misconfigured, then the `ping` test will fail, so the `ping` test indirectly verifies the credentials are correctly configured.
 
 After the tests succeed, you should see output similar to the following in your console.
 
