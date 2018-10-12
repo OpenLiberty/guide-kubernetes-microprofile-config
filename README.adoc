@@ -12,11 +12,11 @@
 :projectid: kubernetes-microprofile-config
 :page-layout: guide
 :page-duration: 15 minutes
-:page-releasedate: 2018-09-24
+:page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
-:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'Microprofile', 'mpConfig', 'ConfigMaps', 'Secrets']
+:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'Microprofile', 'Config', 'ConfigMaps', 'Secrets']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['docker', 'istio', 'kubernetes']
+:page-related-guides: ['kubernetes', 'microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 = Configuring microservices running in Kubernetes
@@ -64,7 +64,7 @@ include::{common-includes}/gitclone.adoc[]
 
 include::{common-includes}/kube-start.adoc[]
 
-== Deploy the name and ping applications
+== Deploying the microservices
 
 You'll deploy two applications, `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start` directory and run the following command.
 
@@ -109,7 +109,7 @@ Navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to
 
 Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
-== Modify name application
+== Modifying name microservice
 
 First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
 
@@ -119,7 +119,7 @@ Update the name resource class in the `name/src/main/java/io/openliberty/guides/
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
 
-== Modify ping application
+== Modifying ping microservice
 
 Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd` respectively. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
 
@@ -129,7 +129,7 @@ Update the ping resource class in the `ping/src/main/java/io/openliberty/guides/
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
 
-== Create ConfigMap and Secret
+== Creating a ConfigMap and Secret
 
 There are several ways to configure an environment variable in a Docker container. You can set it directly in `Dockerfile` with the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
@@ -139,7 +139,7 @@ Create a ConfigMap to configure the greeting with the following `kubectl` comman
 kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
 
-This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `meeting` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
+This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
 
 Create a Secret to configure the credentials that `ping` will use to authenticate against `name` with the following `kubectl` command.
 
@@ -149,9 +149,9 @@ kubectl create secret generic name-credentials --from-literal username=bob --fro
 
 This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
 
-A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a `Base64` encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
-== Update {kube} resources
+== Creating {kube} resources
 
 Next, update your {kube} Deployments in `kubernetes.yaml` to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
 
@@ -162,7 +162,7 @@ include::finish/kubernetes.yaml[]
 
 In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example `configMapKeyRef` gets the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
 
-== Deploy your changes
+== Deploying your changes
 
 Rebuild the application using `mvn package`.
 
