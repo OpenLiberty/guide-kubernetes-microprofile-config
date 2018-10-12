@@ -66,7 +66,7 @@ include::{common-includes}/kube-start.adoc[]
 
 == Deploying the microservices
 
-You'll deploy two applications, `name` and `ping`. `name` displays a greeting and displays its container name. `ping` accepts a hostname as a parameter and returns `pong` if it can successfully make a request to `name`, otherwise the request fails. To build these applications, navigate to the `start` directory and run the following command.
+The two microservices you will deploy are called `name` and `ping`. The `name` microservice simply displays a brief greeting and the name of the container that it runs in. The `ping` microservice simply pings the {kube} Service that encapsulates the pod running the `name` microservice. This demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
 
 ```
 mvn package
@@ -204,11 +204,24 @@ Navigate to `{name-api}` and you will see that the greeting message has changed 
 
 == Testing the microservices
 
-Run the tests by running the following command and substituting `[hostname]` for the correct value.
+****
+[system]#*{win} | {mac}*#
+
+Run the integration tests against a cluster running with a hostname of localhost:
 
 ```
-mvn verify -Ddockerfile.skip=true -Dcluster.ip=[hostname]
+mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost
 ```
+
+[system]#*{linux}*#
+
+Run the integration tests against a cluster running at Minikube's IP address:
+
+```
+mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip`
+```
+****
+
 
 The tests check that `name` responds with a container name, and they check that `ping` responds with `pong` on success and that it gracefully handles a bad response.
 
