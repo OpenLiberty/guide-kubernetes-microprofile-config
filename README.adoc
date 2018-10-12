@@ -119,12 +119,24 @@ Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guide
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
 
+The first change is to use the `@Inject` and `@ConfigProperty` annotations to inject the `GREETING` environment variable for use in the name resource class:
+[source, java, indent=0, role="no_copy"]
+----
+include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=greeting]
+----
+
+The second change is to update the response to use the configured greeting in the `getContainerName` method:
+[source, java, indent=0, role="no_copy"]
+----
+include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=response]
+----
+
 == Modifying ping microservice
 
 Update the `ping` service to make the user name and password members configurable. These values are used to authenticate with the `name` service and they are currently hardcoded to `bob` and `bobpwd`. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`. Use MicroProfile Config and CDI to inject the value of the environment variables `USERNAME` and `PASSWORD` into the ping resource class. Then remove the hardcoded values from those same properties.
 
 Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file with the following:
-[source, java, indent=0, role="no_copy"]
+[source, java, indent=0]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
