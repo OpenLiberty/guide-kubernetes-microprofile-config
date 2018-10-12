@@ -14,7 +14,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
-:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'Microprofile', 'Config', 'ConfigMaps', 'Secrets']
+:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'MicroProfile', 'Config', 'ConfigMaps', 'Secrets']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
@@ -111,9 +111,9 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 == Modifying name microservice
 
-Update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
+Update the `name` service to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
 
-Update the name resource class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
+Update the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
 
 First, inject the greeting configuration into the resource:
 [source, java, indent=0]
@@ -135,9 +135,9 @@ include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[
 
 == Modifying ping microservice
 
-Update `ping` to make the user name and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd`. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
+Update the `ping` service to make the user name and password members configurable. These values are used to authenticate with the `name` service and they are currently hardcoded to `bob` and `bobpwd`. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
 
-Update the ping resource class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
+Update the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
 
 Add the `@Inject` and `@ConfigProperty` annotations, and remove the hardcoded values.
 [source, java, indent=0]
@@ -145,7 +145,7 @@ Add the `@Inject` and `@ConfigProperty` annotations, and remove the hardcoded va
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=credentials]
 ----
 
-After you add the configuration properties for the credentials, the ping resource class should look like the following:
+After you add the configuration properties for the credentials, the `PingResource` class should look like the following:
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
