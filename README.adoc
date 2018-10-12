@@ -113,18 +113,40 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
 
-Update the name resource class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file:
+Update the name resource class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
+
+First, inject the greeting configuration into the resource:
 [source, java, indent=0]
+----
+include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=greeting]
+----
+
+Next, update the response to use the configured greeting:
+[source, java, indent=0]
+----
+include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=response]
+----
+
+The name resource class should look like the following when you're done.
+[source, java, indent=0, role="no_copy"]
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
 
 == Modifying ping microservice
 
-Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd` respectively. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
+Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hard coded to `bob` and `bobpwd` respectively. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
 
-Update the ping resource class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file:
+Update the ping resource class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
+
+Add the `@Inject` and `@ConfigProperty` annotations, and remove the hard coded values.
 [source, java, indent=0]
+----
+include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=credentials]
+----
+
+The ping resource class should look like the following when you're done.
+[source, java, indent=0, role="no_copy"]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
@@ -149,13 +171,14 @@ kubectl create secret generic name-credentials --from-literal username=bob --fro
 
 This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
 
-A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a `Base64` encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
-== Creating {kube} resources
+== Updating {kube} resources
 
-Next, update your {kube} Deployments in `kubernetes.yaml` to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
+Next, you will update your {kube} Deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
 
-[source, java, indent=0]
+Replace the contents of `kubernetes.yaml` with the following:
+[source, yaml, indent=0]
 ----
 include::finish/kubernetes.yaml[]
 ----
