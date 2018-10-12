@@ -111,7 +111,7 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 == Modifying name microservice
 
-First, update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
+Update `name` to have a configurable greeting message. At the moment, it is hardcoded to be `Hello!`. Use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class. Then use `greeting` to create a response with a custom greeting message.
 
 Update the name resource class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
 
@@ -127,7 +127,7 @@ Next, update the response to use the configured greeting:
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=response]
 ----
 
-The name resource class should look like the following when you're done.
+After you add the configuration property and modify the response, the name resource class should look like the following:
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
@@ -135,17 +135,17 @@ include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[
 
 == Modifying ping microservice
 
-Update `ping` to make the username and password members configurable. These values are used to authenticate with `name` so they are currently hard coded to `bob` and `bobpwd` respectively. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
+Update `ping` to make the user name and password members configurable. These values are used to authenticate with `name` so they are currently hardcoded to `bob` and `bobpwd`. Now, they will take the values of the environment variables `USERNAME` and `PASSWORD`.
 
 Update the ping resource class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
 
-Add the `@Inject` and `@ConfigProperty` annotations, and remove the hard coded values.
+Add the `@Inject` and `@ConfigProperty` annotations, and remove the hardcoded values.
 [source, java, indent=0]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=credentials]
 ----
 
-The ping resource class should look like the following when you're done.
+After you add the configuration properties for the credentials, the ping resource class should look like the following:
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
@@ -175,9 +175,9 @@ A Secret is similar to a ConfigMap, except a Secret is used for confidential inf
 
 == Updating {kube} resources
 
-Next, you will update your {kube} Deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously.
+Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. The `env` sections under the `name-container` and `ping-container` containers are where the environment variables will be set.
 
-Replace the contents of `kubernetes.yaml` with the following:
+Replace the contents of the `kubernetes.yaml` file with the following:
 [source, yaml, indent=0]
 ----
 include::finish/kubernetes.yaml[]
