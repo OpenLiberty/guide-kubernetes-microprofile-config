@@ -14,7 +14,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
-:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'Microprofile', 'Config', 'ConfigMaps', 'Secrets']
+:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'MicroProfile', 'Config', 'ConfigMaps', 'Secrets']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes', 'microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
