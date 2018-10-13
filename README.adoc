@@ -1,5 +1,3 @@
-// INSTRUCTION: Please remove all comments that start INSTRUCTION prior to commit. Most comments should be removed, although not the copyright.
-// INSTRUCTION: The copyright statement must appear at the top of the file
 //
 // Copyright (c) 2018 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
@@ -50,7 +48,6 @@ Furthermore, you'll learn how to set these environment variables with ConfigMaps
 // =================================================================================================
 
 include::{common-includes}/kube-prereq.adoc[]
-
 
 // =================================================================================================
 // Getting Started
@@ -118,13 +115,13 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
 
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the name resource class.
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class.
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=greeting]
 ----
 
-Another change adds a new `greeting` member, it is used to create a response with a custom greeting message in the `getContainerName` method.
+Another change uses the new `greeting` member to create a response with a custom greeting message in the `getContainerName` method.
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=response]
@@ -138,7 +135,7 @@ The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to 
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables `USERNAME` and `PASSWORD` into the ping resource class. Then the hardcoded values are removed from those same properties.
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables `USERNAME` and `PASSWORD` into the `PingResource` class. Then the hardcoded values are removed from those same properties.
 [source, java, indent=0, role="no_copy"]
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=credentials]
@@ -216,7 +213,7 @@ mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip`
 ****
 
 
-The tests check that `name` responds with a container name, and they check that `ping` responds with `pong` on success and that it gracefully handles a bad response.
+The tests check that the `name` service responds with a container name, and they check that the `ping` service returns with a `pong` response on success and that it gracefully handles a bad response.
 
 After the tests succeed, you should see output similar to the following in your console.
 
