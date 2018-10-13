@@ -37,6 +37,7 @@ import io.openliberty.guides.ping.client.UnknownUrlException;
 @Path("")
 public class PingResource {
 
+    // tag::credentials[]
     @Inject
     @ConfigProperty(name = "USERNAME")
     private String username;
@@ -44,6 +45,7 @@ public class PingResource {
     @Inject
     @ConfigProperty(name = "PASSWORD")
     private String password;
+    // end::credentials[]
 
     @GET
     @Path("/{hostname}")

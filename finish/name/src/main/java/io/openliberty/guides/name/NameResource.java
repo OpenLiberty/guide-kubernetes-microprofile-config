@@ -25,9 +25,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @Path("/")
 public class NameResource {
 
+    // tag::greeting[]
     @Inject
     @ConfigProperty(name = "GREETING")
     private String greeting;
+    // end::greeting[]
 
     @Inject
     @ConfigProperty(name = "HOSTNAME")
@@ -36,7 +38,9 @@ public class NameResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getContainerName() {
+        // tag::response[]
         return greeting + " I'm container " + hostname + "\n";
+        // end::response[]
     }
     
 }
