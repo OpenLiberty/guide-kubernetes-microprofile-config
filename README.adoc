@@ -81,7 +81,7 @@ When this command finishes, wait for the pods to be in the Ready state. Run the 
 kubectl get pods
 ```
 
-When the pods are ready, the output shows `1/1` for READY and `Running` for STATUS."
+When the pods are ready, the output shows `1/1` for READY and `Running` for STATUS.
 
 [source, role="no_copy"]
 ----
