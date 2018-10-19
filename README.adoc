@@ -63,7 +63,7 @@ include::{common-includes}/kube-start.adoc[]
 
 == Deploying the microservices
 
-The two microservices you will deploy are called `name` and `ping`. The `name` microservice displays a brief greeting and the name of the container that it runs in. The `ping` microservice pings the {kube} Service that encapsulates the pod running the `name` microservice. This demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
+The two microservices you will deploy are called `name` and `ping`. The `name` microservice displays a brief greeting and the name of the container that it runs in. The `ping` microservice pings the {kube} Service that encapsulates the pod running the `name` microservice. The `ping` microservice demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
 
 ```
 mvn package
@@ -81,7 +81,7 @@ When this command finishes, wait for the pods to be in the Ready state. Run the 
 kubectl get pods
 ```
 
-When the pods are ready, the output shows `1/1` for READY and `Running` for STATUS."
+When the pods are ready, the output shows `1/1` for READY and `Running` for STATUS.
 
 [source, role="no_copy"]
 ----
