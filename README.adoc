@@ -17,6 +17,8 @@
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
+:page-seo-title: Kubernetes and MicroProfile configuration tutorial
+:page-seo-description: How to externalize configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices
 = Configuring microservices running in Kubernetes
 
 [.hidden]
