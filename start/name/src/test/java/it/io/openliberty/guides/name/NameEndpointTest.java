@@ -14,6 +14,7 @@ package it.io.openliberty.guides.name;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -66,8 +67,21 @@ public class NameEndpointTest {
         
         String containerName = greeting.substring(greeting.lastIndexOf(" ") + 1);
         containerName = (containerName.equals("null")) ? null : containerName;
-        assertNotNull("Container name should not be null but it was. The service is robably not running inside a container",
+        assertNotNull("Container name should not be null but it was. The service is probably not running inside a container",
             containerName);
+    }
+
+    @Test
+    public void testGreetingMessage() {
+        response = this.getResponse(clusterUrl);
+        this.assertResponse(clusterUrl, response);
+
+        String responseText = response.readEntity(String.class);
+        String expected = System.getProperty("name.message");
+
+        assertTrue(
+            String.format("\"%s\" should start with \"%s\"", responseText, expected),
+            responseText.startsWith(expected));
     }
 
     /**

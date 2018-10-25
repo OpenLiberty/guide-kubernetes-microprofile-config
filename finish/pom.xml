@@ -28,6 +28,7 @@
         <!-- Default test properties -->
         <cluster.ip>192.168.99.100</cluster.ip>
         <name.kube.service>name-service</name.kube.service>
+        <name.message>Hello!</name.message>
         <name.node.port>31000</name.node.port>
         <ping.node.port>32000</ping.node.port>
     </properties>
