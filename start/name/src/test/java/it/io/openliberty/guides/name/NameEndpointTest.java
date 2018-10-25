@@ -14,6 +14,7 @@ package it.io.openliberty.guides.name;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -77,8 +78,10 @@ public class NameEndpointTest {
 
         String responseText = response.readEntity(String.class);
         String expected = System.getProperty("name.message");
-        String actual = responseText.substring(0, responseText.indexOf(" "));
-        assertEquals(expected, actual);
+
+        assertTrue(
+            String.format("\"%s\" should start with \"%s\"", responseText, expected),
+            responseText.startsWith(expected));
     }
 
     /**
