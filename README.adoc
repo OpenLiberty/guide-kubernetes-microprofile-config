@@ -117,6 +117,7 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file with the following:
 ----
 
+NameResource.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
@@ -143,6 +144,7 @@ The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to 
 Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file with the following:
 ----
 
+PingResource.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
@@ -180,11 +182,12 @@ A Secret is similar to a ConfigMap, except a Secret is used for confidential inf
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. The `env` sections under the `name-container` and `ping-container` containers are where the environment variables will be set.
 
-role="code_command hotspot=1-88"]
+[role="code_command hotspot=1-88"]
 ----
 Replace the contents of the `kubernetes.yaml` file with the following:
 ----
 
+kubernetes.yaml
 [source, yaml, indent=0, role='code_column']
 ----
 include::finish/kubernetes.yaml[]
