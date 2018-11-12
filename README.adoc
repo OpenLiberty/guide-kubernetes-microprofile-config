@@ -8,7 +8,7 @@
 //     IBM Corporation
 //
 :projectid: kubernetes-microprofile-config
-:page-layout: guide
+:page-layout: guide-multipane
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
@@ -110,9 +110,14 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 == Modifying name microservice
 
-The `name` service is hardcoded to have `Hello!` as the greeting message. You'll make this message configurable. Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file with the following:
+The `name` service is hardcoded to have `Hello!` as the greeting message. You'll make this message configurable. 
 
-[source, java, indent=0]
+[role="code_command hotspot=13-46"]
+----
+Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file with the following:
+----
+
+[source, java, indent=0, role='code_column']
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
@@ -131,8 +136,14 @@ include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[
 
 == Modifying ping microservice
 
-The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `name` service. You'll make these credentials configurable. Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file with the following:
-[source, java, indent=0]
+The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `name` service. You'll make these credentials configurable. 
+
+[role="code_command hotspot=13-90"]
+----
+Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file with the following:
+----
+
+[source, java, indent=0, role='code_column']
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
@@ -169,8 +180,12 @@ A Secret is similar to a ConfigMap, except a Secret is used for confidential inf
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. The `env` sections under the `name-container` and `ping-container` containers are where the environment variables will be set.
 
+role="code_command hotspot=1-88"]
+----
 Replace the contents of the `kubernetes.yaml` file with the following:
-[source, yaml, indent=0]
+----
+
+[source, yaml, indent=0, role='code_column']
 ----
 include::finish/kubernetes.yaml[]
 ----
