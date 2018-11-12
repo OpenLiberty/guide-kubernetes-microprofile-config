@@ -57,6 +57,11 @@ include::{common-includes}/kube-prereq.adoc[]
 
 include::{common-includes}/gitclone.adoc[]
 
+[role='code_column']
+----
+include::blank.txt
+----
+
 // =================================================================================================
 // Starting/Preparing Cluster
 // =================================================================================================
