@@ -112,7 +112,7 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 The `name` service is hardcoded to have `Hello!` as the greeting message. You'll make this message configurable. 
 
-[role="code_command hotspot=13-46"]
+[role="code_command hotspot=13-46", subs="quotes"]
 ----
 Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file with the following:
 ----
