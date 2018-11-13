@@ -59,7 +59,7 @@ include::{common-includes}/gitclone.adoc[]
 
 [role='code_column']
 ----
-include::blank.txt
+include::blank.txt[]
 ----
 
 // =================================================================================================
