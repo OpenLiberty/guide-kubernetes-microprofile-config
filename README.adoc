@@ -57,10 +57,6 @@ include::{common-includes}/kube-prereq.adoc[]
 
 include::{common-includes}/gitclone.adoc[]
 
-[role='code_column']
-----
-include::blank.txt[]
-----
 
 // =================================================================================================
 // Starting/Preparing Cluster
@@ -119,11 +115,11 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 
 [role="code_command hotspot=13-46", subs="quotes"]
 ----
-Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file with the following:
+Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
 ----
 
 NameResource.java
-[source, java, indent=0, role='code_column']
+[source, java, indent=0, linenums, role='code_column']
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
@@ -146,11 +142,11 @@ The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to 
 
 [role="code_command hotspot=13-90"]
 ----
-Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file with the following:
+Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
 ----
 
 PingResource.java
-[source, java, indent=0, role='code_column']
+[source, java, indent=0, linenums, role='code_column']
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
@@ -189,11 +185,11 @@ Next, you will update your {kube} deployments to set the environment variables i
 
 [role="code_command hotspot=1-88"]
 ----
-Replace the contents of the `kubernetes.yaml` file with the following:
+Replace the contents of the `kubernetes.yaml` file.
 ----
 
 kubernetes.yaml
-[source, yaml, indent=0, role='code_column']
+[source, yaml, indent=0, linenums, role='code_column']
 ----
 include::finish/kubernetes.yaml[]
 ----
