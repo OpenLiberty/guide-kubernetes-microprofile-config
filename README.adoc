@@ -113,49 +113,47 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 The `name` service is hardcoded to have `Hello!` as the greeting message. You'll make this message configurable. 
 
-[role="code_command hotspot=13-46", subs="quotes"]
+[role="code_command hotspot=1-34", subs="quotes"]
 ----
 Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
 ----
 
 NameResource.java
-[source, java, indent=0, linenums, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
 
+[role="code_command hotspot=16-18", subs="quotes"]
+----
 These changes use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class.
-[source, java, indent=0, role="no_copy"]
 ----
-include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=greeting]
+   
+[role="code_command hotspot=26-28", subs="quotes"]
 ----
-
 Another change uses the new `greeting` member to create a response with a custom greeting message in the `getContainerName` method.
-[source, java, indent=0, role="no_copy"]
-----
-include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=response]
 ----
 
 == Modifying ping microservice
 
 The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `name` service. You'll make these credentials configurable. 
 
-[role="code_command hotspot=13-90"]
+[role="code_command hotspot=1-78"]
 ----
 Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
 ----
 
 PingResource.java
-[source, java, indent=0, linenums, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
+[role="code_command hotspot=28-34", subs="quotes"]
+----
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables `USERNAME` and `PASSWORD` into the `PingResource` class.
+----
+Then the hardcoded values are removed from those same properties.
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables `USERNAME` and `PASSWORD` into the `PingResource` class. Then the hardcoded values are removed from those same properties.
-[source, java, indent=0, role="no_copy"]
-----
-include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=credentials]
-----
 
 == Creating a ConfigMap and Secret
 
@@ -189,7 +187,7 @@ Replace the contents of the `kubernetes.yaml` file.
 ----
 
 kubernetes.yaml
-[source, yaml, indent=0, linenums, role='code_column']
+[source, yaml, linenums, role='code_column']
 ----
 include::finish/kubernetes.yaml[]
 ----
