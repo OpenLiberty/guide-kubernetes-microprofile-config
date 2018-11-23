@@ -48,38 +48,38 @@ Furthermore, you'll learn how to set these environment variables with ConfigMaps
 // =================================================================================================
 // Prerequisites
 // =================================================================================================
-
+[role='command']
 include::{common-includes}/kube-prereq.adoc[]
 
 // =================================================================================================
 // Getting Started
 // =================================================================================================
-
+[role='command']
 include::{common-includes}/gitclone.adoc[]
 
 
 // =================================================================================================
 // Starting/Preparing Cluster
 // =================================================================================================
-
+[role='command']
 include::{common-includes}/kube-start.adoc[]
 
 == Deploying the microservices
 
 The two microservices you will deploy are called `name` and `ping`. The `name` microservice displays a brief greeting and the name of the container that it runs in. The `ping` microservice pings the {kube} Service that encapsulates the pod running the `name` microservice. The `ping` microservice demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
-
+[role='command']
 ```
 mvn package
 ```
 
 When the build succeeds, run the following command to deploy the necessary {kube} resources to serve the applications.
-
+[role='command']
 ```
 kubectl apply -f kubernetes.yaml
 ```
 
 When this command finishes, wait for the pods to be in the Ready state. Run the following command to view the status of the pods.
-
+[role='command']
 ```
 kubectl get pods
 ```
@@ -124,15 +124,10 @@ NameResource.java
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
 
-[role="code_command hotspot=16-18", subs="quotes"]
-----
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called `GREETING` into the `greeting` member of the `NameResource` class.
-----
-   
-[role="code_command hotspot=26-28", subs="quotes"]
-----
-Another change uses the new `greeting` member to create a response with a custom greeting message in the `getContainerName` method.
-----
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=16-18]`GREETING` into the `greeting` member of the `NameResource` class.
+
+Another change uses the new `greeting` member to create a response with a custom greeting message in the [hotspot=26-28]`getContainerName` method.
+
 
 == Modifying ping microservice
 
@@ -148,10 +143,9 @@ PingResource.java
 ----
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
-[role="code_command hotspot=28-34", subs="quotes"]
-----
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables `USERNAME` and `PASSWORD` into the `PingResource` class.
-----
+
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`USERNAME` and [hotspot=32-34]`PASSWORD` into the `PingResource` class.
+
 Then the hardcoded values are removed from those same properties.
 
 
@@ -160,7 +154,7 @@ Then the hardcoded values are removed from those same properties.
 There are several ways to configure an environment variable in a Docker container. You can set it directly in `Dockerfile` with the `ENV` command. You can also set it in your `kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the greeting with the following `kubectl` command.
-
+[role='command']
 ```
 kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
@@ -168,11 +162,11 @@ kubectl create configmap greeting-config --from-literal message=Greetings...
 This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
 
 Create a Secret to configure the credentials that `ping` will use to authenticate against `name` with the following `kubectl` command.
-
+[role='command']
 ```
 kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
-
+ 
 This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
 
 A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
@@ -192,18 +186,18 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-In the `kubernetes.yaml` file where the containers are defined, you can see the `valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example `configMapKeyRef` gets the value `message` from the ConfigMap `greeting-config`. Similarly, `secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
+In the `kubernetes.yaml` file where the containers are defined, you can see the [hotspot=23-24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=24-25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=25-26]`greeting-config`. Similarly, [hotspot=52-54ss]`secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
 
 == Deploying your changes
 
 Rebuild the application using `mvn package`.
-
+[role='command']
 ```
 mvn package
 ```
 
 Run the following commands to deploy your changes to the {kube} cluster.
-
+[role='command']
 ```
 kubectl delete -f kubernetes.yaml
 kubectl apply -f kubernetes.yaml
@@ -217,7 +211,7 @@ Navigate to `{name-api}` and you will see that the greeting message has changed 
 [system]#*{win} | {mac}*#
 
 Run the integration tests against a cluster running with a hostname of localhost:
-
+[role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost -Dname.message=Greetings...
 ```
@@ -225,7 +219,7 @@ mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost -Dname.message=Greeting
 [system]#*{linux}*#
 
 Run the integration tests against a cluster running at Minikube's IP address:
-
+[role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dname.message=Greetings...
 ```
@@ -265,7 +259,7 @@ Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 == Tearing down the {kube} resources
 
 Run the following commands to delete all the resources that you created.
-
+[role='command']
 ```
 kubectl delete -f kubernetes.yaml
 kubectl delete configmap greeting-config
