@@ -115,7 +115,8 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 
 [role="code_command hotspot=1-34", subs="quotes"]
 ----
-Replace the `NameResource` class in the `name/src/main/java/io/openliberty/guides/name/NameResource.java` file.
+Replace the `NameResource` class file.
+`name/src/main/java/io/openliberty/guides/name/NameResource.java`.
 ----
 
 NameResource.java
@@ -135,7 +136,8 @@ The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to 
 
 [role="code_command hotspot=1-78"]
 ----
-Replace the `PingResource` class in the `ping/src/main/java/io/openliberty/guides/ping/PingResource.java` file.
+Replace the `PingResource` class file.
+`ping/src/main/java/io/openliberty/guides/ping/PingResource.java`
 ----
 
 PingResource.java
@@ -177,7 +179,8 @@ Next, you will update your {kube} deployments to set the environment variables i
 
 [role="code_command hotspot=1-88"]
 ----
-Replace the contents of the `kubernetes.yaml` file.
+Replace the file.
+`kubernetes.yaml`
 ----
 
 kubernetes.yaml
