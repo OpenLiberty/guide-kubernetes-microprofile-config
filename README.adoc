@@ -134,7 +134,7 @@ Another change uses the new `greeting` member to create a response with a custom
 
 The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `name` service. You'll make these credentials configurable. 
 
-[role="code_command hotspot=1-78"]
+[role="code_command hotspot=1-78", subs="quotes"]
 ----
 Replace the `PingResource` class file.
 `ping/src/main/java/io/openliberty/guides/ping/PingResource.java`
@@ -177,9 +177,9 @@ A Secret is similar to a ConfigMap, except a Secret is used for confidential inf
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. The `env` sections under the `name-container` and `ping-container` containers are where the environment variables will be set.
 
-[role="code_command hotspot=1-88"]
+[role="code_command hotspot=1-88", subs="quotes"]
 ----
-Replace the file.
+Replace the `kubernetes` file.
 `kubernetes.yaml`
 ----
 
