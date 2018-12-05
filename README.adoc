@@ -189,7 +189,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-In the `kubernetes.yaml` file where the containers are defined, you can see the [hotspot=23-24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=24-25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=25-26]`greeting-config`. Similarly, [hotspot=52-54ss]`secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
+In the `kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
 
 == Deploying your changes
 
