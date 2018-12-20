@@ -199,7 +199,7 @@ include::finish/kubernetes.yaml[]
 
 The `env` sections under the `ping-container` is where the `USERNAME` and `PASSWORD` environment variables will be set.
 
-[role="code_command hotspot=22-27", subs="quotes"]
+[role="code_command hotspot=50-60", subs="quotes"]
 ----
 Set the `USERNAME` and `PASSWORD` environment variables in the `kubernetes` file.
 `kubernetes.yaml`
