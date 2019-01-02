@@ -12,7 +12,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
-:page-tags: ['microservices', 'Kubernetes', 'Docker', 'containers', 'kubectl', 'Minikube', 'MicroProfile', 'Config', 'ConfigMaps', 'Secrets']
+:page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
@@ -158,7 +158,7 @@ The changes introduced here use MicroProfile Config and CDI to inject the value 
 
 == Creating a ConfigMap and Secret
 
-There are several ways to configure an environment variable in a Docker container. You can set it directly in `Dockerfile` with the `ENV` command. You can also set it in your [hotspot=1-88]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a Docker container. You can set it directly in [hotspot=1-6 file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot=1-88 file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the greeting with the following `kubectl` command.
 [role='command']
@@ -183,6 +183,13 @@ kubernetes.yaml
 ----
 include::finish/kubernetes.yaml[]
 ----
+
+Dockerfile
+[source, text, linenums, role='code_column']
+----
+include::finish/name/Dockerfile
+----
+
 == Updating {kube} resources
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
