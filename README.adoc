@@ -19,6 +19,7 @@
 :source-highlighter: prettify
 :page-seo-title: MicroProfile Configuration in Kubernetes tutorial
 :page-seo-description: How to externalize configuration with Eclipse MicroProfile Configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices
+:guide-author: Open Liberty
 = Configuring microservices running in Kubernetes
 
 [.hidden]
