@@ -116,7 +116,7 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 
 [role="code_command hotspot=16-18", subs="quotes"]
 ----
-Add the `greeting` member to the `NameResource` class.
+#Add the `greeting` member to the `NameResource` class.#
 `name/src/main/java/io/openliberty/guides/name/NameResource.java`.
 ----
 
@@ -129,7 +129,7 @@ Next, you will add the [hotspot=16-18]`greeting` member to the return value of [
 
 [role="code_command hotspot=27", subs="quotes"]
 ----
-Add the `greeting` member to return value in `getContainerName()`.
+#Add the `greeting` member to return value in `getContainerName()`.#
 `name/src/main/java/io/openliberty/guides/name/NameResource.java`.
 ----
 
@@ -144,7 +144,7 @@ The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to 
 
 [role="code_command hotspot=28-34", subs="quotes"]
 ----
-Replace the `username` and `password` variables to the `PingResource` class.
+#Replace the `username` and `password` variables to the `PingResource` class.#
 `ping/src/main/java/io/openliberty/guides/ping/PingResource.java`
 ----
 
@@ -200,7 +200,7 @@ and `ping-container` containers are where the environment variables will be set.
 
 [role="code_command hotspot=22-27", subs="quotes"]
 ----
-Set the `GREETING` environment variable in the `kubernetes` file.
+#Set the `GREETING` environment variable in the `kubernetes` file.#
 `kubernetes.yaml`
 ----
 
@@ -214,7 +214,7 @@ The `env` sections under the `ping-container` is where the `USERNAME` and `PASSW
 
 [role="code_command hotspot=50-60", subs="quotes"]
 ----
-Set the `USERNAME` and `PASSWORD` environment variables in the `kubernetes` file.
+#Set the `USERNAME` and `PASSWORD` environment variables in the `kubernetes` file.#
 `kubernetes.yaml`
 ----
 
