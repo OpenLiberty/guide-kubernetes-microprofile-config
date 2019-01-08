@@ -288,7 +288,7 @@ Results :
 Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-== Tearing down the {kube} resources
+== Tearing down the environment
 
 Run the following commands to delete all the resources that you created.
 [role='command']
@@ -297,6 +297,10 @@ kubectl delete -f kubernetes.yaml
 kubectl delete configmap greeting-config
 kubectl delete secret name-credentials
 ```
+
+
+include::{common-includes}/kube-minikube-teardown.adoc[]
+
 
 // =================================================================================================
 // finish
