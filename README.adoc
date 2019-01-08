@@ -132,7 +132,7 @@ Add the `greeting` member to return value in `getContainerName()`.
 `name/src/main/java/io/openliberty/guides/name/NameResource.java`.
 ----
 
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=17]`GREETING` into the [hotspot=16-18]`greeting` member of the `NameResource` class.
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=17]`GREETING` into the [hotspot=16-18]`greeting` member of the [hotspot=14-30]`NameResource` class.
 
 Another change uses the new [hotspot=16-18]`greeting` member to create a response with a custom greeting message in [hotspot=26-28]`getContainerName()`.
 
@@ -153,7 +153,7 @@ PingResource.java
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`USERNAME` and [hotspot=32-34]`PASSWORD` into the `PingResource` class.
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`USERNAME` and [hotspot=32-34]`PASSWORD` into the [hotspot=26-76]`PingResource` class.
 
 
 == Creating a ConfigMap and Secret
@@ -166,7 +166,7 @@ Create a ConfigMap to configure the greeting with the following `kubectl` comman
 kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
 
-This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
+This command deploys a ConfigMap named [hotspot=26]`greeting-config` to your cluster. It has a key called [hotspot=27]`message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
 
 Create a Secret to configure the credentials that `ping` will use to authenticate against `name` with the following `kubectl` command.
 [role='command']
@@ -193,7 +193,7 @@ include::finish/name/Dockerfile[]
 == Updating {kube} resources
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
-The `env` sections under the `name-container` is where the `GREETING` environment variable will be set.
+The [hotspot=22-27]`env` sections under the [hotspot=17]`name-container` is where the `GREETING` environment variable will be set.
 
 and `ping-container` containers are where the environment variables will be set.
 
@@ -218,7 +218,7 @@ Set the `USERNAME` and `PASSWORD` environment variables in the `kubernetes` file
 ----
 
 
-In the `kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values `username` and `password` from the Secret `name-credentials`.
+In the [hotspot=1-88]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values `username` and `password` from the Secret [hotspot=54]`name-credentials`.
 
 == Deploying your changes
 
