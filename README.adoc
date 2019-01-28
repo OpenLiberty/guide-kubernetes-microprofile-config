@@ -116,7 +116,7 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 
 [role="code_command hotspot=16-18", subs="quotes"]
 ----
-#Add the `greeting` member to the `NameResource` class.#
+#Replace the `NameResource` class.#
 `name/src/main/java/io/openliberty/guides/name/NameResource.java`.
 ----
 
@@ -125,13 +125,7 @@ NameResource.java
 ----
 include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
 ----
-Next, you will add the [hotspot=16-18]`greeting` member to the return value of [hotspot=26-28]`getContainerName()`.
-
-[role="code_command hotspot=27", subs="quotes"]
-----
-#Add the `greeting` member to return value in `getContainerName()`.#
-`name/src/main/java/io/openliberty/guides/name/NameResource.java`.
-----
+The [hotspot=16-18]`greeting` member was added to the return value of [hotspot=26-28]`getContainerName()`.
 
 These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=17]`GREETING` into the [hotspot=16-18]`greeting` member of the [hotspot=14-30]`NameResource` class.
 
@@ -200,7 +194,7 @@ and `ping-container` containers are where the environment variables will be set.
 
 [role="code_command hotspot=22-27", subs="quotes"]
 ----
-#Set the `GREETING` environment variable in the `kubernetes` file.#
+#Replace the kubernetes file.#
 `kubernetes.yaml`
 ----
 
@@ -210,14 +204,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-The `env` sections under the `ping-container` is where the `USERNAME` and `PASSWORD` environment variables will be set.
-
-[role="code_command hotspot=50-60", subs="quotes"]
-----
-#Set the `USERNAME` and `PASSWORD` environment variables in the `kubernetes` file.#
-`kubernetes.yaml`
-----
-
+The `env` sections under the `ping-container` is where the `USERNAME` and `PASSWORD` environment variables were be set.
 
 In the [hotspot=1-88]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values `username` and `password` from the Secret [hotspot=54]`name-credentials`.
 
