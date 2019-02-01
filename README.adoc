@@ -138,7 +138,7 @@ The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to 
 
 [role="code_command hotspot=28-34", subs="quotes"]
 ----
-#Replace the `username` and `password` variables to the `PingResource` class.#
+#Replace the `PingResource` class.#
 `ping/src/main/java/io/openliberty/guides/ping/PingResource.java`
 ----
 
