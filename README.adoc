@@ -153,7 +153,7 @@ The changes introduced here use MicroProfile Config and CDI to inject the value 
 
 == Creating a ConfigMap and Secret
 
-There are several ways to configure an environment variable in a Docker container. You can set it directly in [hotspot=1-6 file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot=1-88 file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a Docker container. You can set it directly in [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot=1-88 file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the greeting with the following `kubectl` command.
 [role='command']
