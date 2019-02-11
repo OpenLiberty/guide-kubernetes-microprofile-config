@@ -114,7 +114,7 @@ Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
 
 The `name` service is hardcoded to have `Hello!` as the greeting message. You'll make this message configurable by adding the `greeting` member and return value. 
 
-[role="code_command hotspot=16-18", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Replace the `NameResource` class.#
 `name/src/main/java/io/openliberty/guides/name/NameResource.java`.
@@ -136,7 +136,7 @@ Another change uses the new [hotspot=16-18]`greeting` member to create a respons
 
 The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `name` service. You'll make these credentials configurable. 
 
-[role="code_command hotspot=28-34", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Replace the `PingResource` class.#
 `ping/src/main/java/io/openliberty/guides/ping/PingResource.java`
@@ -153,7 +153,7 @@ The changes introduced here use MicroProfile Config and CDI to inject the value 
 
 == Creating a ConfigMap and Secret
 
-There are several ways to configure an environment variable in a Docker container. You can set it directly in [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot=1-88 file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a Docker container. You can set it directly in [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the greeting with the following `kubectl` command.
 [role='command']
@@ -192,7 +192,7 @@ The [hotspot=22-27]`env` sections under the [hotspot=17]`name-container` is wher
 
 and `ping-container` containers are where the environment variables will be set.
 
-[role="code_command hotspot=22-27", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Replace the kubernetes file.#
 `kubernetes.yaml`
@@ -206,7 +206,7 @@ include::finish/kubernetes.yaml[]
 
 The `env` sections under the `ping-container` is where the `USERNAME` and `PASSWORD` environment variables were be set.
 
-In the [hotspot=1-88]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values `username` and `password` from the Secret [hotspot=54]`name-credentials`.
+In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value `message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values `username` and `password` from the Secret [hotspot=54]`name-credentials`.
 
 == Deploying your changes
 
