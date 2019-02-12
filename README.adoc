@@ -161,7 +161,7 @@ Create a ConfigMap to configure the greeting with the following `kubectl` comman
 kubectl create configmap greeting-config --from-literal message=Greetings...
 ```
 
-This command deploys a ConfigMap named [hotspot=26]`greeting-config` to your cluster. It has a key called [hotspot=27]`message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation].
+This command deploys a ConfigMap named [hotspot=26]`greeting-config` to your cluster. It has a key called [hotspot=27]`message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
 Create a Secret to configure the credentials that `ping` will use to authenticate against `name` with the following `kubectl` command.
 [role='command']
