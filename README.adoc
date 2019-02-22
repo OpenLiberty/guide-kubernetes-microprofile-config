@@ -117,7 +117,7 @@ The `name` service is hardcoded to have `Hello!` as the greeting message. You'll
 [role="code_command hotspot", subs="quotes"]
 ----
 #Replace the `NameResource` class.#
-`name/src/main/java/io/openliberty/guides/name/NameResource.java`.
+`name/src/main/java/io/openliberty/guides/name/NameResource.java`
 ----
 
 NameResource.java
