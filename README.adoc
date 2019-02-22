@@ -188,9 +188,8 @@ include::finish/name/Dockerfile[]
 == Updating {kube} resources
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
-The [hotspot=22-27]`env` sections under the [hotspot=17-20]`name-container` is where the `GREETING` environment variable will be set.
-
-and [hotspot=45-48]`ping-container` containers are where the environment variables will be set.
+The [hotspot=22-27]`env` section under the [hotspot=17-27]`name-container` is where the `GREETING` environment variable will be set.
+The [hotspot=50-60]`env` section under the [hotspot=45-60]`ping-container` is where the [hotspot=51-55]`USERNAME` and [hotspot=56-60]`PASSWORD` environment variables will be set.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -204,9 +203,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-The [hotspot=50-60]`env` sections under the [hotspot=45-48]`ping-container` is where the [hotspot=51-55]`USERNAME` and [hotspot=56-60]`PASSWORD` environment variables were be set.
-
-In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24 hotspot=52 hotspot=57]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25]`configMapKeyRef` gets the value [hotspot=27]`message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53]`secretKeyRef` gets the values [hotspot=51]`username` and [hotspot=56]`password` from the Secret [hotspot=54]`name-credentials`.
+In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`name-credentials`.
 
 == Deploying your changes
 
