@@ -298,4 +298,4 @@ You have used MicroProfile Config to externalize the configuration of two micros
 
 // Include the below from the guides-common repo to tell users how they can contribute to the guide
 
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
+include::{common-includes}/attribution.adoc[subs="attributes"]
