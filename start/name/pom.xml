@@ -38,12 +38,6 @@
            <artifactId>microprofile-rest-client-api</artifactId>
        </dependency>
        <dependency>
-           <groupId>io.openliberty.features</groupId>
-           <artifactId>mpConfig-1.2</artifactId>
-           <type>esa</type>
-           <scope>provided</scope>
-       </dependency>
-       <dependency>
            <groupId>junit</groupId>
            <artifactId>junit</artifactId>
        </dependency>
