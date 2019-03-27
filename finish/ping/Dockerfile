@@ -1,5 +1,5 @@
 FROM open-liberty
 
-COPY target/liberty/wlp/usr/servers/defaultServer/bootstrap.properties /config
-COPY src/main/liberty/config/server.xml /config
-COPY target/*.war /config/apps/ping.war
+COPY --chown=1001:0 target/liberty/wlp/usr/servers/defaultServer/bootstrap.properties /config
+COPY --chown=1001:0 src/main/liberty/config/server.xml /config
+COPY --chown=1001:0 target/*.war /config/apps/ping.war
