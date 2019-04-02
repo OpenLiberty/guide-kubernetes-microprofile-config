@@ -148,7 +148,7 @@ PingResource.java
 include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`USERNAME` and [hotspot=32-34]`PASSWORD` into the [hotspot=26-76]`PingResource` class.
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`PING_USERNAME` and [hotspot=32-34]`PING_PASSWORD` into the [hotspot=26-76]`PingResource` class.
 
 
 == Creating a ConfigMap and Secret
@@ -189,7 +189,7 @@ include::finish/name/Dockerfile[]
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
 The [hotspot=22-27]`env` section under the [hotspot=17-27]`name-container` is where the `GREETING` environment variable will be set.
-The [hotspot=50-60]`env` section under the [hotspot=45-60]`ping-container` is where the [hotspot=51-55]`USERNAME` and [hotspot=56-60]`PASSWORD` environment variables will be set.
+The [hotspot=50-60]`env` section under the [hotspot=45-60]`ping-container` is where the [hotspot=51-55]`PING_USERNAME` and [hotspot=56-60]`PING_PASSWORD` environment variables will be set.
 
 [role="code_command hotspot", subs="quotes"]
 ----

@@ -46,14 +46,14 @@ spec:
         image: ping:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
-        # Set the USERNAME and PASSWORD environment variables
+        # Set the PING_USERNAME and PING_PASSWORD environment variables
         env:
-        - name: USERNAME
+        - name: PING_USERNAME
           valueFrom:
             secretKeyRef:
               name: name-credentials
               key: username
-        - name: PASSWORD
+        - name: PING_PASSWORD
           valueFrom:
             secretKeyRef:
               name: name-credentials

@@ -39,11 +39,11 @@ public class PingResource {
 
     // tag::credentials[]
     @Inject
-    @ConfigProperty(name = "USERNAME")
+    @ConfigProperty(name = "PING_USERNAME")
     private String username;
 
     @Inject
-    @ConfigProperty(name = "PASSWORD")
+    @ConfigProperty(name = "PING_PASSWORD")
     private String password;
     // end::credentials[]
 
