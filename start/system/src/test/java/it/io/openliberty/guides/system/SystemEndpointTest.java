@@ -84,6 +84,17 @@ public class SystemEndpointTest {
         response.close();
     }
 
+    @Test
+    public void testAppName() {
+        response = this.getResponse(clusterUrl);
+        this.assertResponse(clusterUrl, response);
+
+        String appName = response.getHeaderString("X-App-Name");
+        assertEquals(appName, System.getProperty("system.appName"))
+
+        response.close();
+    }
+
     /**
      * <p>
      * Returns response information from the specified URL.
@@ -94,7 +105,11 @@ public class SystemEndpointTest {
      * @return Response object with the response from the specified URL.
      */
     private Response getResponse(String url) {
-        return client.target(url).request().get();
+        return client
+            .target(url)
+            .request()
+            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .get();
     }
 
     /**
