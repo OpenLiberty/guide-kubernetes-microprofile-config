@@ -184,7 +184,11 @@ public class InventoryEndpointTest {
      */
     // end::javadoc[]
     private Response getResponse(String url) {
-        return client.target(url).request().get();
+        return client
+            .target(url)
+            .request()
+            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .get();
     }
 
     // tag::javadoc[]

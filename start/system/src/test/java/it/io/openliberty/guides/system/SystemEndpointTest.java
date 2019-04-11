@@ -78,7 +78,10 @@ public class SystemEndpointTest {
         client.register(JsrJsonpProvider.class);
 
         WebTarget target = client.target(clusterUrl);
-        Response response = target.request().get();
+        Response response = target
+            .request()
+            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .get();
 
         assertEquals("Incorrect response code from " + clusterUrl, 200, response.getStatus());
         response.close();
@@ -90,7 +93,7 @@ public class SystemEndpointTest {
         this.assertResponse(clusterUrl, response);
 
         String appName = response.getHeaderString("X-App-Name");
-        assertEquals(appName, System.getProperty("system.appName"))
+        assertEquals(appName, System.getProperty("system.appName"));
 
         response.close();
     }
