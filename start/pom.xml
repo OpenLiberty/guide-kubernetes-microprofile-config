@@ -35,6 +35,7 @@
         <cluster.ip>localhost</cluster.ip>
         <system.kube.service>system-service</system.kube.service>
         <system.node.port>31000</system.node.port>
+        <system.appName>system</system.appName>
         <inventory.node.port>32000</inventory.node.port>
     </properties>
 
@@ -207,6 +208,9 @@
                                 </includes>
                                 <systemPropertyVariables>
                                     <cluster.ip>${cluster.ip}</cluster.ip>
+                                    <system.appName>
+                                        ${system.appName}
+                                    </system.appName>
                                     <system.ingress.path>
                                         ${system.ingress.path}
                                     </system.ingress.path>
