@@ -131,7 +131,7 @@ The `system` service is hardcoded to have `system` as the app name. You'll make 
 SystemResource.java
 [source, java, linenums, role='code_column']
 ----
-include::system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
+include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
 ----
 The [hotspot=19-21]`greeting` member was added to the header value in [hotspot=32]`getProperties()`.
 
@@ -187,7 +187,7 @@ include::finish/kubernetes.yaml[]
 Dockerfile
 [source, text, linenums, role='code_column']
 ----
-include::finish/name/Dockerfile[]
+include::finish/system/Dockerfile[]
 ----
 
 == Updating {kube} resources
