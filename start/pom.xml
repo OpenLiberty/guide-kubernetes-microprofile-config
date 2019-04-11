@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
         <artifactId>liberty-maven-app-parent</artifactId>
@@ -32,11 +32,10 @@
         <http.port>9080</http.port>
         <https.port>9443</https.port>
         <!-- Default test properties -->
-        <cluster.ip>192.168.99.100</cluster.ip>
-        <name.kube.service>name-service</name.kube.service>
-        <name.message>Hello!</name.message>
-        <name.node.port>31000</name.node.port>
-        <ping.node.port>32000</ping.node.port>
+        <cluster.ip>localhost</cluster.ip>
+        <system.kube.service>system-service</system.kube.service>
+        <system.node.port>31000</system.node.port>
+        <inventory.node.port>32000</inventory.node.port>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +57,18 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.json</artifactId>
+                <version>1.0.4</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-extension-providers</artifactId>
+                <version>3.2.6</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -171,7 +182,9 @@
                                 <excludes>
                                     <exclude>**/it/**</exclude>
                                 </excludes>
-                                <reportsDirectory>${project.build.directory}/test-reports/unit</reportsDirectory>
+                                <reportsDirectory>
+                                    ${project.build.directory}/test-reports/unit
+                                </reportsDirectory>
                             </configuration>
                         </execution>
                     </executions>
@@ -194,11 +207,19 @@
                                 </includes>
                                 <systemPropertyVariables>
                                     <cluster.ip>${cluster.ip}</cluster.ip>
-                                    <name.ingress.path>${name.ingress.path}</name.ingress.path>
-                                    <name.node.port>${name.node.port}</name.node.port>
-                                    <name.kube.service>${name.kube.service}</name.kube.service>
-                                    <ping.ingress.path>${ping.ingress.path}</ping.ingress.path>
-                                    <ping.node.port>${ping.node.port}</ping.node.port>
+                                    <system.ingress.path>
+                                        ${system.ingress.path}
+                                    </system.ingress.path>
+                                    <system.node.port>
+                                        ${system.node.port}
+                                    </system.node.port>
+                                    <system.kube.service>
+                                        ${system.kube.service}
+                                    </system.kube.service>
+                                    <inventory.ingress.path>
+                                        ${inventory.ingress.path}
+                                    </inventory.ingress.path>
+                                    <inventory.node.port>${inventory.node.port}</inventory.node.port>
                                 </systemPropertyVariables>
                             </configuration>
                         </execution>
@@ -210,8 +231,12 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
-                        <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>
+                        <summaryFile>
+                            ${project.build.directory}/test-reports/it/failsafe-summary.xml
+                        </summaryFile>
+                        <reportsDirectory>
+                            ${project.build.directory}/test-reports/it
+                        </reportsDirectory>
                     </configuration>
                 </plugin>
             </plugins>
@@ -219,8 +244,8 @@
     </build>
 
     <modules>
-        <module>name</module>
-        <module>ping</module>
+        <module>system</module>
+        <module>inventory</module>
     </modules>
 
 </project>

@@ -1,53 +1,72 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: name-deployment
+  name: system-deployment
   labels:
-    app: name
+    app: system
 spec:
   selector:
     matchLabels:
-      app: name
+      app: system
   template:
     metadata:
       labels:
-        app: name
+        app: system
     spec:
       containers:
-      - name: name-container
-        image: name:1.0-SNAPSHOT
+      - name: system-container
+        image: system:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
+        # Set the APP_NAME environment variable
+        env:
+        - name: APP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: sys-app-name
+              key: name
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ping-deployment
+  name: inventory-deployment
   labels:
-    app: ping
+    app: inventory
 spec:
   selector:
     matchLabels:
-      app: ping
+      app: inventory
   template:
     metadata:
       labels:
-        app: ping
+        app: inventory
     spec:
       containers:
-      - name: ping-container
-        image: ping:1.0-SNAPSHOT
+      - name: inventory-container
+        image: inventory:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
+        # Set the SYSTEM_APP_USERNAME and SYSTEM_APP_PASSWORD environment variables
+        env:
+        - name: SYSTEM_APP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: sys-app-credentials
+              key: username
+        - name: SYSTEM_APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sys-app-credentials
+              key: password
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: name-service
+  name: system-service
 spec:
   type: NodePort
   selector:
-    app: name
+    app: system
   ports:
   - protocol: TCP
     port: 9080
@@ -57,11 +76,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ping-service
+  name: inventory-service
 spec:
   type: NodePort
   selector:
-    app: ping
+    app: inventory
   ports:
   - protocol: TCP
     port: 9080
