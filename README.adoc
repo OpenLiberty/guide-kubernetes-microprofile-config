@@ -232,7 +232,7 @@ Navigate to `{system-api}` and examing the response headers in your developer co
 ****
 [system]#*{win} | {mac}*#
 
-Run the integration tests against a cluster running with a hostname of localhost:
+Run the integration tests against a cluster running with appName `my-system`:
 [role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
@@ -240,7 +240,7 @@ mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
 
 [system]#*{linux}*#
 
-Run the integration tests against a cluster running at Minikube's IP address:
+Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
@@ -257,12 +257,15 @@ After the tests succeed, you should see output similar to the following in your 
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.name.NameEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.542 sec - in it.io.openliberty.guides.name.NameEndpointTest
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.709 s - in it.io.openliberty.guides.system.SystemEndpointTest
 
-Results :
+Results:
 
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 [source, role="no_copy"]
@@ -270,12 +273,12 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.ping.PingEndpointTest
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.761 sec - in it.io.openliberty.guides.ping.PingEndpointTest
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.696 s - in it.io.openliberty.guides.inventory.InventoryEndpointTest
 
-Results :
+Results:
 
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 == Tearing down the environment
