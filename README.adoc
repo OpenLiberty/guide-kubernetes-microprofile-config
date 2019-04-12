@@ -29,8 +29,6 @@ Explore how to externalize configuration using MicroProfile Config and configure
 
 :minikube-ip: 192.168.99.100
 :kube: Kubernetes
-:name-api: http://[hostname]:31000/api/name
-:ping-api: http://[hostname]:32000/api/ping
 :system-api: http://[hostname]:31000/system/properties
 :inventory-api: http://[hostname]:32000/inventory/systems
 :win: Windows
@@ -135,7 +133,7 @@ include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource
 ----
 The [hotspot=19-21]`greeting` member was added to the header value in [hotspot=32]`getProperties()`.
 
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`greeting` member of the `NameResource` class.
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`appName` member of the `SystemResource` class.
 
 == Modifying inventory microservice
 
@@ -254,9 +252,6 @@ After the tests succeed, you should see output similar to the following in your 
 
 [source, role="no_copy"]
 ----
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
