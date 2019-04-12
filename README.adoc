@@ -131,7 +131,7 @@ SystemResource.java
 ----
 include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
 ----
-The [hotspot=19-21]`greeting` member was added to the header value in [hotspot=32]`getProperties()`.
+The [hotspot=19-21]`appName` member was added to the header value in [hotspot=32]`getProperties()`.
 
 These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`appName` member of the `SystemResource` class.
 
