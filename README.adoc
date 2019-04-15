@@ -69,7 +69,7 @@ include::{common-includes}/kube-start.adoc[]
 
 The two microservices you will deploy are called `system` and `inventory`. The `system` microservice
 returns the JVM system properties of the running container and it returns the pod's name in the HTTP header
-making replicas easy to distinquish from each other. The `inventory` microservice
+making replicas easy to distinguish from each other. The `inventory` microservice
 adds the properties from the `system` microservice to the inventory. This demonstrates
 how communication can be established between pods inside a cluster.
 To build these applications, navigate to the `start` directory and run the following command.
@@ -112,7 +112,7 @@ The default hostname for Docker Desktop is `localhost`.
 The default hostname for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
 ****
 
-Navigate to `{system-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. Open your browser's developer console and examing the response headers. Observe that the `X-App-Name` header currently has the value `system`.
+Navigate to `{system-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. Open your browser's developer console and examining the response headers. Observe that the `X-App-Name` header currently has the value `system`.
 
 Similarly, navigate to `{inventory-api}/system-service` and the system will be added to your inventory.
 
@@ -131,7 +131,7 @@ SystemResource.java
 ----
 include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
 ----
-The [hotspot=19-21]`appName` member was added to the header value in [hotspot=32]`getProperties()`.
+The [hotspot=21]`appName` member was added to the [hotspot=32]`header` value in [hotspot=29-34]`getProperties()`.
 
 These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`appName` member of the `SystemResource` class.
 
