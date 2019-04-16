@@ -40,7 +40,7 @@ Explore how to externalize configuration using MicroProfile Config and configure
 // =================================================================================================
 
 == What you'll learn
-You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}; this allows for easier deployment to different environments.
+You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}. Using environment variables allows for easier deployment to different environments.
 
 MicroProfile Config provides useful annotations that you can use to inject configured values into your code. These values can come from any config sources, such as environment variables. To learn more about MicroProfile Config, read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide.
 
@@ -69,7 +69,7 @@ include::{common-includes}/kube-start.adoc[]
 
 The two microservices you will deploy are called `system` and `inventory`. The `system` microservice
 returns the JVM system properties of the running container and it returns the pod's name in the HTTP header
-making replicas easy to distinquish from each other. The `inventory` microservice
+making replicas easy to distinguish from each other. The `inventory` microservice
 adds the properties from the `system` microservice to the inventory. This demonstrates
 how communication can be established between pods inside a cluster.
 To build these applications, navigate to the `start` directory and run the following command.
@@ -105,14 +105,14 @@ After the pods are ready, you will make requests to your services.
 ****
 [system]#*{win} | {mac}*#
 
-The default hostname for Docker Desktop is `localhost`.
+The default host name for Docker Desktop is `localhost`.
 
 [system]#*{linux}*#
 
-The default hostname for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
+The default host name for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
 ****
 
-Navigate to `{system-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. Open your browser's developer console and examing the response headers. Observe that the `X-App-Name` header currently has the value `system`.
+Navigate to `{system-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or host name of your {kube} cluster. Open your browser's developer console and examine the response headers. Observe that the `X-App-Name` header currently has the value `system`.
 
 Similarly, navigate to `{inventory-api}/system-service` and the system will be added to your inventory.
 
@@ -131,7 +131,7 @@ SystemResource.java
 ----
 include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
 ----
-The [hotspot=19-21]`appName` member was added to the header value in [hotspot=32]`getProperties()`.
+The [hotspot=21]`appName` member was added to the [hotspot=32]`header` value in [hotspot=29-34]`getProperties()`.
 
 These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`appName` member of the `SystemResource` class.
 
@@ -156,7 +156,7 @@ The changes introduced here use MicroProfile Config and CDI to inject the value 
 
 == Creating a ConfigMap and Secret
 
-There are several ways to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you're going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be reused across many different containers, even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the app name with the following `kubectl` command.
 [role='command']
@@ -172,9 +172,9 @@ Create a Secret to configure the credentials that `inventory` will use to authen
 kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
  
-This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
+This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means you're creating a Secret that is `generic`, in other words it stores information that isn't specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
 
-A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
 kubernetes.yaml
 [source, yaml, linenums, role='code_column']
@@ -223,7 +223,7 @@ kubectl delete -f kubernetes.yaml
 kubectl apply -f kubernetes.yaml
 ```
 
-Navigate to `{system-api}` and examing the response headers in your developer console. You will see that the app name has changed from `system` to `my-system`. Verify that `{inventory-api}/system-service` is working as intended. If it is not, then check the configuration of the credentials.
+Navigate to `{system-api}` and examine the response headers in your developer console. You will see that the app name has changed from `system` to `my-system`. Verify that `{inventory-api}/system-service` is working as intended. If it is not, then check the configuration of the credentials.
 
 == Testing the microservices
 
