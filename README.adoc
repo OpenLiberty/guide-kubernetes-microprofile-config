@@ -112,7 +112,7 @@ The default host name for Docker Desktop is `localhost`.
 The default host name for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
 ****
 
-Navigate to `{system-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or host name of your {kube} cluster. Open your browser's developer console and examine the response headers. Observe that the `X-App-Name` header currently has the value `system`.
+Navigate to `{system-api}` and use the user name `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or host name of your {kube} cluster. Open your browser's developer console and examine the response headers. Observe that the `X-App-Name` header currently has the value `system`.
 
 Similarly, navigate to `{inventory-api}/system-service` and the system will be added to your inventory.
 
@@ -172,9 +172,9 @@ Create a Secret to configure the credentials that `inventory` will use to authen
 kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
  
-This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means you're creating a Secret that is `generic`, in other words it stores information that isn't specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
+This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means you're creating a Secret that is `generic`, in other words it stores information that isn't specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
 
-A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap. A key difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
 kubernetes.yaml
 [source, yaml, linenums, role='code_column']
@@ -206,7 +206,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`name` from the ConfigMap [hotspot=26]`sys-app-name`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
+In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field that allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`name` from the ConfigMap [hotspot=26]`sys-app-name`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
 
 == Deploying your changes
 
