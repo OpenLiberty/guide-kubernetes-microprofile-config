@@ -29,8 +29,8 @@ Explore how to externalize configuration using MicroProfile Config and configure
 
 :minikube-ip: 192.168.99.100
 :kube: Kubernetes
-:name-api: http://[hostname]:31000/api/name
-:ping-api: http://[hostname]:32000/api/ping
+:system-api: http://[hostname]:31000/system/properties
+:inventory-api: http://[hostname]:32000/inventory/systems
 :win: Windows
 :mac: Mac
 :linux: Linux
@@ -40,7 +40,7 @@ Explore how to externalize configuration using MicroProfile Config and configure
 // =================================================================================================
 
 == What you'll learn
-You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}; this allows for easier deployment to different environments.
+You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}. Using environment variables allows for easier deployment to different environments.
 
 MicroProfile Config provides useful annotations that you can use to inject configured values into your code. These values can come from any config sources, such as environment variables. To learn more about MicroProfile Config, read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide.
 
@@ -67,10 +67,16 @@ include::{common-includes}/kube-start.adoc[]
 
 == Deploying the microservices
 
-The two microservices you will deploy are called `name` and `ping`. The `name` microservice displays a brief greeting and the name of the container that it runs in. The `ping` microservice pings the {kube} Service that encapsulates the pod running the `name` microservice. The `ping` microservice demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
+The two microservices you will deploy are called `system` and `inventory`. The `system` microservice
+returns the JVM system properties of the running container and it returns the pod's name in the HTTP header
+making replicas easy to distinguish from each other. The `inventory` microservice
+adds the properties from the `system` microservice to the inventory. This demonstrates
+how communication can be established between pods inside a cluster.
+To build these applications, navigate to the `start` directory and run the following command.
+
 [role='command']
 ```
-mvn package
+mvn clean package
 ```
 
 When the build succeeds, run the following command to deploy the necessary {kube} resources to serve the applications.
@@ -89,9 +95,9 @@ When the pods are ready, the output shows `1/1` for READY and `Running` for STAT
 
 [source, role="no_copy"]
 ----
-NAME                               READY     STATUS    RESTARTS   AGE
-name-deployment-6bd97d9bf6-6d2cj   1/1       Running   0          34s
-ping-deployment-645767664f-7gnxf   1/1       Running   0          34s
+NAME                                   READY     STATUS    RESTARTS   AGE
+system-deployment-6bd97d9bf6-6d2cj     1/1       Running   0          34s
+inventory-deployment-645767664f-7gnxf  1/1       Running   0          34s
 ----
 
 After the pods are ready, you will make requests to your services.
@@ -99,79 +105,76 @@ After the pods are ready, you will make requests to your services.
 ****
 [system]#*{win} | {mac}*#
 
-The default hostname for Docker Desktop is `localhost`.
+The default host name for Docker Desktop is `localhost`.
 
 [system]#*{linux}*#
 
-The default hostname for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
+The default host name for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
 ****
 
-Navigate to `{name-api}` and use the username `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or hostname of your {kube} cluster. You will see something similar to `Hello! I'm container name-deployment-6bd97d9bf6-qbhbc`.
+Navigate to `{system-api}` and use the user name `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or host name of your {kube} cluster. Open your browser's developer console and examine the response headers. Observe that the `X-App-Name` header currently has the value `system`.
 
-Similarly, navigate to `{ping-api}/name-service` and you will see `pong`.
+Similarly, navigate to `{inventory-api}/system-service` and the system will be added to your inventory.
 
-== Modifying name microservice
+== Modifying system microservice
 
-The `name` service is hardcoded to have `Hello!` as the greeting message. You'll make this message configurable by adding the `greeting` member and return value. 
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Replace the `NameResource` class.#
-`name/src/main/java/io/openliberty/guides/name/NameResource.java`
-----
-
-NameResource.java
-[source, java, linenums, role='code_column']
-----
-include::finish/name/src/main/java/io/openliberty/guides/name/NameResource.java[tags=**;!copyright;]
-----
-The [hotspot=16-18]`greeting` member was added to the return value of [hotspot=26-28]`getContainerName()`.
-
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=17]`GREETING` into the [hotspot=16-18]`greeting` member of the [hotspot=14-30]`NameResource` class.
-
-Another change uses the new [hotspot=16-18]`greeting` member to create a response with a custom greeting message in [hotspot=26-28]`getContainerName()`.
-
-
-== Modifying ping microservice
-
-The `ping` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `name` service. You'll make these credentials configurable. 
+The `system` service is hardcoded to have `system` as the app name. You'll make this name configurable by adding the `appName` member and `X-App-Name` header.
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Replace the `PingResource` class.#
-`ping/src/main/java/io/openliberty/guides/ping/PingResource.java`
+#Replace the `SystemResource` class.#
+`system/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
-PingResource.java
+SystemResource.java
 [source, java, linenums, role='code_column']
 ----
-include::finish/ping/src/main/java/io/openliberty/guides/ping/PingResource.java[tags=**;!copyright;]
+include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
+----
+The [hotspot=21]`appName` member was added to the [hotspot=32]`header` value in [hotspot=29-34]`getProperties()`.
+
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`appName` member of the `SystemResource` class.
+
+== Modifying inventory microservice
+
+The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service. You'll make these credentials configurable. 
+
+[role="code_command hotspot", subs="quotes"]
+----
+#Replace the `SystemClient` class.#
+`inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`PING_USERNAME` and [hotspot=32-34]`PING_PASSWORD` into the [hotspot=26-76]`PingResource` class.
+SystemClient.java
+[source, java, linenums, role='code_column']
+----
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright;]
+----
+
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`SYSTEM_APP_USERNAME` and [hotspot=32-34]`SYSTEM_APP_PASSWORD` into the `SystemClient` class.
 
 
 == Creating a ConfigMap and Secret
 
-There are several ways to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you are going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be re-used across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you're going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be reused across many different containers, even if they all require different environment variables to be set with the same value.
 
-Create a ConfigMap to configure the greeting with the following `kubectl` command.
+Create a ConfigMap to configure the app name with the following `kubectl` command.
 [role='command']
 ```
-kubectl create configmap greeting-config --from-literal message=Greetings...
+kubectl create configmap sys-app-name --from-literal name=my-system
 ```
 
-This command deploys a ConfigMap named `greeting-config` to your cluster. It has a key called `message` with a value of `Greetings...`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
+This command deploys a ConfigMap named `sys-app-name` to your cluster. It has a key called `name` with a value of `my-system`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
-Create a Secret to configure the credentials that `ping` will use to authenticate against `name` with the following `kubectl` command.
+Create a Secret to configure the credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
 [role='command']
 ```
-kubectl create secret generic name-credentials --from-literal username=bob --from-literal password=bobpwd
+kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd
 ```
  
-This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means that you're creating a Secret that is `generic`, in other words it stores information that is not specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public/private key pairs.
+This command looks very similar to the command to create a ConfigMap, one difference is the word `generic`. It means you're creating a Secret that is `generic`, in other words it stores information that isn't specialized in any way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
 
-A Secret is similar to a ConfigMap, except a Secret is used for confidential information such as credentials. One of the main differences is that you have to explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap. A key difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
 kubernetes.yaml
 [source, yaml, linenums, role='code_column']
@@ -182,14 +185,14 @@ include::finish/kubernetes.yaml[]
 Dockerfile
 [source, text, linenums, role='code_column']
 ----
-include::finish/name/Dockerfile[]
+include::finish/system/Dockerfile[]
 ----
 
 == Updating {kube} resources
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
-The [hotspot=22-27]`env` section under the [hotspot=17-27]`name-container` is where the `GREETING` environment variable will be set.
-The [hotspot=50-60]`env` section under the [hotspot=45-60]`ping-container` is where the [hotspot=51-55]`PING_USERNAME` and [hotspot=56-60]`PING_PASSWORD` environment variables will be set.
+The [hotspot=22-27]`env` section under the [hotspot=17-27]`system-container` is where the [hotspot=23-27]`APP_NAME` environment variable will be set.
+The [hotspot=50-60]`env` section under the [hotspot=45-60]`inventory-container` is where the [hotspot=51-55]`SYSTEM_APP_USERNAME` and [hotspot=56-60]`SYSTEM_APP_PASSWORD` environment variables will be set.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -203,14 +206,14 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field which allows you to specify the value of an environment variable from a variety of sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`message` from the ConfigMap [hotspot=26]`greeting-config`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`name-credentials`.
+In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field that allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`name` from the ConfigMap [hotspot=26]`sys-app-name`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
 
 == Deploying your changes
 
-Rebuild the application using `mvn package`.
+Rebuild the application using `mvn clean package`.
 [role='command']
 ```
-mvn package
+mvn clean package
 ```
 
 Run the following commands to deploy your changes to the {kube} cluster.
@@ -220,30 +223,30 @@ kubectl delete -f kubernetes.yaml
 kubectl apply -f kubernetes.yaml
 ```
 
-Navigate to `{name-api}` and you will see that the greeting message has changed from `Hello!` to `Greetings...`. Verify that `{ping-api}/name-service` is working as intended. If it is not, then check the configuration of the credentials.
+Navigate to `{system-api}` and examine the response headers in your developer console. You will see that the app name has changed from `system` to `my-system`. Verify that `{inventory-api}/system-service` is working as intended. If it is not, then check the configuration of the credentials.
 
 == Testing the microservices
 
 ****
 [system]#*{win} | {mac}*#
 
-Run the integration tests against a cluster running with a hostname of localhost:
+Run the integration tests against a cluster running with appName `my-system`:
 [role='command']
 ```
-mvn verify -Ddockerfile.skip=true -Dcluster.ip=localhost -Dname.message=Greetings...
+mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
 ```
 
 [system]#*{linux}*#
 
-Run the integration tests against a cluster running at Minikube's IP address:
+Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
 ```
-mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dname.message=Greetings...
+mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
 ```
 ****
 
 
-The tests check that the `name` service responds with a container name and that the message in the response matches the configured message. The tests for `ping` verify that the service returns with a `pong` response on success and that it gracefully handles a bad response. If the credentials are misconfigured, then the `ping` test will fail, so the `ping` test indirectly verifies the credentials are correctly configured.
+The tests check that the `system` service responds with a header containing the configured name. The tests for `inventory` verify that the service may communicate with `system` using the configured credentials. If the credentials are misconfigured, then the `inventory` test will fail, so the `inventory` test indirectly verifies the credentials are correctly configured.
 
 After the tests succeed, you should see output similar to the following in your console.
 
@@ -252,12 +255,12 @@ After the tests succeed, you should see output similar to the following in your 
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.name.NameEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.542 sec - in it.io.openliberty.guides.name.NameEndpointTest
+Running it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.709 s - in it.io.openliberty.guides.system.SystemEndpointTest
 
-Results :
+Results:
 
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 [source, role="no_copy"]
@@ -265,12 +268,12 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.ping.PingEndpointTest
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.761 sec - in it.io.openliberty.guides.ping.PingEndpointTest
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.696 s - in it.io.openliberty.guides.inventory.InventoryEndpointTest
 
-Results :
+Results:
 
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 == Tearing down the environment
@@ -280,8 +283,8 @@ Run the following commands to delete all the resources that you created.
 [role='command']
 ```
 kubectl delete -f kubernetes.yaml
-kubectl delete configmap greeting-config
-kubectl delete secret name-credentials
+kubectl delete configmap sys-app-name
+kubectl delete secret sys-app-credentials
 ```
 
 [role='command']
