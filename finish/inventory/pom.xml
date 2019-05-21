@@ -61,7 +61,6 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
