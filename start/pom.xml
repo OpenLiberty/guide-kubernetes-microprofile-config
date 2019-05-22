@@ -89,7 +89,8 @@
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>2.3.1</version>
-            </dependency> 
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
