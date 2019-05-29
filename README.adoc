@@ -31,9 +31,9 @@ Explore how to externalize configuration using MicroProfile Config and configure
 :kube: Kubernetes
 :system-api: http://[hostname]:31000/system/properties
 :inventory-api: http://[hostname]:32000/inventory/systems
-:win: Windows
-:mac: Mac
-:linux: Linux
+:win: WINDOWS
+:mac: MAC
+:linux: LINUX
 
 // =================================================================================================
 // What you'll learn
