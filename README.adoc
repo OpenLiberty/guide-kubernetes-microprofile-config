@@ -11,7 +11,7 @@
 :page-layout: guide-multipane
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
-:page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
+:page-description: Externalize configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices.
 :page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
