@@ -102,32 +102,19 @@ inventory-deployment-645767664f-7gnxf  1/1       Running   0          34s
 
 After the pods are ready, you will make requests to your services.
 
-[.tab_link]
-[.windows_link]
+[.tab_link.windows_link]
 `*WINDOWS*`
-[.tab_link]
-[.mac_link]
+[.tab_link.mac_link]
 `*MAC*`
-[.tab_link]
-[.linux_link]
+[.tab_link.linux_link]
 `*LINUX*`
 
-[.tab_content]
-[.windows_section]
+[.tab_content.windows_section.mac_section]
 --
 The default host name for Docker Desktop is `localhost`.
 --
 
-
-[.tab_content]
-[.mac_section]
---
-The default host name for Docker Desktop is `localhost`.
---
-
-
-[.tab_content]
-[.linux_section]
+[.tab_content.linux_section]
 --
 The default host name for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
 --
@@ -247,18 +234,14 @@ Navigate to `{system-api}` and examine the response headers in your developer co
 
 == Testing the microservices
 
-[.tab_link]
-[.windows_link]
+[.tab_link.windows_link]
 `*WINDOWS*`
-[.tab_link]
-[.mac_link]
+[.tab_link.mac_link]
 `*MAC*`
-[.tab_link]
-[.linux_link]
+[.tab_link.linux_link]
 `*LINUX*`
 
-[.tab_content]
-[.windows_section]
+[.tab_content.windows_section.mac_section]
 --
 Run the integration tests against a cluster running with appName `my-system`:
 [role='command']
@@ -267,20 +250,7 @@ mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
 ```
 --
 
-
-[.tab_content]
-[.mac_section]
---
-Run the integration tests against a cluster running with appName `my-system`:
-[role='command']
-```
-mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
-```
---
-
-
-[.tab_content]
-[.linux_section]
+[.tab_content.linux_section]
 --
 Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
