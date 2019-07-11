@@ -234,6 +234,7 @@ Navigate to `{system-api}` and examine the response headers in your developer co
 
 == Testing the microservices
 
+****
 [.tab_link.windows_link]
 `*WINDOWS*`
 [.tab_link.mac_link]
@@ -258,6 +259,7 @@ Run the integration tests against a cluster running at Minikube's IP address and
 mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
 ```
 --
+****
 
 The tests check that the `system` service responds with a header containing the configured name. The tests for `inventory` verify that the service may communicate with `system` using the configured credentials. If the credentials are misconfigured, then the `inventory` test will fail, so the `inventory` test indirectly verifies the credentials are correctly configured.
 
