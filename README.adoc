@@ -79,7 +79,17 @@ To build these applications, navigate to the `start` directory and run the follo
 mvn clean package
 ```
 
-When the build succeeds, run the following command to deploy the necessary {kube} resources to serve the applications.
+Next, run the `docker build` commands to build container images for your application:
+[role='command']
+```
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
+```
+
+The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
+The tag for an image describes the specific image version. If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
+
+Run the following command to deploy the necessary {kube} resources to serve the applications.
 [role='command']
 ```
 kubectl apply -f kubernetes.yaml

@@ -9,6 +9,11 @@ set -euxo pipefail
 
 mvn -q package
 
+docker pull open-liberty
+
+docker build -t system system/.
+docker build -t inventory inventory/.
+
 kubectl create configmap sys-app-name --from-literal name=my-system
 kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd
 
