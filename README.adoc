@@ -226,6 +226,13 @@ Rebuild the application using `mvn clean package`.
 mvn clean package
 ```
 
+Run the `docker build` commands to rebuild container images for your application:
+[role='command']
+```
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
+```
+
 Run the following commands to deploy your changes to the {kube} cluster.
 [role='command']
 ```
