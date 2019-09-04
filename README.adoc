@@ -11,11 +11,11 @@
 :page-layout: guide-multipane
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
-:page-description: Externalize configuration and use Kubernetes ConfigMaps and Secretes to configure your microservices.
+:page-description: Externalize configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices.
 :page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/os-specific
+:common-includes: ../guides-common/
 :source-highlighter: prettify
 :page-seo-title: MicroProfile Configuration in Kubernetes tutorial
 :page-seo-description: How to externalize configuration with Eclipse MicroProfile Configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices
@@ -31,9 +31,9 @@ Explore how to externalize configuration using MicroProfile Config and configure
 :kube: Kubernetes
 :system-api: http://[hostname]:31000/system/properties
 :inventory-api: http://[hostname]:32000/inventory/systems
-:win: Windows
-:mac: Mac
-:linux: Linux
+:win: WINDOWS
+:mac: MAC
+:linux: LINUX
 
 // =================================================================================================
 // What you'll learn
@@ -79,7 +79,17 @@ To build these applications, navigate to the `start` directory and run the follo
 mvn clean package
 ```
 
-When the build succeeds, run the following command to deploy the necessary {kube} resources to serve the applications.
+Next, run the `docker build` commands to build container images for your application:
+[role='command']
+```
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
+```
+
+The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
+The tag for an image describes the specific image version. If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
+
+Run the following command to deploy the necessary {kube} resources to serve the applications.
 [role='command']
 ```
 kubectl apply -f kubernetes.yaml
@@ -221,6 +231,13 @@ Rebuild the application using `mvn clean package`.
 [role='command']
 ```
 mvn clean package
+```
+
+Run the `docker build` commands to rebuild container images for your application:
+[role='command']
+```
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
 Run the following commands to deploy your changes to the {kube} cluster.
