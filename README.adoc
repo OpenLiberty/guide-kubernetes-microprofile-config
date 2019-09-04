@@ -112,12 +112,7 @@ inventory-deployment-645767664f-7gnxf  1/1       Running   0          34s
 
 After the pods are ready, you will make requests to your services.
 
-[.tab_link.windows_link]
-`*WINDOWS*`
-[.tab_link.mac_link]
-`*MAC*`
-[.tab_link.linux_link]
-`*LINUX*`
+include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
 --
@@ -251,12 +246,7 @@ Navigate to `{system-api}` and examine the response headers in your developer co
 
 == Testing the microservices
 
-[.tab_link.windows_link]
-`*WINDOWS*`
-[.tab_link.mac_link]
-`*MAC*`
-[.tab_link.linux_link]
-`*LINUX*`
+include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
 --
