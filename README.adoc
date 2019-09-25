@@ -15,7 +15,7 @@
 :page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
-:common-includes: ../guides-common/
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: MicroProfile Configuration in Kubernetes tutorial
 :page-seo-description: How to externalize configuration with Eclipse MicroProfile Configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices
@@ -112,15 +112,17 @@ inventory-deployment-645767664f-7gnxf  1/1       Running   0          34s
 
 After the pods are ready, you will make requests to your services.
 
-****
-[system]#*{win} | {mac}*#
+include::{common-includes}/os-tabs.adoc[]
 
+[.tab_content.windows_section.mac_section]
+--
 The default host name for Docker Desktop is `localhost`.
+--
 
-[system]#*{linux}*#
-
+[.tab_content.linux_section]
+--
 The default host name for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
-****
+--
 
 Navigate to `{system-api}` and use the user name `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or host name of your {kube} cluster. Open your browser's developer console and examine the response headers. Observe that the `X-App-Name` header currently has the value `system`.
 
@@ -244,24 +246,25 @@ Navigate to `{system-api}` and examine the response headers in your developer co
 
 == Testing the microservices
 
-****
-[system]#*{win} | {mac}*#
+include::{common-includes}/os-tabs.adoc[]
 
+[.tab_content.windows_section.mac_section]
+--
 Run the integration tests against a cluster running with appName `my-system`:
 [role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
 ```
+--
 
-[system]#*{linux}*#
-
+[.tab_content.linux_section]
+--
 Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
 ```
-****
-
+--
 
 The tests check that the `system` service responds with a header containing the configured name. The tests for `inventory` verify that the service may communicate with `system` using the configured credentials. If the credentials are misconfigured, then the `inventory` test will fail, so the `inventory` test indirectly verifies the credentials are correctly configured.
 
