@@ -38,13 +38,17 @@ public class SystemClient {
 
   // Basic Auth Credentials
   // tag::credentials[]
+  // tag::system-app-username[]
   @Inject
   @ConfigProperty(name = "SYSTEM_APP_USERNAME")
   private String username;
+  // end::system-app-username[]
 
+  // tag::system-app-password[]
   @Inject
   @ConfigProperty(name = "SYSTEM_APP_PASSWORD")
   private String password;
+  // end::system-app-password[]
   // end::credentials[]
 
   // Wrapper function that gets properties

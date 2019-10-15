@@ -11,7 +11,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>inventory</artifactId>
+    <artifactId>guide-kubernetes-microprofile-config</artifactId>
     <packaging>war</packaging>
 
     <dependencies>
