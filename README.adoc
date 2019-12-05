@@ -139,13 +139,13 @@ The `system` service is hardcoded to have `system` as the app name. You'll make 
 ----
 
 SystemResource.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=**;!copyright;]
+include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[]
 ----
-The [hotspot=21]`appName` member was added to the [hotspot=32]`header` value in [hotspot=29-34]`getProperties()`.
+The [hotspot=appName]`appName` member was added to the [hotspot=header-appName]`header` value in [hotspot=getProperties]`getProperties()`.
 
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=20]`APP_NAME` into the [hotspot=21]`appName` member of the `SystemResource` class.
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=ConfigProperty]`APP_NAME` into the [hotspot=appName]`appName` member of the `SystemResource` class.
 
 == Modifying inventory microservice
 
@@ -158,12 +158,12 @@ The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credential
 ----
 
 SystemClient.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=**;!copyright;]
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=28-30]`SYSTEM_APP_USERNAME` and [hotspot=32-34]`SYSTEM_APP_PASSWORD` into the `SystemClient` class.
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=system-app-username]`SYSTEM_APP_USERNAME` and [hotspot=system-app-password]`SYSTEM_APP_PASSWORD` into the `SystemClient` class.
 
 
 == Creating a ConfigMap and Secret
