@@ -12,6 +12,10 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.client;
 
+import java.net.URI;
+import java.util.Base64;
+import java.util.Properties;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.client.Client;
@@ -24,17 +28,16 @@ import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import java.util.Base64;
-import java.util.Properties;
-import java.net.URI;
-
 @RequestScoped
 public class SystemClient {
 
   // Constants for building URI to the system service.
-  private final int DEFAULT_PORT = Integer.valueOf(System.getProperty("default.http.port"));
   private final String SYSTEM_PROPERTIES = "/system/properties";
   private final String PROTOCOL = "http";
+
+  @Inject
+  @ConfigProperty(name = "default.http.port")
+  String DEFAULT_PORT;
 
   // Basic Auth Credentials
   // tag::credentials[]
