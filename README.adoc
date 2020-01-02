@@ -235,11 +235,10 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
-Run the following commands to deploy your changes to the {kube} cluster.
+Run the following command to deploy your changes to the {kube} cluster.
 [role='command']
 ```
-kubectl delete -f kubernetes.yaml
-kubectl apply -f kubernetes.yaml
+kubectl replace --force -f kubernetes.yaml
 ```
 
 Navigate to `{system-api}` and examine the response headers in your developer console. You will see that the app name has changed from `system` to `my-system`. Verify that `{inventory-api}/system-service` is working as intended. If it is not, then check the configuration of the credentials.
@@ -253,7 +252,7 @@ include::{common-includes}/os-tabs.adoc[]
 Run the integration tests against a cluster running with appName `my-system`:
 [role='command']
 ```
-mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
+mvn failsafe:integration-test -Ddockerfile.skip=true -Dsystem.appName=my-system
 ```
 --
 
@@ -262,7 +261,7 @@ mvn verify -Ddockerfile.skip=true -Dsystem.appName=my-system
 Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
 ```
-mvn verify -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
+mvn failsafe:integration-test -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
 ```
 --
 
@@ -275,8 +274,8 @@ After the tests succeed, you should see output similar to the following in your 
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.system.SystemEndpointTest
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.709 s - in it.io.openliberty.guides.system.SystemEndpointTest
+Running it.io.openliberty.guides.system.SystemEndpointIT
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.709 s - in it.io.openliberty.guides.system.SystemEndpointIT
 
 Results:
 
@@ -288,12 +287,12 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.inventory.InventoryEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.696 s - in it.io.openliberty.guides.inventory.InventoryEndpointTest
+Running it.io.openliberty.guides.inventory.InventoryEndpointIT
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.696 s - in it.io.openliberty.guides.inventory.InventoryEndpointIT
 
 Results:
 
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 == Tearing down the environment
