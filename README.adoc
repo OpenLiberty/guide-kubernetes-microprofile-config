@@ -145,7 +145,7 @@ include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource
 ----
 The [hotspot=appName]`appName` member was added to the [hotspot=header-appName]`header` value in [hotspot=getProperties]`getProperties()`.
 
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=ConfigProperty]`APP_NAME` into the [hotspot=appName]`appName` member of the `SystemResource` class.
+These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=ConfigProperty]`APP_NAME` into the [hotspot=appName]`appName` member of the [hotspot file=0]`SystemResource` class.
 
 == Modifying inventory microservice
 
