@@ -124,9 +124,58 @@ The default host name for Docker Desktop is `localhost`.
 The default host name for minikube is {minikube-ip}. Otherwise it can be found using the `minikube ip` command.
 --
 
-Navigate to `{system-api}` and use the user name `bob` and the password `bobpwd` to authenticate. Replace `[hostname]` with the IP address or host name of your {kube} cluster. Open your browser's developer console and examine the response headers. Observe that the `X-App-Name` header currently has the value `system`.
+Navigate to `{system-api}` and use the user name `bob` and the password `bobpwd` to authenticate.
+Replace `[hostname]` with the IP address or host name of your {kube} cluster.
+Open your browser's developer console and examine the response headers.
 
-Similarly, navigate to `{inventory-api}/system-service` and the system will be added to your inventory.
+You can also run the `curl` command to make requests to your microservices.
+To view the header, you may use the `-I` option in the `curl` command when making a request to `{system-api}`.
+Use the `-u` option to pass in the user name `bob` and the password `bobpwd.
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section.mac_section]
+--
+[role=command]
+```
+curl http://localhost:31000/system/properties -u bob:bobpwd -I
+```
+--
+
+[.tab_content.linux_section]
+--
+[role=command]
+```
+curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
+```
+--
+
+Observe that the `X-App-Name` header currently has the value `system`:
+
+[source, role="no_copy"]
+----
+X-App-Name: system
+----
+
+Similarly, navigate to `{inventory-api}/system-service`, or use the following `curl` command, to add the system to your inventory.
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section.mac_section]
+--
+[role=command]
+```
+curl http://localhost:32000/inventory/systems/system-service
+```
+--
+
+[.tab_content.linux_section]
+--
+[role=command]
+```
+curl http://`minikube ip`:32000/inventory/systems/system-service
+```
+--
 
 == Modifying system microservice
 
@@ -241,7 +290,36 @@ Run the following command to deploy your changes to the {kube} cluster.
 kubectl replace --force -f kubernetes.yaml
 ```
 
-Navigate to `{system-api}` and examine the response headers in your developer console. You will see that the app name has changed from `system` to `my-system`. Verify that `{inventory-api}/system-service` is working as intended. If it is not, then check the configuration of the credentials.
+Navigate to `{system-api}` and examine the response headers in your developer console,
+or run the following `curl` command:
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section.mac_section]
+--
+[role=command]
+```
+curl http://localhost:31000/system/properties -u bob:bobpwd -I
+```
+--
+
+[.tab_content.linux_section]
+--
+[role=command]
+```
+curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
+```
+--
+
+You will see that the app name has changed from `system` to `my-system`.
+
+[source, role="no_copy"]
+----
+X-App-Name: my-system
+----
+
+Verify that `{inventory-api}/system-service` is working as intended.
+If it is not, then check the configuration of the credentials.
 
 == Testing the microservices
 
@@ -252,7 +330,7 @@ include::{common-includes}/os-tabs.adoc[]
 Run the integration tests against a cluster running with appName `my-system`:
 [role='command']
 ```
-mvn failsafe:integration-test -Ddockerfile.skip=true -Dsystem.appName=my-system
+mvn failsafe:integration-test -Dsystem.appName=my-system
 ```
 --
 
@@ -261,7 +339,7 @@ mvn failsafe:integration-test -Ddockerfile.skip=true -Dsystem.appName=my-system
 Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
 ```
-mvn failsafe:integration-test -Ddockerfile.skip=true -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
+mvn failsafe:integration-test -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
 ```
 --
 
