@@ -17,7 +17,7 @@
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Configuring Java microservices using Kubernetes and Eclipse MicroProfile Config 
+:page-seo-title: Configuring Java microservices on Kubernetes with Eclipse MicroProfile Config 
 :page-seo-description: A getting started tutorial with examples of how to externalize configuration with Eclipse MicroProfile Config and use Kubernetes ConfigMaps and Secrets to configure your Java microservices.
 :guide-author: Open Liberty
 = Configuring microservices running in Kubernetes
