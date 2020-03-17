@@ -130,7 +130,7 @@ Open your browser's developer console and examine the response headers.
 
 You can also run the `curl` command to make requests to your microservices.
 To view the header, you may use the `-I` option in the `curl` command when making a request to `{system-api}`.
-Use the `-u` option to pass in the user name `bob` and the password `bobpwd.
+Use the `-u` option to pass in the user name `bob` and the password `bobpwd`.
 
 include::{common-includes}/os-tabs.adoc[]
 
