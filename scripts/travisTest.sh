@@ -9,7 +9,7 @@ set -euxo pipefail
 
 mvn -q package
 
-docker pull open-liberty
+docker pull openliberty/open-liberty:kernel-java8-openj9-ubi
 
 docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
@@ -25,7 +25,7 @@ kubectl get pods
 
 echo `minikube ip`
 
-mvn failsafe:integration-test -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
+mvn -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system failsafe:integration-test
 mvn failsafe:verify
 
 kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
