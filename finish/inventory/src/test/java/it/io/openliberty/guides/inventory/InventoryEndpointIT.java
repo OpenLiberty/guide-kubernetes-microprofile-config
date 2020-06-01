@@ -154,6 +154,10 @@ public class InventoryEndpointIT {
             .request(MediaType.APPLICATION_JSON)
             .get();
 
+        assertEquals(404, badResponse.getStatus(),
+                     "BadResponse expected status: 404. " 
+                     + "Response code not as expected.");
+
         String obj = badResponse.readEntity(String.class);
 
         boolean isError = obj.contains("ERROR");
