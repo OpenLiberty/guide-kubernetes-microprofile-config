@@ -79,6 +79,8 @@ To build these applications, navigate to the `start` directory and run the follo
 mvn clean package
 ```
 
+include::{common-includes}/ol-kernel-docker-pull.adoc[]
+
 Next, run the `docker build` commands to build container images for your application:
 [role='command']
 ```
