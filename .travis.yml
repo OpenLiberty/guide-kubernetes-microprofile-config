@@ -8,7 +8,6 @@ before_script:
 - cd finish
 - chmod +x ../scripts/travisTest.sh
 script: 
-- sudo mount --make-rshared /
 - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 - chmod +x kubectl
 - sudo ln -s $(pwd)/kubectl /usr/local/bin/kubectl
