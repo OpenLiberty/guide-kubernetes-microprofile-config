@@ -14,7 +14,7 @@ script:
 - wget https://github.com/kubernetes/minikube/releases/download/v0.28.2/minikube-linux-amd64 -q -O minikube
 - chmod +x minikube
 - sudo ln -s $(pwd)/minikube /usr/local/bin/minikube
-- sudo minikube start --vm-driver=none --bootstrapper=localkube
+- sudo minikube start --vm-driver=none --bootstrapper=kubeadm
 - ../scripts/travisTest.sh
 notifications:
   slack:
