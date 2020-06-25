@@ -15,7 +15,8 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 
 kubectl create configmap sys-app-name --from-literal name=my-system -o yaml --dry-run | kubectl apply -f -
-kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd
+kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd --dry-run -o yaml | 
+kubectl apply -f -
 
 kubectl apply -f kubernetes.yaml
 
