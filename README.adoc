@@ -76,6 +76,7 @@ To build these applications, navigate to the `start` directory and run the follo
 
 [role='command']
 ```
+cd start
 mvn clean package
 ```
 
