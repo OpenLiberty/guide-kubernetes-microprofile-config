@@ -324,6 +324,54 @@ X-App-Name: my-system
 Verify that `{inventory-api}/system-service` is working as intended.
 If it is not, then check the configuration of the credentials.
 
+== View and Update ConfigMaps and Secret
+
+Kubernetes has a command to display ConfigMaps and secrets. You can use the `describe` command as follows:
+[role=command]
+```
+kubectl describe configmaps sys-app-name                                                                                                                                          
+```
+
+The output should be something similar to the following. Notice the key `name` under Data has the value `my-system`:
+[source, role="no_copy"]
+----
+Name:         sys-app-name
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+name:
+\{----}
+my-system
+Events:  <none>
+----
+
+Similarly to view the encrypted `secret`, use the following command:
+[role=command]
+```
+kubectl describe secrets sys-app-credential
+```
+
+The output should be similar to:
+[source, role="no_copy"]
+----
+Name:         sys-app-credentials
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+password:  6 bytes
+username:  3 bytes
+----
+
+
+
 == Testing the microservices
 
 include::{common-includes}/os-tabs.adoc[]
