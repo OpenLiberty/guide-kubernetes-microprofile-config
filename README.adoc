@@ -326,7 +326,7 @@ If it is not, then check the configuration of the credentials.
 
 == View and Update ConfigMaps and Secret
 
-Kubernetes has a command to display ConfigMaps and secrets. You can use the `describe` command as follows:
+Kubernetes has the `describe` command to show details about any ressources. We can use this to display ConfigMaps and Secrets by running the following:
 [role=command]
 ```
 kubectl describe configmaps sys-app-name                                                                                                                                          
@@ -334,7 +334,7 @@ kubectl describe configmaps sys-app-name
 
 The output should be something similar to the following. Notice the key `name` under Data has the value `my-system`:
 [source, role="no_copy"]
-----
+....
 Name:         sys-app-name
 Namespace:    default
 Labels:       <none>
@@ -343,18 +343,18 @@ Annotations:  <none>
 Data
 ====
 name:
-\{----}
+----
 my-system
 Events:  <none>
-----
+....
 
-Similarly to view the encrypted `secret`, use the following command:
+Similarly to view the `Secret`, use the following command:
 [role=command]
 ```
 kubectl describe secrets sys-app-credential
 ```
 
-The output should be similar to:
+The output should be similar to the following. Notice that the values for `password` and `username` are hidden.
 [source, role="no_copy"]
 ----
 Name:         sys-app-credentials
@@ -370,7 +370,55 @@ password:  6 bytes
 username:  3 bytes
 ----
 
+You can quickly modify ConfigMaps by running the following command. This creates a new ConfigMaps and completely replaces the old one.
 
+[role=command]
+```
+kubectl create configmap sys-app-name --from-literal name=new-name --dry-run=client --save-config=true -o yaml | kubectl replace -f -  
+```
+
+The output should look like the following.
+
+[source, role="no_copy"]
+----
+configmap/sys-app-name replaced
+----
+
+Use the `describe` command to see that the `value` for the key `name` changed.
+You may redeploy the `system` service to observe the changes.
+
+[role=command]
+```
+kubectl rollout restart deployment system-deployment 
+```
+
+Navigate to `{system-api}` and examine the response headers in your developer console,
+or run the following `curl` command:
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section.mac_section]
+--
+[role=command]
+```
+curl http://localhost:31000/system/properties -u bob:bobpwd -I
+```
+--
+
+[.tab_content.linux_section]
+--
+[role=command]
+```
+curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
+```
+--
+
+You will see that the app name has changed from `system` to `new-name`.
+
+[source, role="no_copy"]
+----
+X-App-Name: new-name
+----
 
 == Testing the microservices
 
