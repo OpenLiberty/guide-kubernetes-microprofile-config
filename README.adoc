@@ -324,7 +324,7 @@ X-App-Name: my-system
 Verify that `{inventory-api}/system-service` is working as intended.
 If it is not, then check the configuration of the credentials.
 
-== View and Update ConfigMaps and Secret
+== View and Update ConfigMaps and Secrets
 
 Kubernetes has the `describe` command to show details about any ressources. We can use this to display ConfigMaps and Secrets by running the following:
 [role=command]
@@ -370,8 +370,7 @@ password:  6 bytes
 username:  3 bytes
 ----
 
-You can quickly modify ConfigMaps by running the following command. This creates a new ConfigMaps and completely replaces the old one.
-
+You can quickly modify ConfigMaps by running the following command. This sets the key `name` to the value `new-name`. Note that this creates a new ConfigMaps and overwrites the old one. 
 [role=command]
 ```
 kubectl create configmap sys-app-name --from-literal name=new-name --dry-run=client --save-config=true -o yaml | kubectl replace -f -  
@@ -413,12 +412,20 @@ curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
 ```
 --
 
-You will see that the app name has changed from `system` to `new-name`.
+You will see that the app name has changed from `my-system` to `new-name`.
 
 [source, role="no_copy"]
 ----
 X-App-Name: new-name
 ----
+
+Let's change the app name again and redeploy to prepare for testing. 
+
+[role=command]
+```
+kubectl create configmap sys-app-name --from-literal name=my-system --dry-run=client --save-config=true -o yaml | kubectl replace -f -  
+kubectl rollout restart deployment system-deployment 
+```
 
 == Testing the microservices
 
