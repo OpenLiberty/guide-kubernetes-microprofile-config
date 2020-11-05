@@ -31,11 +31,10 @@ jobs:
         wget https://github.com/kubernetes/minikube/releases/download/v0.28.2/minikube-linux-amd64 -q -O minikube
         chmod +x minikube
         CHANGE_MINIKUBE_NONE_USER=true
-    - name: Install Conn Track & Jq
+    - name: Install Conn Track
       run: |
         sudo apt-get update -y
         sudo apt-get install -y conntrack
-        sudo apt-get install jq
     - name: Start Minikube
       run: sudo minikube start --vm-driver=none --bootstrapper=kubeadm
     - name: Run tests
