@@ -2,20 +2,19 @@ name: Test application
 
 on:
   pull_request:
-    branches: [qa]
+    branches: [ qa ]
 
 jobs:
   java8build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jdk: [8]
+        jdk: [ 8 ]
     env:
       CHANGE_MINIKUBE_NONE_USER: true
     defaults:
       run:
         working-directory: finish
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
@@ -23,20 +22,6 @@ jobs:
         with:
           java-version: ${{ matrix.jdk }}
       - run: unset _JAVA_OPTIONS
-      - name: Set up Minikube
-        run: |
-          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-          chmod +x kubectl
-          sudo ln -s $(pwd)/kubectl /usr/local/bin/kubectl
-          wget https://github.com/kubernetes/minikube/releases/download/v0.28.2/minikube-linux-amd64 -q -O minikube
-          chmod +x minikube
-          CHANGE_MINIKUBE_NONE_USER=true
-      - name: Install Conn Track
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y conntrack
-      - name: Start Minikube
-        run: sudo minikube start --vm-driver=none --bootstrapper=kubeadm
       - name: Run tests
         run: sudo ../scripts/testApp.sh
       - name: Post tests
