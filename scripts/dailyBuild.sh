@@ -27,7 +27,7 @@ minikube delete
 
 echo "Testing daily Docker image"
 
-sed -i "s;FROM openliberty/open-liberty:kernel-java8-openj9-ubi;FROM openliberty/daily:latest;g" system/Dockerfile inventory/Dockerfile
+sed -i "s;FROM "$DOCKER_USERNAME"/olguides:"$BUILD";FROM openliberty/daily:latest;g" system/Dockerfile inventory/Dockerfile
 
 cat system/Dockerfile inventory/Dockerfile
 
