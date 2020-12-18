@@ -16,6 +16,4 @@ cat inventory/Dockerfile system/Dockerfile
 
 docker pull "openliberty/daily:latest"
 
-sudo ../scripts/startMinikube.sh
 sudo ../scripts/testApp.sh
-sudo ../scripts/stopMinikube.sh
