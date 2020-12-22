@@ -18,13 +18,13 @@ spec:
         image: system:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
-        # Set the APP_NAME environment variable
+        # Set the CONTEXT_ROOT environment variable
         env:
-        - name: APP_NAME
+        - name: CONTEXT_ROOT
           valueFrom:
             configMapKeyRef:
               name: sys-app-name
-              key: name
+              key: contextRoot
 ---
 apiVersion: apps/v1
 kind: Deployment

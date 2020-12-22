@@ -153,13 +153,6 @@ curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
 ```
 --
 
-Observe that the `X-App-Name` header currently has the value `system`:
-
-[source, role="no_copy"]
-----
-X-App-Name: system
-----
-
 Similarly, navigate to `{inventory-api}/system-service`, or use the following `curl` command, to add the system to your inventory.
 
 include::{common-includes}/os-tabs.adoc[]
@@ -182,22 +175,35 @@ curl http://`minikube ip`:32000/inventory/systems/system-service
 
 == Modifying system microservice
 
-The `system` service is hardcoded to have `system` as the app name. You'll make this name configurable by adding the `appName` member and `X-App-Name` header.
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Replace the `SystemResource` class.#
-`system/src/main/java/io/openliberty/guides/system/SystemResource.java`
-----
-
+// File 0
 SystemResource.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[]
+include::finish/system/src/main/liberty/config/server.xml[]
 ----
-The [hotspot=appName]`appName` member was added to the [hotspot=header-appName]`header` value in [hotspot=getProperties]`getProperties()`.
 
-These changes use MicroProfile Config and CDI to inject the value of an environment variable called [hotspot=ConfigProperty]`APP_NAME` into the [hotspot=appName]`appName` member of the [hotspot file=0]`SystemResource` class.
+The `system` service is hardcoded to use a single forward slash as the context
+root. The context root is set in the [hotspot=webApplication
+file=0]`webApplication` element where the `contextRoot` attribute is specified
+as `"/"`. You'll make the value of the `contextRoot` attribute configurable by
+implementing it as a variable.
+
+[role="code_command hotspot", subs="quotes"]
+----
+#Replace the `server.xml` file.#
+`system/src/main/liberty/config/server.xml`
+----
+
+The `contextRoot` attribute in the [hotspot=webApplication
+file=0]`webApplication` element now gets its value from the
+[hotspot=context.root file=0]`context.root` variable. To find a value for the
+`context.root` variable, Open Liberty will look for the following environment
+variables, in order:
+
+* `context.root`
+* `context_root`
+* `CONTEXT_ROOT`
+
 
 == Modifying inventory microservice
 
@@ -225,10 +231,10 @@ There are several ways to configure an environment variable in a Docker containe
 Create a ConfigMap to configure the app name with the following `kubectl` command.
 [role='command']
 ```
-kubectl create configmap sys-app-name --from-literal name=my-system
+kubectl create configmap sys-app-name --from-literal contextRoot=/dev
 ```
 
-This command deploys a ConfigMap named `sys-app-name` to your cluster. It has a key called `name` with a value of `my-system`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
+This command deploys a ConfigMap named `sys-app-name` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
 Create a Secret to configure the credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
 [role='command']
@@ -255,7 +261,7 @@ include::finish/system/Dockerfile[]
 == Updating {kube} resources
 
 Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
-The [hotspot=22-27]`env` section under the [hotspot=17-27]`system-container` is where the [hotspot=23-27]`APP_NAME` environment variable will be set.
+The [hotspot=22-27]`env` section under the [hotspot=17-27]`system-container` is where the [hotspot=23-27]`CONTEXT_ROOT` environment variable will be set.
 The [hotspot=50-60]`env` section under the [hotspot=45-60]`inventory-container` is where the [hotspot=51-55]`SYSTEM_APP_USERNAME` and [hotspot=56-60]`SYSTEM_APP_PASSWORD` environment variables will be set.
 
 [role="code_command hotspot", subs="quotes"]
@@ -270,7 +276,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field that allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`name` from the ConfigMap [hotspot=26]`sys-app-name`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
+In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field that allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`contextRoot` from the ConfigMap [hotspot=26]`sys-app-name`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
 
 == Deploying your changes
 
@@ -293,8 +299,7 @@ Run the following command to deploy your changes to the {kube} cluster.
 kubectl replace --force -f kubernetes.yaml
 ```
 
-Navigate to `{system-api}` and examine the response headers in your developer console,
-or run the following `curl` command:
+Your application will now be available at the `http://[hostname]:31000/dev/system/properties`. Alternatively, you can run the following command:
 
 include::{common-includes}/os-tabs.adoc[]
 
@@ -302,7 +307,7 @@ include::{common-includes}/os-tabs.adoc[]
 --
 [role=command]
 ```
-curl http://localhost:31000/system/properties -u bob:bobpwd -I
+curl http://localhost:31000/dev/system/properties -u bob:bobpwd
 ```
 --
 
@@ -310,16 +315,11 @@ curl http://localhost:31000/system/properties -u bob:bobpwd -I
 --
 [role=command]
 ```
-curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
+curl http://`minikube ip`:31000/dev/system/properties -u bob:bobpwd
 ```
 --
 
-You will see that the app name has changed from `system` to `my-system`.
-
-[source, role="no_copy"]
-----
-X-App-Name: my-system
-----
+Notice that the URL you are using to reach the application now has `/dev` as the context root. 
 
 Verify that `{inventory-api}/system-service` is working as intended.
 If it is not, then check the configuration of the credentials.
