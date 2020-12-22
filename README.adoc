@@ -68,8 +68,7 @@ include::{common-includes}/kube-start.adoc[]
 == Deploying the microservices
 
 The two microservices you will deploy are called `system` and `inventory`. The `system` microservice
-returns the JVM system properties of the running container and it returns the pod's name in the HTTP header
-making replicas easy to distinguish from each other. The `inventory` microservice
+returns the JVM system properties of the running container. The `inventory` microservice
 adds the properties from the `system` microservice to the inventory. This demonstrates
 how communication can be established between pods inside a cluster.
 To build these applications, navigate to the `start` directory and run the following command.
@@ -132,7 +131,6 @@ Replace `[hostname]` with the IP address or host name of your {kube} cluster.
 Open your browser's developer console and examine the response headers.
 
 You can also run the `curl` command to make requests to your microservices.
-To view the header, you may use the `-I` option in the `curl` command when making a request to `{system-api}`.
 Use the `-u` option to pass in the user name `bob` and the password `bobpwd`.
 
 include::{common-includes}/os-tabs.adoc[]
@@ -141,7 +139,7 @@ include::{common-includes}/os-tabs.adoc[]
 --
 [role=command]
 ```
-curl http://localhost:31000/system/properties -u bob:bobpwd -I
+curl http://localhost:31000/system/properties -u bob:bobpwd
 ```
 --
 
@@ -149,7 +147,7 @@ curl http://localhost:31000/system/properties -u bob:bobpwd -I
 --
 [role=command]
 ```
-curl http://`minikube ip`:31000/system/properties -u bob:bobpwd -I
+curl http://`minikube ip`:31000/system/properties -u bob:bobpwd
 ```
 --
 
