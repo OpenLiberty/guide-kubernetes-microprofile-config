@@ -14,7 +14,7 @@ docker pull openliberty/open-liberty:kernel-java8-openj9-ubi
 docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 
-kubectl create configmap sys-app-name --from-literal contextRoot=/dev -o yaml --dry-run | kubectl apply -f -
+kubectl create configmap sys-app-root --from-literal contextRoot=/dev -o yaml --dry-run | kubectl apply -f -
 kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd --dry-run -o yaml | 
 kubectl apply -f -
 
@@ -26,7 +26,7 @@ kubectl get pods
 
 echo `minikube ip`
 
-mvn -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system failsafe:integration-test
+mvn -Dcluster.ip=`minikube ip` failsafe:integration-test
 mvn failsafe:verify
 
 kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
