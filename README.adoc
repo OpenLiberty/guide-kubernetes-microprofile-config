@@ -328,10 +328,10 @@ include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
 --
-Run the integration tests against a cluster running with appName `my-system`:
+Run the integration tests.
 [role='command']
 ```
-mvn failsafe:integration-test -Dsystem.appName=my-system
+mvn failsafe:integration-test
 ```
 --
 
@@ -340,7 +340,7 @@ mvn failsafe:integration-test -Dsystem.appName=my-system
 Run the integration tests against a cluster running at Minikube's IP address and with appName `my-system`:
 [role='command']
 ```
-mvn failsafe:integration-test -Dcluster.ip=`minikube ip` -Dsystem.appName=my-system
+mvn failsafe:integration-test -Dcluster.ip=`minikube ip`
 ```
 --
 
