@@ -40,7 +40,7 @@ public class SystemEndpointIT {
     public static void oneTimeSetup() {
         String clusterIp = System.getProperty("cluster.ip");
         String nodePort = System.getProperty("system.node.port");
-        clusterUrl = "http://" + clusterIp + ":" + nodePort + "/system/properties/";
+        clusterUrl = "http://" + clusterIp + ":" + nodePort + "/dev/system/properties/";
     }
     
     @BeforeEach
@@ -82,17 +82,6 @@ public class SystemEndpointIT {
             .get();
 
         assertEquals(200, response.getStatus(), "Incorrect response code from " + clusterUrl);
-        response.close();
-    }
-
-    @Test
-    public void testAppName() {
-        response = this.getResponse(clusterUrl);
-        this.assertResponse(clusterUrl, response);
-
-        String appName = response.getHeaderString("X-App-Name");
-        assertEquals(System.getProperty("system.appName"), appName);
-
         response.close();
     }
 

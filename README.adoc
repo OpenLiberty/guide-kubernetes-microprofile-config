@@ -174,8 +174,8 @@ curl http://`minikube ip`:32000/inventory/systems/system-service
 == Modifying system microservice
 
 // File 0
-SystemResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+server.xml
+[source, xml, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/system/src/main/liberty/config/server.xml[]
 ----
@@ -229,10 +229,10 @@ There are several ways to configure an environment variable in a Docker containe
 Create a ConfigMap to configure the app name with the following `kubectl` command.
 [role='command']
 ```
-kubectl create configmap sys-app-name --from-literal contextRoot=/dev
+kubectl create configmap sys-app-root --from-literal contextRoot=/dev
 ```
 
-This command deploys a ConfigMap named `sys-app-name` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
+This command deploys a ConfigMap named `sys-app-root` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
 Create a Secret to configure the credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
 [role='command']
@@ -274,7 +274,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field that allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`contextRoot` from the ConfigMap [hotspot=26]`sys-app-name`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
+In the [hotspot]`kubernetes.yaml` file where the containers are defined, you can see the [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field that allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`contextRoot` from the ConfigMap [hotspot=26]`sys-app-root`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
 
 == Deploying your changes
 
@@ -381,7 +381,7 @@ Run the following commands to delete all the resources that you created.
 [role='command']
 ```
 kubectl delete -f kubernetes.yaml
-kubectl delete configmap sys-app-name
+kubectl delete configmap sys-app-root
 kubectl delete secret sys-app-credentials
 ```
 

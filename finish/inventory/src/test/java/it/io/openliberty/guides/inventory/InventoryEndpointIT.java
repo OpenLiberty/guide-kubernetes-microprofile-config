@@ -47,7 +47,7 @@ public class InventoryEndpointIT {
         
         sysKubeService = System.getProperty("system.kube.service");
         invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort + "/system/properties/";
+        sysUrl = "http://" + clusterIp + ":" + sysNodePort + "/dev/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {

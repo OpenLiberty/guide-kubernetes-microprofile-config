@@ -85,17 +85,6 @@ public class SystemEndpointIT {
         response.close();
     }
 
-    @Test
-    public void testAppName() {
-        response = this.getResponse(clusterUrl);
-        this.assertResponse(clusterUrl, response);
-
-        String appName = response.getHeaderString("X-App-Name");
-        assertEquals(System.getProperty("system.appName"), appName);
-
-        response.close();
-    }
-
     /**
      * <p>
      * Returns response information from the specified URL.

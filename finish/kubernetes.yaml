@@ -23,7 +23,7 @@ spec:
         - name: CONTEXT_ROOT
           valueFrom:
             configMapKeyRef:
-              name: sys-app-name
+              name: sys-app-root
               key: contextRoot
 ---
 apiVersion: apps/v1
@@ -58,6 +58,11 @@ spec:
             secretKeyRef:
               name: sys-app-credentials
               key: password
+        - name: CONTEXT_ROOT
+          valueFrom:
+            configMapKeyRef:
+              name: sys-app-root
+              key: contextRoot
 ---
 apiVersion: v1
 kind: Service
