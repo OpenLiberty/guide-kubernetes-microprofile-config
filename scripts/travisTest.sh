@@ -25,8 +25,7 @@ sleep 120
 kubectl get pods
 
 echo `minikube ip`
-
-mvn -Dcluster.ip=`minikube ip` failsafe:integration-test
+mvn -Dsystem.context.root=/dev -Dcluster.ip=`minikube ip` failsafe:integration-test
 mvn failsafe:verify
 
 kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
