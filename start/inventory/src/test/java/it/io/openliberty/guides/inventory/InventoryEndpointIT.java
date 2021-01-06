@@ -44,10 +44,11 @@ public class InventoryEndpointIT {
         String clusterIp = System.getProperty("cluster.ip");
         String invNodePort = System.getProperty("inventory.node.port");
         String sysNodePort = System.getProperty("system.node.port");
+        String contextRoot = System.getProperty("system.context.root");
         
         sysKubeService = System.getProperty("system.kube.service");
         invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort + "/dev/system/properties/";
+        sysUrl = "http://" + clusterIp + ":" + sysNodePort + contextRoot + "/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
