@@ -354,11 +354,11 @@ After the tests succeed, you should see output similar to the following in your 
  T E S T S
 -------------------------------------------------------
 Running it.io.openliberty.guides.system.SystemEndpointIT
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.709 s - in it.io.openliberty.guides.system.SystemEndpointIT
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.706 s - in it.io.openliberty.guides.system.SystemEndpointIT
 
 Results:
 
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 [source, role="no_copy"]
