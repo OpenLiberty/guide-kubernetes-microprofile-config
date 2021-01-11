@@ -147,7 +147,7 @@ curl http://localhost:31000/system/properties -u bob:bobpwd
 --
 [role=command]
 ```
-curl http://`minikube ip`:31000/system/properties -u bob:bobpwd
+curl http://$(minikube ip):31000/system/properties -u bob:bobpwd
 ```
 --
 
@@ -167,7 +167,7 @@ curl http://localhost:32000/inventory/systems/system-service
 --
 [role=command]
 ```
-curl http://`minikube ip`:32000/inventory/systems/system-service
+curl http://$(minikube ip):32000/inventory/systems/system-service
 ```
 --
 
@@ -314,7 +314,7 @@ curl http://localhost:31000/dev/system/properties -u bob:bobpwd
 --
 [role=command]
 ```
-curl http://`minikube ip`:31000/dev/system/properties -u bob:bobpwd
+curl http://$(minikube ip):31000/dev/system/properties -u bob:bobpwd
 ```
 --
 
@@ -341,7 +341,7 @@ mvn failsafe:integration-test -Dsystem.context.root=/dev
 Run the integration tests against a cluster running at Minikube's IP address:
 [role='command']
 ```
-mvn failsafe:integration-test -Dsystem.context.root=/dev -Dcluster.ip=`minikube ip`
+mvn failsafe:integration-test -Dsystem.context.root=/dev -Dcluster.ip=$(minikube ip)
 ```
 --
 
