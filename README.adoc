@@ -272,7 +272,7 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-The [hotspot=22-27]`env` section under the [hotspot=17-27]`system-container` is where the [hotspot=23-27]`CONTEXT_ROOT` environment variable is set.
+The [hotspot=22-27]`env` section under the [hotspot=system-container file=0]`system-container` is where the [hotspot=23-27]`CONTEXT_ROOT` environment variable is set.
 The [hotspot=50-60]`env` section under the [hotspot=45-60]`inventory-container` is where the [hotspot=51-55]`SYSTEM_APP_USERNAME` and [hotspot=56-60]`SYSTEM_APP_PASSWORD` environment variables are set.
 
 The [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`contextRoot` from the ConfigMap [hotspot=26]`sys-app-root`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
