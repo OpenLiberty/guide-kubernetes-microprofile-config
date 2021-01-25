@@ -286,7 +286,7 @@ hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field allows you to
 specify the value of an environment variable from various sources. These sources
 include a ConfigMap, a Secret, and information about the cluster. In this
 example [hotspot=configRef1 hotspot=configRef2 file=0]`configMapKeyRef` gets the
-value [hotspot=root1 hotspot=root2 file=0]`contextRoot` from the
+value [hotspot=contextRootKey1 hotspot=contextRootKey2 file=0]`contextRoot` from the
 ConfigMap [hotspot=root1 hotspot=root2 file=0]`sys-app-root`. Similarly,
 [hotspot=secretRef1 hotspot=secretRef2 hotspot=secretRef3 hotspot=secretRef4
 file=0]`secretKeyRef` gets the values [hotspot=username1 hotspot=username2
