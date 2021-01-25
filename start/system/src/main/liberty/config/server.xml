@@ -10,6 +10,8 @@
 
   <variable name="default.http.port" defaultValue="9080"/>
   <variable name="default.https.port" defaultValue="9443"/>
+  <variable name="system.app.username" defaultValue="bob"/>
+  <variable name="system.app.password" defaultValue="bobpwd"/>
 
   <httpEndpoint host="*" httpPort="${default.http.port}" 
     httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
@@ -17,7 +19,7 @@
   <webApplication location="system.war" contextRoot="/"/>
 
   <basicRegistry id="basic" realm="BasicRegistry">
-    <user name="bob" password="bobpwd" />
+    <user name="${system.app.username}" password="${system.app.password}" />
   </basicRegistry>
 
 </server>

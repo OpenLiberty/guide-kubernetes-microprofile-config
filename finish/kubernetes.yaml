@@ -18,13 +18,23 @@ spec:
         image: system:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
-        # Set the CONTEXT_ROOT environment variable
+        # Set the environment variables
         env:
         - name: CONTEXT_ROOT
           valueFrom:
             configMapKeyRef:
               name: sys-app-root
               key: contextRoot
+        - name: SYSTEM_APP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: sys-app-credentials
+              key: username
+        - name: SYSTEM_APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sys-app-credentials
+              key: password
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -46,8 +56,13 @@ spec:
         image: inventory:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
-        # Set the SYSTEM_APP_USERNAME and SYSTEM_APP_PASSWORD environment variables
+        # Set the environment variables
         env:
+        - name: CONTEXT_ROOT
+          valueFrom:
+            configMapKeyRef:
+              name: sys-app-root
+              key: contextRoot
         - name: SYSTEM_APP_USERNAME
           valueFrom:
             secretKeyRef:
@@ -58,11 +73,6 @@ spec:
             secretKeyRef:
               name: sys-app-credentials
               key: password
-        - name: CONTEXT_ROOT
-          valueFrom:
-            configMapKeyRef:
-              name: sys-app-root
-              key: contextRoot
 ---
 apiVersion: v1
 kind: Service
