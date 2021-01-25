@@ -120,9 +120,9 @@ spec:
               # tag::credentials3[]
               name: sys-app-credentials
               # end::credentials3[]
-              # tag::username[]
+              # tag::username2[]
               key: username
-              # end::username[]
+              # end::username2[]
             # end::secretRef3[]
         # end::sysUsername2[]
         # tag::sysPassword2[]

@@ -275,7 +275,7 @@ include::finish/kubernetes.yaml[]
 
 In the [hotspot=env1 hotspot=env2 file=0]`env` section under the
 [hotspot=system-container file=0]`system-container` and the
-[hotspot=inventory-container file=0]`inventory-container, the
+[hotspot=inventory-container file=0]`inventory-container`, the
 [hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`,
 [hotspot=sysUsername1 hotspot=sysUsername2 file=0]`SYSTEM_APP_USERNAME`, and
 [hotspot=sysPassword1 hotspot=sysPassword2 file=0]`SYSTEM_APP_PASSWORD` environment
