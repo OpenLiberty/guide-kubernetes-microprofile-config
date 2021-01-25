@@ -234,10 +234,10 @@ kubectl create configmap sys-app-root --from-literal contextRoot=/dev
 
 This command deploys a ConfigMap named `sys-app-root` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
-Create a Secret to configure the credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
+Create a Secret to configure the new credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
 [role='command']
 ```
-kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpwd
+kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland
 ```
  
 This command looks similar to the command to create a ConfigMap, one difference is the word `generic`. This creates a Secret that doesn't store information in any specialized way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
@@ -272,10 +272,27 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-The [hotspot=22-27]`env` section under the [hotspot=17-27]`system-container` is where the [hotspot=23-27]`CONTEXT_ROOT` environment variable is set.
-The [hotspot=50-60]`env` section under the [hotspot=45-60]`inventory-container` is where the [hotspot=51-55]`SYSTEM_APP_USERNAME` and [hotspot=56-60]`SYSTEM_APP_PASSWORD` environment variables are set.
 
-The [hotspot=24-27 hotspot=52-55 hotspot=57-60]`valueFrom` field allows you to specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=25-27]`configMapKeyRef` gets the value [hotspot=27]`contextRoot` from the ConfigMap [hotspot=26]`sys-app-root`. Similarly, [hotspot=53-55 hotspot=58-60]`secretKeyRef` gets the values [hotspot=55]`username` and [hotspot=60]`password` from the Secret [hotspot=54 hotspot=59]`sys-app-credentials`.
+In the [hotspot=env1 hotspot=env2 file=0]`env` section under the
+[hotspot=system-container file=0]`system-container` and the
+[hotspot=inventory-container file=0]`inventory-container, the
+[hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`,
+[hotspot=sysUsername1 hotspot=sysUsername2 file=0]`SYSTEM_APP_USERNAME`, and
+[hotspot=sysPassword1 hotspot=sysPassword2 file=0]`SYSTEM_APP_PASSWORD` environment
+variables are set.
+
+The [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4
+hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field allows you to
+specify the value of an environment variable from various sources. These sources
+include a ConfigMap, a Secret, and information about the cluster. In this
+example [hotspot=configRef1 hotspot=configRef2 file=0]`configMapKeyRef` gets the
+value [hotspot=contextRoot1 hotspot=contextRoot2 file=0]`contextRoot` from the
+ConfigMap [hotspot=root1 hotspot=root2 file=0]`sys-app-root`. Similarly,
+[hotspot=secretRef1 hotspot=secretRef2 hotspot=secretRef3 hotspot=secretRef4
+file=0]`secretKeyRef` gets the values [hotspot=username1 hotspot=username2
+file=0]`username` and [hotspot=password1 hotspot=password2 file=0]`password`
+from the Secret [hotspot=credentials1 hotspot=credentials2 hotspot=credentials3
+hotspot=credentials4 file=0]`sys-app-credentials`.
 
 == Deploying your changes
 
@@ -314,7 +331,7 @@ curl http://localhost:31000/dev/system/properties -u bob:bobpwd
 --
 [role=command]
 ```
-curl http://$(minikube ip):31000/dev/system/properties -u bob:bobpwd
+curl http://$(minikube ip):31000/dev/system/properties -u alice:wonderland
 ```
 --
 
