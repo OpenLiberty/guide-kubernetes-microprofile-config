@@ -33,9 +33,9 @@ spec:
               # tag::root1[]
               name: sys-app-root
               # end::root1[]
-              # tag::contextRoot1[]
+              # tag::contextRootKey1[]
               key: contextRoot
-              # end::contextRoot1[]
+              # end::contextRootKey1[]
             # end::configRef1[]
         # end::contextRoot1[]
         # tag::sysUsername1[]
@@ -105,9 +105,9 @@ spec:
               # tag::root2[]
               name: sys-app-root
               # end::root2[]
-              # tag::contextRoot2[]
+              # tag::contextRootKey2[]
               key: contextRoot
-              # end::contextRoot2[]
+              # end::contextRootKey2[]
             # end::configRef2[]
         # end::contextRoot2[]
         # tag::sysUsername2[]
