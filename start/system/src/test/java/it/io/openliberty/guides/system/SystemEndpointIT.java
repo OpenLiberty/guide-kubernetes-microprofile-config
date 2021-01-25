@@ -80,7 +80,7 @@ public class SystemEndpointIT {
         WebTarget target = client.target(clusterUrl);
         Response response = target
             .request()
-            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .header("Authorization", "Basic YWxpY2U6d29uZGVybGFuZA==")
             .get();
 
         assertEquals(200, response.getStatus(), "Incorrect response code from " + clusterUrl);
@@ -100,7 +100,7 @@ public class SystemEndpointIT {
         return client
             .target(url)
             .request()
-            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .header("Authorization", "Basic YWxpY2U6d29uZGVybGFuZA==")
             .get();
     }
 

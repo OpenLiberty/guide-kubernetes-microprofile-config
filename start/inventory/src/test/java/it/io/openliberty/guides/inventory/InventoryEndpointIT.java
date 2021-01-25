@@ -187,7 +187,7 @@ public class InventoryEndpointIT {
         return client
             .target(url)
             .request()
-            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .header("Authorization", "Basic YWxpY2U6d29uZGVybGFuZA==")
             .get();
     }
 
