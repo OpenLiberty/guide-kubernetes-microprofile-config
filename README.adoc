@@ -42,7 +42,7 @@ Explore how to externalize configuration using MicroProfile Config and configure
 == What you'll learn
 You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}. Using environment variables allows for easier deployment to different environments.
 
-MicroProfile Config provides useful annotations that you can use to inject configured values into your code. These values can come from any configuration sources, such as environment variables. To learn more about MicroProfile Config, read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide.
+MicroProfile Config provides useful annotations that you can use to inject configured values into your code. These values can come from any configuration source, such as environment variables. To learn more about MicroProfile Config, read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide.
 
 Furthermore, you'll learn how to set these environment variables with ConfigMaps and Secrets. These resources are provided by {kube} and act as a data source for your environment variables. You can use a ConfigMap or Secret to set environment variables for any number of containers.
 
