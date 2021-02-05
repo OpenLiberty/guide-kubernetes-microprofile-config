@@ -7,7 +7,10 @@ set -euxo pipefail
 ##
 ##############################################################################
 
-. "$(pwd)"/../scripts/startMinikube.sh
+# . "$(pwd)"/../scripts/startMinikube.sh
+
+SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+source $SCRIPTPATH/startMinikube.sh
 
 # Test app
 
@@ -35,4 +38,7 @@ mvn failsafe:verify
 kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)"
 kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep inventory)"
 
-. "$(pwd)"../scripts/stopMinikube.sh
+# . "$(pwd)"../scripts/stopMinikube.sh
+
+SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+source $SCRIPTPATH/stopMinikube.sh
