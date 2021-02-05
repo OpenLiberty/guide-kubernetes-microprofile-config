@@ -41,10 +41,11 @@ public class SystemEndpointIT {
         String clusterIp = System.getProperty("cluster.ip");
         String nodePort = System.getProperty("system.node.port");
         String contextRoot = System.getProperty("system.context.root");
-        
-        clusterUrl = "http://" + clusterIp + ":" + nodePort + contextRoot + "/system/properties/";
+
+        clusterUrl = "http://" + clusterIp + ":" + nodePort
+                     + contextRoot + "/system/properties/";
     }
-    
+
     @BeforeEach
     public void setup() {
         response = null;
@@ -61,15 +62,16 @@ public class SystemEndpointIT {
     public void teardown() {
         client.close();
     }
-    
+
     @Test
     public void testPodNameNotNull() {
         response = this.getResponse(clusterUrl);
         this.assertResponse(clusterUrl, response);
         String greeting = response.getHeaderString("X-Pod-Name");
-        
+
         assertNotNull(greeting,
-            "Container name should not be null but it was. The service is probably not running inside a container");
+            "Container name should not be null but it was"
+            + " The service is probably not running inside a container");
     }
 
     @Test
@@ -91,7 +93,7 @@ public class SystemEndpointIT {
      * <p>
      * Returns response information from the specified URL.
      * </p>
-     * 
+     *
      * @param url
      *          - target URL.
      * @return Response object with the response from the specified URL.
@@ -108,7 +110,7 @@ public class SystemEndpointIT {
      * <p>
      * Asserts that the given URL has the correct response code of 200.
      * </p>
-     * 
+     *
      * @param url
      *          - target URL.
      * @param response

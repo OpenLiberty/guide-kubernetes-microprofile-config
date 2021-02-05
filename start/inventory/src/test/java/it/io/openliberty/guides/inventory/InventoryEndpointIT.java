@@ -48,7 +48,8 @@ public class InventoryEndpointIT {
         
         sysKubeService = System.getProperty("system.kube.service");
         invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort + contextRoot + "/system/properties/";
+        sysUrl = "http://" + clusterIp + ":" + sysNodePort + 
+                  contextRoot + "/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
@@ -122,10 +123,11 @@ public class InventoryEndpointIT {
         this.assertResponse(invUrl, invResponse);
         this.assertResponse(sysUrl, sysResponse);
 
-        JsonObject jsonFromInventory = (JsonObject) invResponse.readEntity(JsonObject.class)
-                                                            .getJsonArray("systems")
-                                                            .getJsonObject(0)
-                                                            .get("properties");
+        JsonObject jsonFromInventory = (JsonObject) invResponse
+                                                        .readEntity(JsonObject.class)
+                                                        .getJsonArray("systems")
+                                                        .getJsonObject(0)
+                                                        .get("properties");
 
         JsonObject jsonFromSystem = sysResponse.readEntity(JsonObject.class);
 
@@ -156,7 +158,7 @@ public class InventoryEndpointIT {
             .get();
 
         assertEquals(404, badResponse.getStatus(),
-                     "BadResponse expected status: 404. " 
+                     "BadResponse expected status: 404. "
                      + "Response code not as expected.");
 
         String obj = badResponse.readEntity(String.class);
@@ -196,7 +198,7 @@ public class InventoryEndpointIT {
      * <p>
      * Asserts that the given URL has the correct response code of 200.
      * </p>
-     * 
+     *
      * @param url
      *          - target URL.
      * @param response
@@ -211,7 +213,7 @@ public class InventoryEndpointIT {
     /**
      * Asserts that the specified JVM system property is equivalent in both the
      * system and inventory services.
-     * 
+     *
      * @param propertyName
      *          - name of the system property to check.
      * @param hostname

@@ -39,5 +39,5 @@ public class SystemResource {
       .header("X-Pod-Name", hostname)
       .header("X-App-Name", "system")
       .build();
-  } 
+  }
 }
