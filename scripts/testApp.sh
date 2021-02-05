@@ -8,9 +8,9 @@ set -euxo pipefail
 ##############################################################################
 
 # . "$(pwd)"/../scripts/startMinikube.sh
-
+# shellcheck source= . .testApp.sh
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-source $SCRIPTPATH/startMinikube.sh
+source "$SCRIPTPATH"/startMinikube.sh
 
 # Test app
 
@@ -40,5 +40,4 @@ kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{
 
 # . "$(pwd)"../scripts/stopMinikube.sh
 
-SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-source $SCRIPTPATH/stopMinikube.sh
+source "$SCRIPTPATH"/stopMinikube.sh
