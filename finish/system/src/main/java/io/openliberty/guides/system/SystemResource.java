@@ -40,6 +40,6 @@ public class SystemResource {
       .header("X-Pod-Name", hostname)
       .header("X-Pod-Name", "system")
       .build();
-  } 
+  }
   // end::getProperties[]
 }

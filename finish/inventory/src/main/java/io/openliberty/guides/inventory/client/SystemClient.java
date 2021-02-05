@@ -61,7 +61,7 @@ public class SystemClient {
   // Wrapper function that gets properties
   public Properties getProperties(String hostname) {
     String url = buildUrl(PROTOCOL,
-                          hostname, 
+                          hostname,
                           Integer.valueOf(DEFAULT_PORT),
                           CONTEXT_ROOT + SYSTEM_PROPERTIES);
     Builder clientBuilder = buildClientBuilder(url);

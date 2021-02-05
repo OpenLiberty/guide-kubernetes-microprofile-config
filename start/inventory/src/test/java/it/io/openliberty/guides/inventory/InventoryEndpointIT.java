@@ -45,11 +45,11 @@ public class InventoryEndpointIT {
         String invNodePort = System.getProperty("inventory.node.port");
         String sysNodePort = System.getProperty("system.node.port");
         String contextRoot = System.getProperty("system.context.root");
-        
+
         sysKubeService = System.getProperty("system.kube.service");
         invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort + 
-                  contextRoot + "/system/properties/";
+        sysUrl = "http://" + clusterIp + ":" + sysNodePort
+                 + contextRoot + "/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
@@ -179,7 +179,7 @@ public class InventoryEndpointIT {
      * <p>
      * Returns response information from the specified URL.
      * </p>
-     * 
+     *
      * @param url
      *          - target URL.
      * @return Response object with the response from the specified URL.

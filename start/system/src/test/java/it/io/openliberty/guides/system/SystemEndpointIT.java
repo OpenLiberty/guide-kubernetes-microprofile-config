@@ -85,7 +85,8 @@ public class SystemEndpointIT {
             .header("Authorization", "Basic YWxpY2U6d29uZGVybGFuZA==")
             .get();
 
-        assertEquals(200, response.getStatus(), "Incorrect response code from " + clusterUrl);
+        assertEquals(200, response.getStatus(),
+                     "Incorrect response code from " + clusterUrl);
         response.close();
     }
 
