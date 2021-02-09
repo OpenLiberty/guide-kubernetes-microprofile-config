@@ -10,5 +10,7 @@ chmod +x minikube
 apt-get update -y
 apt-get install -y conntrack
 
+sysctl fs.protected_regular=0
+
 minikube start --vm-driver=none --bootstrapper=kubeadm
 eval $(minikube docker-env)
