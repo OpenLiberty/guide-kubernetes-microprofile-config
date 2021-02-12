@@ -240,7 +240,7 @@ Create a Secret to configure the new credentials that `inventory` will use to au
 kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland
 ```
  
-This command looks similar to the command to create a ConfigMap, one difference is the word `generic`. This creates a Secret that doesn't store information in any specialized way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
+This command looks similar to the command to create a ConfigMap, but one difference is the word `generic`. This word creates a Secret that doesn't store information in any specialized way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
 
 A Secret is similar to a ConfigMap. A key difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
 
@@ -273,26 +273,25 @@ include::finish/kubernetes.yaml[]
 ----
 
 
-In the [hotspot=env1 hotspot=env2 file=0]`env` sections under
-[hotspot=system-container file=0]`system-container` and
-[hotspot=inventory-container file=0]`inventory-container`, the
-[hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`,
+The [hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`,
 [hotspot=sysUsername1 hotspot=sysUsername2 file=0]`SYSTEM_APP_USERNAME`, and
 [hotspot=sysPassword1 hotspot=sysPassword2 file=0]`SYSTEM_APP_PASSWORD` environment
-variables are set.
+variables are set in the [hotspot=env1 hotspot=env2 file=0]`env` sections of
+[hotspot=system-container file=0]`system-container` and
+[hotspot=inventory-container file=0]`inventory-container`
 
-The [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4
-hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field allows you to
+Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4
+hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field, you can
 specify the value of an environment variable from various sources. These sources
 include a ConfigMap, a Secret, and information about the cluster. In this
 example [hotspot=configRef1 hotspot=configRef2 file=0]`configMapKeyRef` gets the
 value [hotspot=contextRootKey1 hotspot=contextRootKey2 file=0]`contextRoot` from the
-ConfigMap [hotspot=root1 hotspot=root2 file=0]`sys-app-root`. Similarly,
+[hotspot=root1 hotspot=root2 file=0]`sys-app-root` ConfigMap. Similarly,
 [hotspot=secretRef1 hotspot=secretRef2 hotspot=secretRef3 hotspot=secretRef4
 file=0]`secretKeyRef` gets the values [hotspot=username1 hotspot=username2
 file=0]`username` and [hotspot=password1 hotspot=password2 file=0]`password`
-from the Secret [hotspot=credentials1 hotspot=credentials2 hotspot=credentials3
-hotspot=credentials4 file=0]`sys-app-credentials`.
+from the [hotspot=credentials1 hotspot=credentials2 hotspot=credentials3
+hotspot=credentials4 file=0]`sys-app-credentials` Secret.
 
 == Deploying your changes
 
@@ -316,7 +315,7 @@ kubectl replace --force -f kubernetes.yaml
 ```
 
 Your application will now be available at the
-`http://[hostname]:31000/dev/system/properties`. You now need to use the new
+`http://[hostname]:31000/dev/system/properties` URL. You now need to use the new
 username, `alice`, and the new password, `wonderland`, to log in. Alternatively,
 you can run the following command:
 
@@ -349,7 +348,7 @@ include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
 --
-Run the integration tests.
+Run the integration tests:
 [role='command']
 ```
 mvn failsafe:integration-test -Dsystem.context.root=/dev
@@ -365,7 +364,10 @@ mvn failsafe:integration-test -Dsystem.context.root=/dev -Dcluster.ip=$(minikube
 ```
 --
 
-The tests check that the `system` service is available at the correct context root. The tests for `inventory` verify that the service may communicate with `system` using the configured credentials. If the credentials are misconfigured, then the `inventory` test will fail, so the `inventory` test indirectly verifies the credentials are correctly configured.
+The tests for `inventory` verify that the service can communicate with `system`
+using the configured credentials. If the credentials are misconfigured, then the
+`inventory` test fails, so the `inventory` test indirectly verifies that the
+credentials are correctly configured.
 
 After the tests succeed, you should see output similar to the following in your console.
 
