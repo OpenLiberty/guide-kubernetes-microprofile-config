@@ -278,7 +278,7 @@ The [hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`,
 [hotspot=sysPassword1 hotspot=sysPassword2 file=0]`SYSTEM_APP_PASSWORD` environment
 variables are set in the [hotspot=env1 hotspot=env2 file=0]`env` sections of
 [hotspot=system-container file=0]`system-container` and
-[hotspot=inventory-container file=0]`inventory-container`
+[hotspot=inventory-container file=0]`inventory-container`.
 
 Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4
 hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field, you can
