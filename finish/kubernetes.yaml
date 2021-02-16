@@ -14,17 +14,61 @@ spec:
         app: system
     spec:
       containers:
+      # tag::system-container[]
       - name: system-container
         image: system:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
-        # Set the APP_NAME environment variable
+        # Set the environment variables
+        # tag::env1[]
         env:
-        - name: APP_NAME
+        # end::env1[]
+        # tag::contextRoot1[]
+        - name: CONTEXT_ROOT
+          # tag::valueFrom1[]
           valueFrom:
+          # end::valueFrom1[]
+            # tag::configRef1[]
             configMapKeyRef:
-              name: sys-app-name
-              key: name
+              # tag::root1[]
+              name: sys-app-root
+              # end::root1[]
+              # tag::contextRootKey1[]
+              key: contextRoot
+              # end::contextRootKey1[]
+            # end::configRef1[]
+        # end::contextRoot1[]
+        # tag::sysUsername1[]
+        - name: SYSTEM_APP_USERNAME
+          # tag::valueFrom2[]
+          valueFrom:
+          # end::valueFrom2[]
+            # tag::secretRef1[]
+            secretKeyRef:
+              # tag::credentials1[]
+              name: sys-app-credentials
+              # end::credentials1[]
+              # tag::username1[]
+              key: username
+              # end::username1[]
+            # end::secretRef1[]
+        # end::sysUsername1[]
+        # tag::sysPassword1[]
+        - name: SYSTEM_APP_PASSWORD
+          # tag::valueFrom3[]
+          valueFrom:
+          # end::valueFrom3[]
+            # tag::secretRef2[]
+            secretKeyRef:
+              # tag::credentials2[]
+              name: sys-app-credentials
+              # end::credentials2[]
+              # tag::password1[]
+              key: password
+              # end::password1[]
+            # end::secretRef2[]
+        # end::sysPassword1[]
+      # end::system-container[]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -42,22 +86,61 @@ spec:
         app: inventory
     spec:
       containers:
+      # tag::inventory-container[]
       - name: inventory-container
         image: inventory:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
-        # Set the SYSTEM_APP_USERNAME and SYSTEM_APP_PASSWORD environment variables
+        # Set the environment variables
+        # tag::env2[]
         env:
+        # end::env2[]
+        # tag::contextRoot2[]
+        - name: CONTEXT_ROOT
+          # tag::valueFrom4[]
+          valueFrom:
+          # end::valueFrom4[]
+            # tag::configRef2[]
+            configMapKeyRef:
+              # tag::root2[]
+              name: sys-app-root
+              # end::root2[]
+              # tag::contextRootKey2[]
+              key: contextRoot
+              # end::contextRootKey2[]
+            # end::configRef2[]
+        # end::contextRoot2[]
+        # tag::sysUsername2[]
         - name: SYSTEM_APP_USERNAME
+          # tag::valueFrom5[]
           valueFrom:
+          # end::valueFrom5[]
+            # tag::secretRef3[]
             secretKeyRef:
+              # tag::credentials3[]
               name: sys-app-credentials
+              # end::credentials3[]
+              # tag::username2[]
               key: username
+              # end::username2[]
+            # end::secretRef3[]
+        # end::sysUsername2[]
+        # tag::sysPassword2[]
         - name: SYSTEM_APP_PASSWORD
+          # tag::valueFrom6[]
           valueFrom:
+          # end::valueFrom6[]
+            # tag::secretRef4[]
             secretKeyRef:
+              # tag::credentials4[]
               name: sys-app-credentials
+              # end::credentials4[]
+              # tag::password2[]
               key: password
+              # end::password2[]
+            # end::secretRef4[]
+        # end::sysPassword2[]
+      # end::inventory-container[]
 ---
 apiVersion: v1
 kind: Service
