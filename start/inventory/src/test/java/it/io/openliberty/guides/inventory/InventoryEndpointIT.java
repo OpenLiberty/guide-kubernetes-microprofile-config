@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018, 2020 IBM Corporation and others.
+ * Copyright (c) 2018, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,12 @@ public class InventoryEndpointIT {
         String clusterIp = System.getProperty("cluster.ip");
         String invNodePort = System.getProperty("inventory.node.port");
         String sysNodePort = System.getProperty("system.node.port");
-        
+        String contextRoot = System.getProperty("system.context.root");
+
         sysKubeService = System.getProperty("system.kube.service");
         invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort + "/system/properties/";
+        sysUrl = "http://" + clusterIp + ":" + sysNodePort
+                 + contextRoot + "/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
@@ -121,10 +123,11 @@ public class InventoryEndpointIT {
         this.assertResponse(invUrl, invResponse);
         this.assertResponse(sysUrl, sysResponse);
 
-        JsonObject jsonFromInventory = (JsonObject) invResponse.readEntity(JsonObject.class)
-                                                            .getJsonArray("systems")
-                                                            .getJsonObject(0)
-                                                            .get("properties");
+        JsonObject jsonFromInventory = (JsonObject) invResponse
+                                                        .readEntity(JsonObject.class)
+                                                        .getJsonArray("systems")
+                                                        .getJsonObject(0)
+                                                        .get("properties");
 
         JsonObject jsonFromSystem = sysResponse.readEntity(JsonObject.class);
 
@@ -155,7 +158,7 @@ public class InventoryEndpointIT {
             .get();
 
         assertEquals(404, badResponse.getStatus(),
-                     "BadResponse expected status: 404. " 
+                     "BadResponse expected status: 404. "
                      + "Response code not as expected.");
 
         String obj = badResponse.readEntity(String.class);
@@ -176,7 +179,7 @@ public class InventoryEndpointIT {
      * <p>
      * Returns response information from the specified URL.
      * </p>
-     * 
+     *
      * @param url
      *          - target URL.
      * @return Response object with the response from the specified URL.
@@ -186,7 +189,7 @@ public class InventoryEndpointIT {
         return client
             .target(url)
             .request()
-            .header("Authorization", "Basic Ym9iOmJvYnB3ZA==")
+            .header("Authorization", "Basic YWxpY2U6d29uZGVybGFuZA==")
             .get();
     }
 
@@ -195,7 +198,7 @@ public class InventoryEndpointIT {
      * <p>
      * Asserts that the given URL has the correct response code of 200.
      * </p>
-     * 
+     *
      * @param url
      *          - target URL.
      * @param response
@@ -210,7 +213,7 @@ public class InventoryEndpointIT {
     /**
      * Asserts that the specified JVM system property is equivalent in both the
      * system and inventory services.
-     * 
+     *
      * @param propertyName
      *          - name of the system property to check.
      * @param hostname

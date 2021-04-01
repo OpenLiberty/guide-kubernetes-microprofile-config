@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2019 IBM Corporation and others.
+ * Copyright (c) 2017, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,14 +29,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class SystemResource {
 
   @Inject
-  // tag::ConfigProperty[]
-  @ConfigProperty(name = "APP_NAME")
-  // end::ConfigProperty[]
-  // tag::appName[]
-  private String appName;
-  // end::appName[]
-
-  @Inject
   @ConfigProperty(name = "HOSTNAME")
   private String hostname;
 
@@ -46,10 +38,8 @@ public class SystemResource {
   public Response getProperties() {
     return Response.ok(System.getProperties())
       .header("X-Pod-Name", hostname)
-      // tag::header-appName[]
-      .header("X-App-Name", appName)
-      // end::header-appName[]
+      .header("X-Pod-Name", "system")
       .build();
-  } 
+  }
   // end::getProperties[]
 }
