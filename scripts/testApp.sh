@@ -16,7 +16,7 @@ source "$SCRIPTPATH"/startMinikube.sh
 
 mvn -q package
 
-docker pull openliberty/open-liberty:kernel-java8-openj9-ubi
+docker pull openliberty/open-liberty:full-java11-openj9-ubi
 
 docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
