@@ -14,7 +14,10 @@ source "$SCRIPTPATH"/startMinikube.sh
 
 # Test app
 
-mvn -q package
+mvn -Dhttp.keepAlive=false \
+    -Dmaven.wagon.http.pool=false \
+    -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+    -q package
 
 docker pull openliberty/open-liberty:full-java11-openj9-ubi
 
@@ -32,7 +35,10 @@ sleep 120
 kubectl get pods
 
 minikube ip
-mvn -Dsystem.context.root=/dev -Dcluster.ip="$(minikube ip)" failsafe:integration-test
+mvn -Dhttp.keepAlive=false \
+    -Dmaven.wagon.http.pool=false \
+    -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+    -Dsystem.context.root=/dev -Dcluster.ip="$(minikube ip)" failsafe:integration-test
 mvn failsafe:verify
 
 kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)"
