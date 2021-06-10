@@ -114,6 +114,9 @@ inventory-deployment-645767664f-7gnxf  1/1       Running   0          34s
 
 After the pods are ready, you will make requests to your services.
 
+// Static guide instruction
+ifndef::cloud-hosted[]
+
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
@@ -170,6 +173,26 @@ curl http://localhost:32000/inventory/systems/system-service
 curl http://$(minikube ip):32000/inventory/systems/system-service
 ```
 --
+
+endif::[]
+
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+Run the following `curl` command to access the system microservice.
+The `-u` option is used to pass in the username `bob` and the password `bobpwd`.
+
+```
+curl http://$(minikube ip):31000/system/properties -u bob:bobpwd
+```
+{: codeblock}
+
+Run the following `curl` command to add the system to the inventory microservice.
+
+```
+curl http://$(minikube ip):32000/inventory/systems/system-service
+```
+{: codeblock}
+endif::[]
 
 == Modifying system microservice
 
