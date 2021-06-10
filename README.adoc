@@ -1,4 +1,3 @@
-//
 // Copyright (c) 2018, 2021 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
@@ -369,6 +368,9 @@ Run the following command to deploy your changes to the {kube} cluster.
 kubectl replace --force -f kubernetes.yaml
 ```
 
+// Static guide instruction
+ifndef::cloud-hosted[]
+
 Your application will now be available at the
 `http://[hostname]:31000/dev/system/properties` URL. You now need to use the new
 username, `alice`, and the new password, `wonderland`, to log in. Alternatively,
@@ -392,10 +394,39 @@ curl http://$(minikube ip):31000/dev/system/properties -u alice:wonderland
 ```
 --
 
+endif::[]
+
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+Your application will now be available at the `http://$(minikube ip):31000/dev/system/properties` URL.
+You now need to use the new username, `alice`, and the new password `wonderland`.
+Access your application with the following command:
+
+```
+curl http://$(minikube ip):31000/dev/system/properties -u alice:wonderland
+```
+{: codeblock}
+endif::[]
+
 Notice that the URL you are using to reach the application now has `/dev` as the context root. 
 
+// Static guide instruction
+ifndef::cloud-hosted[]
 Verify that `{inventory-api}/system-service` is working as intended.
 If it is not, then check the configuration of the credentials.
+endif::[]
+
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+Verify the inventory service is working as intended by using the following command:
+
+```
+curl http://$(minikube ip):32000/inventory/systems/system-service
+```
+{: codeblock}
+
+If it is not working, then check the configuration of the credentials.
+endif::[]
 
 == Testing the microservices
 
