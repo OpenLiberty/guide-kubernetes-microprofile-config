@@ -105,7 +105,8 @@ Run the following command to deploy the necessary {kube} resources to serve the 
 kubectl apply -f kubernetes.yaml
 ```
 
-When this command finishes, wait for the pods to be in the Ready state. Run the following command to view the status of the pods.
+When this command finishes, wait for the pods to be in the Ready state.
+Run the following command to view the status of the pods.
 [role='command']
 ```
 kubectl get pods
@@ -162,7 +163,8 @@ curl http://$(minikube ip):31000/system/properties -u bob:bobpwd
 ```
 --
 
-Similarly, navigate to `{inventory-api}/system-service`, or use the following `curl` command, to add the system to your inventory.
+Similarly, navigate to `{inventory-api}/system-service`,
+or use the following `curl` command to add the system to your inventory.
 
 include::{common-includes}/os-tabs.adoc[]
 
@@ -251,7 +253,9 @@ SystemClient.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=system-app-username]`SYSTEM_APP_USERNAME` and [hotspot=system-app-password]`SYSTEM_APP_PASSWORD` into the [hotspot file=0]`SystemClient` class.
+The changes introduced here use MicroProfile Config and CDI to inject the value of the
+environment variables [hotspot=system-app-username]`SYSTEM_APP_USERNAME` and
+[hotspot=system-app-password]`SYSTEM_APP_PASSWORD` into the [hotspot file=0]`SystemClient` class.
 
 
 == Creating a ConfigMap and Secret
@@ -279,7 +283,8 @@ provide more versatility as to what you want to configure.
 Details about these options can be found in the
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
-Create a Secret to configure the new credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
+Create a Secret to configure the new credentials that `inventory` will use to
+authenticate against `system` with the following `kubectl` command.
 [role='command']
 ```
 kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland
@@ -287,7 +292,8 @@ kubectl create secret generic sys-app-credentials --from-literal username=alice 
  
 This command looks similar to the command to create a ConfigMap, but one difference is the word `generic`.
 This word creates a Secret that doesn't store information in any specialized way.
-There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
+There are different types of secrets, such as secrets to store Docker credentials
+and secrets to store public and private key pairs.
 
 A Secret is similar to a ConfigMap.
 A key difference is that a Secret is used for confidential information such as credentials.
@@ -430,6 +436,9 @@ endif::[]
 
 == Testing the microservices
 
+// Static guide instruction
+ifndef::cloud-hosted[]
+
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
@@ -449,6 +458,21 @@ Run the integration tests against a cluster running at Minikube's IP address:
 mvn failsafe:integration-test -Dsystem.context.root=/dev -Dcluster.ip=$(minikube ip)
 ```
 --
+
+endif::[]
+
+
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+
+Run the integration tests by running the following command:
+
+```
+mvn failsafe:integration-test -Dsystem.context.root=/dev -Dcluster.ip=$(minikube ip)
+```
+{: codeblock}
+
+endif::[]
 
 The tests for `inventory` verify that the service can communicate with `system`
 using the configured credentials. If the credentials are misconfigured, then the
