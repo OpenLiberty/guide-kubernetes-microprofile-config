@@ -40,11 +40,19 @@ Explore how to externalize configuration using MicroProfile Config and configure
 // =================================================================================================
 
 == What you'll learn
-You will learn how and why to externalize your microservice's configuration. Externalized configuration is useful because configuration usually changes depending on your environment. You will also learn how to configure the environment by providing required values to your application using {kube}. Using environment variables allows for easier deployment to different environments.
+You will learn how and why to externalize your microservice's configuration.
+Externalized configuration is useful because configuration usually changes depending on your environment.
+You will also learn how to configure the environment by providing required values to your application using {kube}.
+Using environment variables allows for easier deployment to different environments.
 
-MicroProfile Config provides useful annotations that you can use to inject configured values into your code. These values can come from any configuration source, such as environment variables. To learn more about MicroProfile Config, read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide.
+MicroProfile Config provides useful annotations that you can use to inject configured values into your code.
+These values can come from any configuration source, such as environment variables.
+To learn more about MicroProfile Config,
+read the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide.
 
-Furthermore, you'll learn how to set these environment variables with ConfigMaps and Secrets. These resources are provided by {kube} and act as a data source for your environment variables. You can use a ConfigMap or Secret to set environment variables for any number of containers.
+Furthermore, you'll learn how to set these environment variables with ConfigMaps and Secrets.
+These resources are provided by {kube} and act as a data source for your environment variables.
+You can use a ConfigMap or Secret to set environment variables for any number of containers.
 
 // =================================================================================================
 // Prerequisites
@@ -89,7 +97,8 @@ docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
 The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
-The tag for an image describes the specific image version. If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
+The tag for an image describes the specific image version.
+If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
 
 Run the following command to deploy the necessary {kube} resources to serve the applications.
 [role='command']
@@ -228,7 +237,8 @@ variables, in order:
 
 == Modifying inventory microservice
 
-The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service. You'll make these credentials configurable. 
+The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service.
+You'll make these credentials configurable. 
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -247,7 +257,14 @@ The changes introduced here use MicroProfile Config and CDI to inject the value 
 
 == Creating a ConfigMap and Secret
 
-There are several ways to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable you want to set for a specific container. With these options in mind, you're going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers. A benefit is that they can be reused across many different containers, even if they all require different environment variables to be set with the same value.
+There are several ways to configure an environment variable in a Docker container.
+You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command.
+You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a
+name and a value for the environment variable you want to set for a specific container.
+With these options in mind, you're going to use a ConfigMap and Secret to set these values.
+These are resources provided by Kubernetes that are used as a way to provide configuration values to your containers.
+A benefit is that they can be reused across many different containers,
+even if they all require different environment variables to be set with the same value.
 
 Create a ConfigMap to configure the app name with the following `kubectl` command.
 [role='command']
@@ -255,7 +272,13 @@ Create a ConfigMap to configure the app name with the following `kubectl` comman
 kubectl create configmap sys-app-root --from-literal contextRoot=/dev
 ```
 
-This command deploys a ConfigMap named `sys-app-root` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
+This command deploys a ConfigMap named `sys-app-root` to your cluster.
+It has a key called `contextRoot` with a value of `/dev`.
+The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap.
+Other available options, such as `--from-file` and `--from-env-file`,
+provide more versatility as to what you want to configure.
+Details about these options can be found in the
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
 Create a Secret to configure the new credentials that `inventory` will use to authenticate against `system` with the following `kubectl` command.
 [role='command']
@@ -263,9 +286,17 @@ Create a Secret to configure the new credentials that `inventory` will use to au
 kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland
 ```
  
-This command looks similar to the command to create a ConfigMap, but one difference is the word `generic`. This word creates a Secret that doesn't store information in any specialized way. There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
+This command looks similar to the command to create a ConfigMap, but one difference is the word `generic`.
+This word creates a Secret that doesn't store information in any specialized way.
+There are different types of secrets, such as secrets to store Docker credentials and secrets to store public and private key pairs.
 
-A Secret is similar to a ConfigMap. A key difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure.
+A Secret is similar to a ConfigMap.
+A key difference is that a Secret is used for confidential information such as credentials.
+One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret.
+Additionally, when it does show you the information,
+it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data.
+Secrets don't provide any encryption by default,
+that is something you'll either need to do yourself or find an alternate option to configure.
 
 kubernetes.yaml
 [source, yaml, linenums, role='code_column']
@@ -281,7 +312,8 @@ include::finish/system/Dockerfile[]
 
 == Updating {kube} resources
 
-Next, you will update your {kube} deployments to set the environment variables in your containers based on the values configured in the ConfigMap and Secret created previously. 
+Next, you will update your {kube} deployments to set the environment variables in your containers
+based on the values configured in the ConfigMap and Secret created previously. 
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -441,7 +473,8 @@ include::{common-includes}/kube-minikube-teardown.adoc[]
 
 == Great work! You're done!
 
-You have used MicroProfile Config to externalize the configuration of two microservices, and then you configured them by creating a ConfigMap and Secret in your {kube} cluster.
+You have used MicroProfile Config to externalize the configuration of two microservices,
+and then you configured them by creating a ConfigMap and Secret in your {kube} cluster.
 
 // Include the below from the guides-common repo to tell users how they can contribute to the guide
 
