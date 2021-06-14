@@ -213,23 +213,22 @@ server.xml
 include::finish/system/src/main/liberty/config/server.xml[]
 ----
 
-The `system` service is hardcoded to use a single forward slash as the context
-root. The context root is set in the [hotspot=webApplication
-file=0]`webApplication` element where the `contextRoot` attribute is specified
-as `"/"`. You'll make the value of the `contextRoot` attribute configurable by
+The `system` service is hardcoded to use a single forward slash as the context root.
+The context root is set in the [hotspot=webApplication file=0]`webApplication`
+element where the `contextRoot` attribute is specified as `"/"`.
+You'll make the value of the `contextRoot` attribute configurable by
 implementing it as a variable.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Replace the `server.xml` file.#
 `system/src/main/liberty/config/server.xml`
 ----
 
-The `contextRoot` attribute in the [hotspot=webApplication
-file=0]`webApplication` element now gets its value from the
-[hotspot=context.root file=0]`context.root` variable. To find a value for the
-`context.root` variable, Open Liberty will look for the following environment
-variables, in order:
+The `contextRoot` attribute in the [hotspot=webApplication file=0]`webApplication`
+element now gets its value from the [hotspot=context.root file=0]`context.root` variable.
+To find a value for the `context.root` variable,
+Open Liberty will look for the following environment variables, in order:
 
 * `context.root`
 * `context_root`
@@ -241,7 +240,7 @@ variables, in order:
 The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service.
 You'll make these credentials configurable. 
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Replace the `SystemClient` class.#
 `inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
@@ -332,7 +331,6 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-
 The [hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`,
 [hotspot=sysUsername1 hotspot=sysUsername2 file=0]`SYSTEM_APP_USERNAME`, and
 [hotspot=sysPassword1 hotspot=sysPassword2 file=0]`SYSTEM_APP_PASSWORD` environment
@@ -340,18 +338,16 @@ variables are set in the [hotspot=env1 hotspot=env2 file=0]`env` sections of
 [hotspot=system-container file=0]`system-container` and
 [hotspot=inventory-container file=0]`inventory-container`.
 
-Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4
-hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field, you can
-specify the value of an environment variable from various sources. These sources
+Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4 hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field,
+you can specify the value of an environment variable from various sources. These sources
 include a ConfigMap, a Secret, and information about the cluster. In this
 example [hotspot=configRef1 hotspot=configRef2 file=0]`configMapKeyRef` gets the
 value [hotspot=contextRootKey1 hotspot=contextRootKey2 file=0]`contextRoot` from the
 [hotspot=root1 hotspot=root2 file=0]`sys-app-root` ConfigMap. Similarly,
-[hotspot=secretRef1 hotspot=secretRef2 hotspot=secretRef3 hotspot=secretRef4
-file=0]`secretKeyRef` gets the values [hotspot=username1 hotspot=username2
-file=0]`username` and [hotspot=password1 hotspot=password2 file=0]`password`
-from the [hotspot=credentials1 hotspot=credentials2 hotspot=credentials3
-hotspot=credentials4 file=0]`sys-app-credentials` Secret.
+[hotspot=secretRef1 hotspot=secretRef2 hotspot=secretRef3 hotspot=secretRef4 file=0]`secretKeyRef`
+gets the values [hotspot=username1 hotspot=username2 file=0]`username` and
+[hotspot=password1 hotspot=password2 file=0]`password` from the
+[hotspot=credentials1 hotspot=credentials2 hotspot=credentials3 hotspot=credentials4 file=0]`sys-app-credentials` Secret.
 
 == Deploying your changes
 
