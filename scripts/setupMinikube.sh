@@ -6,9 +6,10 @@ chmod +x kubectl
 ln -s -f "$(pwd)/kubectl" "/usr/local/bin/kubectl"
 
 # Install Minikube
-wget https://github.com/kubernetes/minikube/releases/download/v0.28.2/minikube-linux-amd64 -q -O minikube
+wget https://github.com/kubernetes/minikube/releases/download/v1.20.0/minikube-linux-amd64 -q -O minikube
 chmod +x minikube
-export PATH="$(pwd):$PATH"
+PATH = "$(pwd):$PATH"
+export PATH
 
 apt-get update -y
 apt-get install -y conntrack
