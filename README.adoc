@@ -99,6 +99,15 @@ The `-t` flag in the `docker build` command allows the Docker image to be labele
 The tag for an image describes the specific image version.
 If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
 
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+Run the following script to install and start Minikube.
+```
+../scripts/startMinikube.sh
+```
+{: codeblock}
+endif::[]
+
 Run the following command to deploy the necessary {kube} resources to serve the applications.
 [role='command']
 ```
