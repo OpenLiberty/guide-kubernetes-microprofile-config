@@ -65,12 +65,20 @@ include::{common-includes}/kube-prereq.adoc[]
 [role='command']
 include::{common-includes}/gitclone.adoc[]
 
-
 // =================================================================================================
-// Starting/Preparing Cluster
+// Staring and preparing your cluster for deployment
 // =================================================================================================
+// Static guide instruction
+ifndef::cloud-hosted[]
 [role='command']
 include::{common-includes}/kube-start.adoc[]
+endif::[]
+
+// =================================================================================================
+// Logging into your cluster
+// =================================================================================================
+[role='command']
+include::{common-includes}/skills-network-kube-setup.adoc[]
 
 == Deploying the microservices
 
@@ -98,15 +106,6 @@ docker build -t inventory:1.0-SNAPSHOT inventory/.
 The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
 The tag for an image describes the specific image version.
 If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
-
-// Cloud hosted guide instruction
-ifdef::cloud-hosted[]
-Run the following script to install and start Minikube.
-```
-../scripts/startMinikube.sh
-```
-{: codeblock}
-endif::[]
 
 Run the following command to deploy the necessary {kube} resources to serve the applications.
 [role='command']
