@@ -238,15 +238,15 @@ element now gets its value from the [hotspot=context.root file=0]`context.root` 
 To find a value for the `context.root` variable,
 Open Liberty will look for the following environment variables, in order:
 
-// static guide instructions:
+// Static guide instructions:
 ifndef::cloud-hosted[]
 * `context.root`
 * `context_root`
 * `CONTEXT_ROOT`
 endif::[]
 
-// static guide instructions:
-ifndef::cloud-hosted[]
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
 * **`context.root`**
 * **`context_root`**
 * **`CONTEXT_ROOT`**
