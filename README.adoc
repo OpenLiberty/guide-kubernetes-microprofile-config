@@ -107,6 +107,27 @@ The `-t` flag in the `docker build` command allows the Docker image to be labele
 The tag for an image describes the specific image version.
 If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
 
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+Push your images to the container registry on IBM Cloud with the following commands:
+
+```
+docker tag inventory:1.0-SNAPSHOT us.icr.io/$NAMESPACE_NAME/inventory:1.0-SNAPSHOT
+docker tag system:1.0-SNAPSHOT us.icr.io/$NAMESPACE_NAME/system:1.0-SNAPSHOT
+docker push us.icr.io/$NAMESPACE_NAME/inventory:1.0-SNAPSHOT
+docker push us.icr.io/$NAMESPACE_NAME/system:1.0-SNAPSHOT
+```
+{: codeblock}
+
+Update the image names so that the images in your IBM Cloud container registry are used:
+
+```
+sed -i 's=system:1.0-SNAPSHOT=us.icr.io/'"$NAMESPACE_NAME"'/system:1.0-SNAPSHOT=g' kubernetes.yaml
+sed -i 's=inventory:1.0-SNAPSHOT=us.icr.io/'"$NAMESPACE_NAME"'/inventory:1.0-SNAPSHOT=g' kubernetes.yaml
+```
+{: codeblock}
+endif::[]
+
 Run the following command to deploy the necessary {kube} resources to serve the applications.
 [role='command']
 ```
@@ -196,6 +217,8 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
+
+
 Run the following `curl` command to access the system microservice.
 The `-u` option is used to pass in the username `bob` and the password `bobpwd`.
 
@@ -238,19 +261,10 @@ element now gets its value from the [hotspot=context.root file=0]`context.root` 
 To find a value for the `context.root` variable,
 Open Liberty will look for the following environment variables, in order:
 
-// Static guide instructions:
-ifndef::cloud-hosted[]
 * `context.root`
 * `context_root`
 * `CONTEXT_ROOT`
-endif::[]
 
-// Cloud hosted guide instruction
-ifdef::cloud-hosted[]
-* **`context.root`**
-* **`context_root`**
-* **`CONTEXT_ROOT`**
-endif::[]
 
 == Modifying inventory microservice
 
