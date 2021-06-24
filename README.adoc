@@ -471,12 +471,11 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
-Your application will now be available at the `http://$(minikube ip):31000/dev/system/properties` URL.
 You now need to use the new username, `alice`, and the new password `wonderland`.
 Access your application with the following command:
 
 ```
-curl http://$(minikube ip):31000/dev/system/properties -u alice:wonderland
+curl http://$SYSTEM_HOST:31000/dev/system/properties -u alice:wonderland
 ```
 {: codeblock}
 endif::[]
@@ -494,7 +493,7 @@ ifdef::cloud-hosted[]
 Verify the inventory service is working as intended by using the following command:
 
 ```
-curl http://$(minikube ip):32000/inventory/systems/system-service
+curl http://$INVENTORY_HOST:32000/inventory/systems/system-service
 ```
 {: codeblock}
 
@@ -531,14 +530,20 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
-
-Run the integration tests by running the following command:
+Update the `pom.xml` files so that the `cluster.ip` properties match the values of your node IPs.
 
 ```
-mvn failsafe:integration-test -Dsystem.context.root=/dev -Dcluster.ip=$(minikube ip)
+sed -i 's=localhost='"$INVENTORY_HOST"'=g' inventory/pom.xml
+sed -i 's=localhost='"$SYSTEM_HOST"'=g' system/pom.xml
 ```
 {: codeblock}
 
+Run the integration tests by using the following command:
+
+```
+mvn failsafe:integration-test
+```
+{: codeblock}
 endif::[]
 
 The tests for `inventory` verify that the service can communicate with `system`
