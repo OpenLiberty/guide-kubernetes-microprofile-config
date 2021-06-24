@@ -590,9 +590,11 @@ kubectl delete configmap sys-app-root
 kubectl delete secret sys-app-credentials
 ```
 
+// Static guide instruction
+ifndef::cloud-hosted[]
 [role='command']
 include::{common-includes}/kube-minikube-teardown.adoc[]
-
+endif::[]
 
 // =================================================================================================
 // finish
