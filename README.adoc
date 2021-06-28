@@ -15,7 +15,7 @@
 :page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :source-highlighter: prettify
 :page-seo-title: Configuring Java microservices on Kubernetes with Eclipse MicroProfile Config 
 :page-seo-description: A getting started tutorial with examples of how to externalize configuration with Eclipse MicroProfile Config and use Kubernetes ConfigMaps and Secrets to configure your Java microservices.
