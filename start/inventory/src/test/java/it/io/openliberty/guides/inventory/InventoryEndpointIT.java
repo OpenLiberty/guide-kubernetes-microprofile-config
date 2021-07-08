@@ -41,15 +41,13 @@ public class InventoryEndpointIT {
 
     @BeforeAll
     public static void oneTimeSetup() {
-        String clusterIp = System.getProperty("cluster.ip");
-        String invNodePort = System.getProperty("inventory.node.port");
-        String sysNodePort = System.getProperty("system.node.port");
         String contextRoot = System.getProperty("system.context.root");
+        String systemRootPath = System.getProperty("system.service.root");
+        String inventoryRootPath = System.getProperty("inventory.service.root");
 
         sysKubeService = System.getProperty("system.kube.service");
-        invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort
-                 + contextRoot + "/system/properties/";
+        invUrl = "http://" + inventoryRootPath + "/inventory/systems/";
+        sysUrl = "http://" + systemRootPath + contextRoot + "/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
