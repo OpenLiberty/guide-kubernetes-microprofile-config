@@ -428,6 +428,32 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+
+Push your updated images to the container registry on IBM Cloud with the following commands:
+
+```
+docker tag inventory:1.0-SNAPSHOT us.icr.io/$NAMESPACE_NAME/inventory:1.0-SNAPSHOT
+docker tag system:1.0-SNAPSHOT us.icr.io/$NAMESPACE_NAME/system:1.0-SNAPSHOT
+docker push us.icr.io/$NAMESPACE_NAME/inventory:1.0-SNAPSHOT
+docker push us.icr.io/$NAMESPACE_NAME/system:1.0-SNAPSHOT
+```
+{: codeblock}
+
+Update the image names so that the images in your IBM Cloud container registry are used,
+and remove the **nodePort** fields so that the ports can be automatically generated:
+
+```
+sed -i 's=system:1.0-SNAPSHOT=us.icr.io/'"$NAMESPACE_NAME"'/system:1.0-SNAPSHOT=g' kubernetes.yaml
+sed -i 's=inventory:1.0-SNAPSHOT=us.icr.io/'"$NAMESPACE_NAME"'/inventory:1.0-SNAPSHOT=g' kubernetes.yaml
+sed -i 's=nodePort: 31000==g' kubernetes.yaml
+sed -i 's=nodePort: 32000==g' kubernetes.yaml
+```
+{: codeblock}
+
+endif::[]
+
 Run the following command to deploy your changes to the {kube} cluster.
 [role='command']
 ```
