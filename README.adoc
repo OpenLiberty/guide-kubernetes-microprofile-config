@@ -251,6 +251,9 @@ Use the following **curl** command to access your **inventory** microservice.
 curl localhost:32000/inventory/systems/system-service | jq
 ```
 {: codeblock}
+
+When you're done trying out the microservices, press **CTRL+C** in the command line sessions
+where you ran the `kubectl port-forward` commands. 
 endif::[]
 
 == Modifying system microservice
@@ -398,6 +401,7 @@ gets the values [hotspot=username1 hotspot=username2 file=0]`username` and
 [hotspot=password1 hotspot=password2 file=0]`password` from the
 [hotspot=credentials1 hotspot=credentials2 hotspot=credentials3 hotspot=credentials4 file=0]`sys-app-credentials` Secret.
 
+
 == Deploying your changes
 
 Rebuild the application using `mvn clean package`.
@@ -475,11 +479,27 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
+Set up port forwarding to the new services.
+
+Run the following command to set up port forwarding to access the **system** service.
+
+```
+kubectl port-forward svc/system-service 31000:9080
+```
+{: codeblock}
+
+Then, run the following command to set up port forwarding to access the **inventory** service.
+
+```
+kubectl port-forward svc/inventory-service 32000:9080
+```
+{: codeblock}
+
 You now need to use the new username, `alice`, and the new password `wonderland`.
 Access your application with the following command:
 
 ```
-curl http://$SYSTEM_PROXY/dev/system/properties -u alice:wonderland | jq
+curl localhost:31000/dev/system/properties -u alice:wonderland | jq
 ```
 {: codeblock}
 endif::[]
@@ -489,7 +509,7 @@ Notice that the URL you are using to reach the application now has `/dev` as the
 // Static guide instruction
 ifndef::cloud-hosted[]
 Verify that `{inventory-api}/system-service` is working as intended.
-If it is not, then check the configuration of the credentials.
+If it is not working, then check the configuration of the credentials.
 endif::[]
 
 // Cloud hosted guide instruction
@@ -497,7 +517,7 @@ ifdef::cloud-hosted[]
 Verify the inventory service is working as intended by using the following command:
 
 ```
-curl http://$INVENTORY_PROXY/inventory/systems/system-service | jq
+curl localhost:32000/inventory/systems/system-service | jq
 ```
 {: codeblock}
 
@@ -534,20 +554,10 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
-Update the **pom.xml** files so that the **system.service.root** and **inventory.service.root** properties
-match the values to access the **system** and **inventory** services.
-
-```
-sed -i 's=localhost:31000='"$SYSTEM_PROXY"'=g' inventory/pom.xml
-sed -i 's=localhost:32000='"$INVENTORY_PROXY"'=g' inventory/pom.xml
-sed -i 's=localhost:31000='"$SYSTEM_PROXY"'=g' system/pom.xml
-```
-{: codeblock}
-
 Run the integration tests by using the following command:
 
 ```
-mvn failsafe:integration-test
+mvn failsafe:integration-test -Dsystem.context.root=/dev
 ```
 {: codeblock}
 endif::[]
@@ -604,7 +614,7 @@ endif::[]
 
 // Cloud-hosted guide instruction
 ifdef::cloud-hosted[]
-Press **CTRL+C** to stop the proxy server that was started at step 5.
+Press **CTRL+C** in the command-line sessions where you ran `kubectl port-forward` to stop the port forwarding. 
 endif::[]
 
 // =================================================================================================
