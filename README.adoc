@@ -411,6 +411,7 @@ gets the values [hotspot=username1 hotspot=username2 file=0]`username` and
 Rebuild the application using `mvn clean package`.
 [role='command']
 ```
+cd /home/project/guide-kubernetes-microprofile-config/start
 mvn clean package
 ```
 
@@ -427,6 +428,7 @@ ifdef::cloud-hosted[]
 Push your updated images to the container registry on IBM Cloud with the following commands:
 
 ```
+NAMESPACE_NAME=`bx cr namespace-list | grep sn-labs- | sed 's/ //g'`
 docker tag inventory:1.0-SNAPSHOT us.icr.io/$NAMESPACE_NAME/inventory:1.0-SNAPSHOT
 docker tag system:1.0-SNAPSHOT us.icr.io/$NAMESPACE_NAME/system:1.0-SNAPSHOT
 docker push us.icr.io/$NAMESPACE_NAME/inventory:1.0-SNAPSHOT
@@ -506,7 +508,7 @@ Access your application with the following commands:
 
 ```
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
-curl -s http://localhost:$SYSTEM_NODEPORT/system/properties -u alice:wonderland | jq
+curl -s http://localhost:$SYSTEM_NODEPORT/dev/system/properties -u alice:wonderland | jq
 ```
 {: codeblock}
 endif::[]
