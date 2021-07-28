@@ -30,7 +30,7 @@ kubectl apply -f -
 
 kubectl apply -f kubernetes.yaml
 
-sleep 120
+sleep 180
 
 kubectl get pods
 
