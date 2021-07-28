@@ -177,7 +177,7 @@ Open your browser's developer console and examine the response headers.
 You can also run the `curl` command to make requests to your microservices.
 Use the `-u` option to pass in the username `bob` and the password `bobpwd`.
 
-include::{common-includes}/os-tabs.adoc[]
+include::{common-includes}/os-tabs.adoc[]f
 
 [.tab_content.windows_section.mac_section]
 --
@@ -185,6 +185,8 @@ include::{common-includes}/os-tabs.adoc[]
 ```
 curl http://localhost:31000/system/properties -u bob:bobpwd
 ```
+If the `curl` command is unavailable, then use https://www.getpostman.com/[Postman^]. Postman enables you
+to make requests using a graphical interface.
 --
 
 [.tab_content.linux_section]
@@ -193,9 +195,6 @@ curl http://localhost:31000/system/properties -u bob:bobpwd
 ```
 curl http://$(minikube ip):31000/system/properties -u bob:bobpwd
 ```
-
-If the `curl` command is unavailable, then use https://www.getpostman.com/[Postman^]. Postman enables you
-to make requests using a graphical interface.
 --
 
 Similarly, navigate to `{inventory-api}/system-service`,
