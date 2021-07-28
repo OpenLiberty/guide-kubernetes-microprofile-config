@@ -17,6 +17,7 @@ spec:
       # tag::system-container[]
       - name: system-container
         image: system:1.0-SNAPSHOT
+        imagePullPolicy: Always
         ports:
         - containerPort: 9080
         # Set the environment variables
@@ -89,6 +90,7 @@ spec:
       # tag::inventory-container[]
       - name: inventory-container
         image: inventory:1.0-SNAPSHOT
+        imagePullPolicy: Always
         ports:
         - containerPort: 9080
         # Set the environment variables
