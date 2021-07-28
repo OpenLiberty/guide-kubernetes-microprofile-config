@@ -28,9 +28,11 @@ kubectl create configmap sys-app-root --from-literal contextRoot=/dev -o yaml --
 kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland --dry-run -o yaml | 
 kubectl apply -f -
 
+sed -i 's/imagePullPolicy: Always//g' kubernetes.yaml
+
 kubectl apply -f kubernetes.yaml
 
-sleep 180
+sleep 120
 
 kubectl get pods
 
