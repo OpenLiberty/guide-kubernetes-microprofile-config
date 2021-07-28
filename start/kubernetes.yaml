@@ -16,7 +16,6 @@ spec:
       containers:
       - name: system-container
         image: system:1.0-SNAPSHOT
-        imagePullPolicy: Always
         ports:
         - containerPort: 9080
 ---
@@ -38,7 +37,6 @@ spec:
       containers:
       - name: inventory-container
         image: inventory:1.0-SNAPSHOT
-        imagePullPolicy: Always
         ports:
         - containerPort: 9080
 ---
