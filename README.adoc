@@ -579,7 +579,10 @@ sed -i 's=localhost:31000='"localhost:$SYSTEM_NODEPORT"'=g' system/pom.xml
 Run the integration tests by using the following command:
 
 ```
-mvn failsafe:integration-test -Dsystem.context.root=/dev
+mvn failsafe:integration-test \
+    -Dsystem.service.root=localhost:$SYSTEM_NODEPORT \
+    -Dsystem.context.root=/dev \
+    -Dinventory.service.root=localhost:$INVENTORY_NODEPORT
 ```
 {: codeblock}
 endif::[]
