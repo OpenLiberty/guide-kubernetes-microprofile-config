@@ -177,7 +177,7 @@ Open your browser's developer console and examine the response headers.
 You can also run the `curl` command to make requests to your microservices.
 Use the `-u` option to pass in the username `bob` and the password `bobpwd`.
 
-include::{common-includes}/os-tabs.adoc[]f
+include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section.mac_section]
 --
@@ -188,8 +188,8 @@ curl http://localhost:31000/system/properties -u bob:bobpwd
 If the `curl` command is unavailable, then use https://www.getpostman.com/[Postman^].
 Postman enables you to make requests using a graphical interface.
 To make a request with Postman, enter `\http://localhost:31000/system/properties` into the URL bar.
-Next, set the **Authorization** with **Basic Auth** type, and set the **Username** field to `bob` and **Password** field to `bobpwd`. 
-Read the https://learning.postman.com/docs/sending-requests/authorization/#basic-auth[Authorizing requests document^] for more details.
+Next, set the `Authorization` with `Basic Auth` type, and set the `Username` field to `bob` and `Password` field to `bobpwd`. 
+Read the https://learning.postman.com/docs/sending-requests/authorization/#basic-auth[Authorizing requests^] document for more details.
 Finally, click the blue `Send` button to make the request.
 --
 
@@ -479,7 +479,7 @@ curl http://localhost:31000/dev/system/properties -u alice:wonderland
 ```
 If the `curl` command is unavailable, then use https://www.getpostman.com/[Postman^].
 To make a request with Postman, enter `\http://localhost:31000/dev/system/properties` into the URL bar.
-Next, set the **Authorization** with **Basic Auth** type, and set the **Username** field to `alice` and **Password** field to `wonderland`.
+Next, set the `Authorization` with `Basic Auth` type, and set the `Username` field to `alice` and `Password` field to `wonderland`.
 Finally, click the blue `Send` button to make the request.
 --
 
