@@ -659,6 +659,11 @@ Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 
 == Tearing down the environment
 
+// Cloud-hosted guide instruction
+ifdef::cloud-hosted[]
+Press **CTRL+C** in the command-line sessions where you ran `kubectl port-forward` to stop the port forwarding. 
+endif::[]
+
 Run the following commands to delete all the resources that you created.
 
 [role='command']
@@ -674,10 +679,6 @@ ifndef::cloud-hosted[]
 include::{common-includes}/kube-minikube-teardown.adoc[]
 endif::[]
 
-// Cloud-hosted guide instruction
-ifdef::cloud-hosted[]
-Press **CTRL+C** in the command-line sessions where you ran `kubectl port-forward` to stop the port forwarding. 
-endif::[]
 
 // =================================================================================================
 // finish
