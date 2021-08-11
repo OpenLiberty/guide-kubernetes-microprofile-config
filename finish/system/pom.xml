@@ -85,9 +85,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <cluster.ip>${cluster.ip}</cluster.ip>
-                        <system.node.port>${system.node.port}</system.node.port>
-                        <system.appName>${system.appName}</system.appName>
+                        <system.service.root>${system.service.root}</system.service.root>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
