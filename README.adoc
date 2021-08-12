@@ -432,12 +432,24 @@ gets the values [hotspot=username1 hotspot=username2 file=0]`username` and
 
 == Deploying your changes
 
+// Static guide instruction
+ifdef::cloud-hosted[]
 Rebuild the application using `mvn clean package`.
 [role='command']
+```
+mvn clean package
+```
+endif::[]
+
+// Cloud hosted guide instruction
+ifdef::cloud-hosted[]
+Rebuild the application using **mvn clean package**.
 ```
 cd /home/project/guide-kubernetes-microprofile-config/start
 mvn clean package
 ```
+{: codeblock}
+endif::[]
 
 Run the `docker build` commands to rebuild container images for your application:
 [role='command']
