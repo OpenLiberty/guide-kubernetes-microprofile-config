@@ -236,7 +236,7 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
-In this guide, you need to set up port forwarding to access the services.
+In this IBM cloud environment, you need to set up port forwarding to access the services.
 Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE.
 Run the following commands to set up port forwarding to access the **system** service.
 ```
