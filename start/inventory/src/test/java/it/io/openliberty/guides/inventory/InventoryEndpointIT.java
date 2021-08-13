@@ -67,8 +67,8 @@ public class InventoryEndpointIT {
     }
 
     // tag::tests[]
-    @Test
-    @Order(1)
+    //@Test
+    //@Order(1)
     // tag::testEmptyInventory[]
     public void testEmptyInventory() {
         Response response = this.getResponse(invUrl);
