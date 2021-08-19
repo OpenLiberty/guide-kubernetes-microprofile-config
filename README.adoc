@@ -66,7 +66,7 @@ include::{common-includes}/kube-prereq.adoc[]
 include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
-// Staring and preparing your cluster for deployment
+// Starting and preparing your cluster for deployment
 // =================================================================================================
 // Static guide instruction
 ifndef::cloud-hosted[]
