@@ -38,12 +38,10 @@ public class SystemEndpointIT {
 
     @BeforeAll
     public static void oneTimeSetup() {
-        String clusterIp = System.getProperty("cluster.ip");
-        String nodePort = System.getProperty("system.node.port");
+        String systemRootPath = System.getProperty("system.service.root");
         String contextRoot = System.getProperty("system.context.root");
 
-        clusterUrl = "http://" + clusterIp + ":" + nodePort
-                     + contextRoot + "/system/properties/";
+        clusterUrl = "http://" + systemRootPath + contextRoot + "/system/properties/";
     }
 
     @BeforeEach

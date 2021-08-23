@@ -38,7 +38,9 @@ minikube ip
 mvn -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
-    -Dsystem.context.root=/dev -Dcluster.ip="$(minikube ip)" failsafe:integration-test
+    -Dsystem.context.root=/dev \
+    -Dsystem.service.root="$(minikube ip):31000" -Dinventory.service.root="$(minikube ip):32000" \
+    failsafe:integration-test
 mvn failsafe:verify
 
 kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)"
