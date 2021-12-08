@@ -24,9 +24,8 @@ docker pull openliberty/open-liberty:full-java11-openj9-ubi
 docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 
-kubectl create configmap sys-app-root --from-literal contextRoot=/dev -o yaml --dry-run | kubectl apply -f -
-kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland --dry-run -o yaml | 
-kubectl apply -f -
+kubectl create configmap sys-app-root --from-literal contextRoot=/dev -o yaml --dry-run=none | kubectl apply -f -
+kubectl create secret generic sys-app-credentials --from-literal username=alice --from-literal password=wonderland --dry-run=none -o yaml | kubectl apply -f -
 
 kubectl apply -f kubernetes.yaml
 
