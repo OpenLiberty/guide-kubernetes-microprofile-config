@@ -21,11 +21,11 @@ spec:
         - containerPort: 9080
         readinessProbe:
           httpGet:
-          path: /
-          port: 9080
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          successThreshold: 1
+            path: /
+            port: 9080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
         # Set the environment variables
         # tag::env1[]
         env:
@@ -100,11 +100,11 @@ spec:
         - containerPort: 9080
         readinessProbe:
           httpGet:
-          path: /
-          port: 9080
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          successThreshold: 1
+            path: /
+            port: 9080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
         # Set the environment variables
         # tag::env2[]
         env:
