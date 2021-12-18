@@ -37,6 +37,13 @@ spec:
               key: contextRoot
               # end::contextRootKey1[]
             # end::configRef1[]
+        readinessProbe:
+          httpGet:
+          path: /
+          port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
         # end::contextRoot1[]
         # tag::sysUsername1[]
         - name: SYSTEM_APP_USERNAME
@@ -109,6 +116,13 @@ spec:
               key: contextRoot
               # end::contextRootKey2[]
             # end::configRef2[]
+        readinessProbe:
+          httpGet:
+          path: /
+          port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
         # end::contextRoot2[]
         # tag::sysUsername2[]
         - name: SYSTEM_APP_USERNAME
