@@ -22,7 +22,7 @@ spec:
         readinessProbe:
           httpGet:
           path: /
-          port: 8080
+          port: 9080
           initialDelaySeconds: 5
           periodSeconds: 5
           successThreshold: 1
@@ -101,7 +101,7 @@ spec:
         readinessProbe:
           httpGet:
           path: /
-          port: 8080
+          port: 9080
           initialDelaySeconds: 5
           periodSeconds: 5
           successThreshold: 1
