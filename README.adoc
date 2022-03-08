@@ -91,23 +91,21 @@ The `-t` flag in the `docker build` command allows the Docker image to be labele
 ifdef::cloud-hosted[]
 Push your images to the container registry on IBM Cloud with the following commands:
 
-```
+```bash
 docker tag inventory:1.0-SNAPSHOT us.icr.io/$SN_ICR_NAMESPACE/inventory:1.0-SNAPSHOT
 docker tag system:1.0-SNAPSHOT us.icr.io/$SN_ICR_NAMESPACE/system:1.0-SNAPSHOT
 docker push us.icr.io/$SN_ICR_NAMESPACE/inventory:1.0-SNAPSHOT
 docker push us.icr.io/$SN_ICR_NAMESPACE/system:1.0-SNAPSHOT
 ```
-{: codeblock}
 
 Update the image names and set the image pull policy to **Always** so that the images in your IBM Cloud container registry are used, and remove the **nodePort** fields so that the ports can be automatically generated:
 
-```
+```bash
 sed -i 's=system:1.0-SNAPSHOT=us.icr.io/'"$SN_ICR_NAMESPACE"'/system:1.0-SNAPSHOT\n        imagePullPolicy: Always=g' kubernetes.yaml
 sed -i 's=inventory:1.0-SNAPSHOT=us.icr.io/'"$SN_ICR_NAMESPACE"'/inventory:1.0-SNAPSHOT\n        imagePullPolicy: Always=g' kubernetes.yaml
 sed -i 's=nodePort: 31000==g' kubernetes.yaml
 sed -i 's=nodePort: 32000==g' kubernetes.yaml
 ```
-{: codeblock}
 endif::[]
 
 Run the following command to deploy the necessary {kube} resources to serve the applications.
@@ -204,32 +202,28 @@ endif::[]
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
 In this IBM cloud environment, you need to set up port forwarding to access the services. Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following commands to set up port forwarding to access the **system** service.
-```
+```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
 kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9080
 ```
-{: codeblock}
 
 Then, open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following commands to set up port forwarding to access the **inventory** service.
-```
+```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
 kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9080
 ```
-{: codeblock}
 
 Then use the following commands to access your **system** microservice. The ***-u*** option is used to pass in the username ***bob*** and the password ***bobpwd***.
-```
+```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
 curl -s http://localhost:$SYSTEM_NODEPORT/system/properties -u bob:bobpwd | jq
 ```
-{: codeblock}
 
 Use the following commands to access your ***inventory*** microservice.
-```
+```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
 curl -s http://localhost:$INVENTORY_NODEPORT/inventory/systems/system-service | jq
 ```
-{: codeblock}
 
 When you're done trying out the microservices, press **CTRL+C** in the command line sessions where you ran the ***kubectl port-forward*** commands to stop the port forwarding.
 endif::[]
@@ -356,11 +350,10 @@ endif::[]
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
 Rebuild the application using ***mvn clean package***.
-```
+```bash
 cd /home/project/guide-kubernetes-microprofile-config/start
 mvn clean package
 ```
-{: codeblock}
 endif::[]
 
 Run the `docker build` commands to rebuild container images for your application:
@@ -375,24 +368,21 @@ ifdef::cloud-hosted[]
 
 Push your updated images to the container registry on IBM Cloud with the following commands:
 
-```
+```bash
 docker tag inventory:1.0-SNAPSHOT us.icr.io/$SN_ICR_NAMESPACE/inventory:1.0-SNAPSHOT
 docker tag system:1.0-SNAPSHOT us.icr.io/$SN_ICR_NAMESPACE/system:1.0-SNAPSHOT
 docker push us.icr.io/$SN_ICR_NAMESPACE/inventory:1.0-SNAPSHOT
 docker push us.icr.io/$SN_ICR_NAMESPACE/system:1.0-SNAPSHOT
 ```
-{: codeblock}
 
 Update the image names and set the image pull policy to **Always** so that the images in your IBM Cloud container registry are used, and remove the **nodePort** fields so that the ports can be automatically generated:
 
-```
+```bash
 sed -i 's=system:1.0-SNAPSHOT=us.icr.io/'"$SN_ICR_NAMESPACE"'/system:1.0-SNAPSHOT\n        imagePullPolicy: Always=g' kubernetes.yaml
 sed -i 's=inventory:1.0-SNAPSHOT=us.icr.io/'"$SN_ICR_NAMESPACE"'/inventory:1.0-SNAPSHOT\n        imagePullPolicy: Always=g' kubernetes.yaml
 sed -i 's=nodePort: 31000==g' kubernetes.yaml
 sed -i 's=nodePort: 32000==g' kubernetes.yaml
 ```
-{: codeblock}
-
 endif::[]
 
 Run the following command to deploy your changes to the {kube} cluster.
@@ -441,27 +431,24 @@ Set up port forwarding to the new services.
 
 Run the following commands to set up port forwarding to access the ***system*** service.
 
-```
+```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
 kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9080
 ```
-{: codeblock}
 
 Then, run the following commands to set up port forwarding to access the **inventory** service.
 
-```
+```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
 kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9080
 ```
-{: codeblock}
 
 You now need to use the new username, ***alice***, and the new password, ***wonderland***, to log in. Access your application with the following commands:
 
-```
+```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
 curl -s http://localhost:$SYSTEM_NODEPORT/dev/system/properties -u alice:wonderland | jq
 ```
-{: codeblock}
 endif::[]
 
 Notice that the URL you are using to reach the application now has `/dev` as the context root. 
@@ -475,11 +462,10 @@ endif::[]
 ifdef::cloud-hosted[]
 Verify the inventory service is working as intended by using the following commands:
 
-```
+```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
 curl -s http://localhost:$INVENTORY_NODEPORT/inventory/systems/system-service | jq
 ```
-{: codeblock}
 
 If it is not working, then check the configuration of the credentials.
 endif::[]
@@ -517,24 +503,22 @@ endif::[]
 ifdef::cloud-hosted[]
 Update the ***pom.xml*** files so that the ***system.service.root*** and ***inventory.service.root*** properties have the correct ports to access the **system** and **inventory** services.
 
-```
+```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
 sed -i 's=localhost:31000='"localhost:$SYSTEM_NODEPORT"'=g' inventory/pom.xml
 sed -i 's=localhost:32000='"localhost:$INVENTORY_NODEPORT"'=g' inventory/pom.xml
 sed -i 's=localhost:31000='"localhost:$SYSTEM_NODEPORT"'=g' system/pom.xml
 ```
-{: codeblock}
 
 Run the integration tests by using the following command:
 
-```
+```bash
 mvn failsafe:integration-test \
     -Dsystem.service.root=localhost:$SYSTEM_NODEPORT \
     -Dsystem.context.root=/dev \
     -Dinventory.service.root=localhost:$INVENTORY_NODEPORT
 ```
-{: codeblock}
 endif::[]
 
 The tests for `inventory` verify that the service can communicate with `system` using the configured credentials. If the credentials are misconfigured, then the `inventory` test fails, so the `inventory` test indirectly verifies that the credentials are correctly configured.
