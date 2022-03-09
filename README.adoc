@@ -230,13 +230,6 @@ endif::[]
 
 == Modifying system microservice
 
-// File 0
-server.xml
-[source, xml, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/system/src/main/liberty/config/server.xml[]
-----
-
 The `system` service is hardcoded to use a single forward slash as the context root. The context root is set in the [hotspot=webApplication file=0]`webApplication`
 element, where the `contextRoot` attribute is specified as `"/"`. You'll make the value of the `contextRoot` attribute configurable by implementing it as a variable.
 
@@ -244,6 +237,13 @@ element, where the `contextRoot` attribute is specified as `"/"`. You'll make th
 ----
 #Replace the `server.xml` file.#
 `system/src/main/liberty/config/server.xml`
+----
+
+// File 0
+server.xml
+[source, xml, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/system/src/main/liberty/config/server.xml[]
 ----
 
 The `contextRoot` attribute in the [hotspot=webApplication file=0]`webApplication` element now gets its value from the [hotspot=context.root file=0]`context.root` variable. To find a value for the `context.root` variable, Open Liberty looks for the following environment variables, in order:
