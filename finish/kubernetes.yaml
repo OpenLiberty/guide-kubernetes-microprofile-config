@@ -8,6 +8,11 @@ spec:
   selector:
     matchLabels:
       app: system
+  strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 1
   template:
     metadata:
       labels:
@@ -87,6 +92,11 @@ spec:
   selector:
     matchLabels:
       app: inventory
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
