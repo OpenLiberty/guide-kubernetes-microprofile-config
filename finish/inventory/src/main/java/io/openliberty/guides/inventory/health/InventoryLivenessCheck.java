@@ -37,6 +37,6 @@
        //return HealthCheckResponse.named(InventoryResource.class.getSimpleName()
        //                                + " Liveness Check")
        //                          .status(memUsed < memMax * 0.9).build();
-       return HealthCheckResponse.up(LIVENESS_CHECK);
+       return HealthCheckResponse.up("LIVENESS_CHECK");
    }
  }

@@ -43,7 +43,7 @@
          //} else {
          //    return HealthCheckResponse.down(READINESS_CHECK);
          //}
-         return HealthCheckResponse.up(READINESS_CHECK);
+         return HealthCheckResponse.up("READINESS_CHECK");
      }
 
      private boolean isSystemServiceReachable() {

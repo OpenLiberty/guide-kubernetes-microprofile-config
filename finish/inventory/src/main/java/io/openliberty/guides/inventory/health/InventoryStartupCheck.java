@@ -39,7 +39,7 @@
          //return HealthCheckResponse.named(InventoryResource.class
          //                                    .getSimpleName() + " Startup Check")
          //                                    .status(cpuUsed < 0.95).build();
-         return HealthCheckResponse.up(STARTUP_CHECK);
+         return HealthCheckResponse.up("START_UP_CHECK");
      }
  }
 
