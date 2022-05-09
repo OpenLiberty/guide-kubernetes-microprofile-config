@@ -1,5 +1,5 @@
 // tag::copyright[]
- /*******************************************************************************
+/*******************************************************************************
   * Copyright (c) 2019, 2022 IBM Corporation and others.
   * All rights reserved. This program and the accompanying materials
   * are made available under the terms of the Eclipse Public License v1.0
@@ -9,8 +9,8 @@
   * Contributors:
   *     IBM Corporation - Initial implementation
   *******************************************************************************/
- // end::copyright[]
- // tag::SystemHealth[]
+// end::copyright[]
+// tag::SystemHealth[]
  package io.openliberty.guides.system.health;
 
  import io.openliberty.guides.system.SystemResource;
@@ -38,4 +38,3 @@
      }
  }
  // end::SystemHealth[]
- 

@@ -46,4 +46,3 @@
          return LocalDateTime.now().isAfter(aliveAfter);
      }
  }
- 
