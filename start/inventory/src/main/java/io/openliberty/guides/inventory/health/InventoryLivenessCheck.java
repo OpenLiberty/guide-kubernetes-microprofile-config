@@ -28,7 +28,7 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 // end::Liveness[]
 @ApplicationScoped
 public class InventoryLivenessCheck implements HealthCheck {
-  
+
   @Override
   public HealthCheckResponse call() {
       MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
