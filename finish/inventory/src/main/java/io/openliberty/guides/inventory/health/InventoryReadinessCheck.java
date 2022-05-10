@@ -17,6 +17,7 @@
  import org.eclipse.microprofile.health.HealthCheckResponse;
  import org.eclipse.microprofile.health.Readiness;
  import io.openliberty.guides.inventory.InventoryResource;
+ 
 
  import jakarta.enterprise.context.ApplicationScoped;
  import jakarta.inject.Inject;
@@ -43,7 +44,7 @@
          //} else {
          //    return HealthCheckResponse.down(READINESS_CHECK);
          //}
-         return HealthCheckResponse.up("READINESS_CHECK");
+         return HealthCheckResponse.up(READINESS_CHECK);
      }
 
      private boolean isSystemServiceReachable() {

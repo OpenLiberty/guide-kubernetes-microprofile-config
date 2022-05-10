@@ -21,13 +21,16 @@
  import org.eclipse.microprofile.health.Liveness;
  import org.eclipse.microprofile.health.HealthCheck;
  import org.eclipse.microprofile.health.HealthCheckResponse;
+ 
 
  // tag::Liveness[]
  @Liveness
  // end::Liveness[]
  @ApplicationScoped
- public class InventoryLivenessCheck implements HealthCheck {
-
+public class InventoryLivenessCheck implements HealthCheck {
+   private final String LIVENESS_CHECK = InventoryResource.class
+                                         .getSimpleName()
+                                         + " Liveness Check";
    @Override
    public HealthCheckResponse call() {
        //MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
@@ -37,6 +40,6 @@
        //return HealthCheckResponse.named(InventoryResource.class.getSimpleName()
        //                                + " Liveness Check")
        //                          .status(memUsed < memMax * 0.9).build();
-       return HealthCheckResponse.up("LIVENESS_CHECK");
+       return HealthCheckResponse.up(LIVENESS_CHECK);
    }
  }

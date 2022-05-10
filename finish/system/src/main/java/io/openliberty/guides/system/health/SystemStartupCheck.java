@@ -27,6 +27,8 @@
  @ApplicationScoped
  public class SystemStartupCheck implements HealthCheck {
 
+    private static final String START_UP_CHECK = SystemResource.class.getSimpleName()
+                                                  + " Startup Check";
      @Override
      public HealthCheckResponse call() {
          //OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean)
@@ -36,7 +38,7 @@
          //return HealthCheckResponse.named(SystemResource.class
          //                                    .getSimpleName() + " Startup Check")
          //                                    .status(cpuUsed < 0.95).build();
-         return HealthCheckResponse.up("START_UP_CHECK");
+         return HealthCheckResponse.up(START_UP_CHECK);
      }
  }
 

@@ -36,7 +36,7 @@
          //}
 
          //return HealthCheckResponse.down(READINESS_CHECK);
-         return HealthCheckResponse.up("READINESS_CHECK");
+         return HealthCheckResponse.up(READINESS_CHECK);
      }
 
      public static void setUnhealthy() {

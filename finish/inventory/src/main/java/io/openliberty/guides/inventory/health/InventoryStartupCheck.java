@@ -21,6 +21,7 @@
  import org.eclipse.microprofile.health.HealthCheck;
  import org.eclipse.microprofile.health.HealthCheckResponse;
  import org.eclipse.microprofile.health.Startup;
+ 
 
  import jakarta.enterprise.context.ApplicationScoped;
 
@@ -30,6 +31,9 @@
  @ApplicationScoped
  public class InventoryStartupCheck implements HealthCheck {
 
+    private final String START_UP_CHECK = InventoryResource.class
+                                                 .getSimpleName()
+                                                 + " Startup Check";
      @Override
      public HealthCheckResponse call() {
          //OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean)
@@ -39,7 +43,7 @@
          //return HealthCheckResponse.named(InventoryResource.class
          //                                    .getSimpleName() + " Startup Check")
          //                                    .status(cpuUsed < 0.95).build();
-         return HealthCheckResponse.up("START_UP_CHECK");
+         return HealthCheckResponse.up(START_UP_CHECK);
      }
  }
 
