@@ -28,18 +28,15 @@
  // end::Liveness[]
  @ApplicationScoped
 public class InventoryLivenessCheck implements HealthCheck {
-   private final String LIVENESS_CHECK = InventoryResource.class
-                                         .getSimpleName()
-                                         + " Liveness Check";
+  
    @Override
    public HealthCheckResponse call() {
-       //MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
-       //long memUsed = memBean.getHeapMemoryUsage().getUsed();
-       //long memMax = memBean.getHeapMemoryUsage().getMax();
-//
-       //return HealthCheckResponse.named(InventoryResource.class.getSimpleName()
-       //                                + " Liveness Check")
-       //                          .status(memUsed < memMax * 0.9).build();
-       return HealthCheckResponse.up(LIVENESS_CHECK);
+       MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
+       long memUsed = memBean.getHeapMemoryUsage().getUsed();
+       long memMax = memBean.getHeapMemoryUsage().getMax();
+
+       return HealthCheckResponse.named(InventoryResource.class.getSimpleName()
+                                       + " Liveness Check")
+                                 .status(memUsed < memMax * 0.9).build();
    }
  }

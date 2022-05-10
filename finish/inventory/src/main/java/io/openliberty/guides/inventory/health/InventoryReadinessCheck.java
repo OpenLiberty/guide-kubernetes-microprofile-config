@@ -39,12 +39,11 @@
      private String hostname;
 
      public HealthCheckResponse call() {
-         //if (isSystemServiceReachable()) {
-         //    return HealthCheckResponse.up(READINESS_CHECK);
-         //} else {
-         //    return HealthCheckResponse.down(READINESS_CHECK);
-         //}
-         return HealthCheckResponse.up(READINESS_CHECK);
+         if (isSystemServiceReachable()) {
+             return HealthCheckResponse.up(READINESS_CHECK);
+         } else {
+             return HealthCheckResponse.down(READINESS_CHECK);
+         }
      }
 
      private boolean isSystemServiceReachable() {

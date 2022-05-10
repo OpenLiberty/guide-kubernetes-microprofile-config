@@ -31,12 +31,11 @@
 
      @Override
      public HealthCheckResponse call() {
-         //if (isAlive()) {
-         //    return HealthCheckResponse.up(READINESS_CHECK);
-         //}
+         if (isAlive()) {
+             return HealthCheckResponse.up(READINESS_CHECK);
+         }
 
-         //return HealthCheckResponse.down(READINESS_CHECK);
-         return HealthCheckResponse.up(READINESS_CHECK);
+         return HealthCheckResponse.down(READINESS_CHECK);
      }
 
      public static void setUnhealthy() {

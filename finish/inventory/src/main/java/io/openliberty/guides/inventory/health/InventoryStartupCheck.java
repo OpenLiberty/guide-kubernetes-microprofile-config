@@ -31,19 +31,15 @@
  @ApplicationScoped
  public class InventoryStartupCheck implements HealthCheck {
 
-    private final String START_UP_CHECK = InventoryResource.class
-                                                 .getSimpleName()
-                                                 + " Startup Check";
      @Override
      public HealthCheckResponse call() {
-         //OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean)
-         //ManagementFactory.getOperatingSystemMXBean();
-         //double cpuUsed = bean.getSystemCpuLoad();
-         //String cpuUsage = String.valueOf(cpuUsed);
-         //return HealthCheckResponse.named(InventoryResource.class
-         //                                    .getSimpleName() + " Startup Check")
-         //                                    .status(cpuUsed < 0.95).build();
-         return HealthCheckResponse.up(START_UP_CHECK);
+         OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean)
+         ManagementFactory.getOperatingSystemMXBean();
+         double cpuUsed = bean.getSystemCpuLoad();
+         String cpuUsage = String.valueOf(cpuUsed);
+         return HealthCheckResponse.named(InventoryResource.class
+                                             .getSimpleName() + " Startup Check")
+                                             .status(cpuUsed < 0.95).build();
      }
  }
 

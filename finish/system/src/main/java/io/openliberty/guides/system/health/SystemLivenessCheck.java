@@ -26,18 +26,14 @@
  @ApplicationScoped
  public class SystemLivenessCheck implements HealthCheck {
 
-    private static final String LIVENESS_CHECK = SystemResource.class.getSimpleName()
-                                                  + " Liveness Check";
      @Override
      public HealthCheckResponse call() {
-         //MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
-         //long memUsed = memBean.getHeapMemoryUsage().getUsed();
-         //long memMax = memBean.getHeapMemoryUsage().getMax();
-
-         //return HealthCheckResponse.named(SystemResource.class
-         //                                    .getSimpleName() + " Liveness Check")
-         //                                    .status(memUsed < memMax * 0.9).build();
-         return HealthCheckResponse.up(LIVENESS_CHECK);
+         MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
+         long memUsed = memBean.getHeapMemoryUsage().getUsed();
+         long memMax = memBean.getHeapMemoryUsage().getMax();
+         return HealthCheckResponse.named(SystemResource.class
+                                             .getSimpleName() + " Liveness Check")
+                                             .status(memUsed < memMax * 0.9).build();
      }
  }
  // end::SystemHealth[]
