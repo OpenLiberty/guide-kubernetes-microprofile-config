@@ -115,7 +115,7 @@ spec:
             configMapKeyRef:
               name: sys-app-root
               key: contextRoot
-        - name: SYSTEM_APP_USERNAME]
+        - name: SYSTEM_APP_USERNAME
           valueFrom:
             secretKeyRef:
               name: sys-app-credentials
