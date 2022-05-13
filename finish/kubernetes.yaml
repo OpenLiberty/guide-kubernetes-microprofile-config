@@ -110,6 +110,8 @@ spec:
           failureThreshold: 1
         # Set the environment variables
         env:
+        - name: SYS_APP_HOSTNAME
+          value: system-service
         - name: CONTEXT_ROOT
           valueFrom:
             configMapKeyRef:
@@ -124,7 +126,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: sys-app-credentials
-              key: password
+              key: password      
 ---
 apiVersion: v1
 kind: Service
