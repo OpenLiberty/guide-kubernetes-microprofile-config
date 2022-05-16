@@ -21,9 +21,9 @@
  import org.eclipse.microprofile.health.HealthCheck;
  import org.eclipse.microprofile.health.HealthCheckResponse;
 
- // tag::Startup[]
+ 
  @Startup
- // end::Startup[]
+ 
  @ApplicationScoped
  public class SystemStartupCheck implements HealthCheck {
 
@@ -38,5 +38,3 @@
                                              .status(cpuUsed < 0.95).build();
      }
  }
-
- // end::SystemStartupCheck[]

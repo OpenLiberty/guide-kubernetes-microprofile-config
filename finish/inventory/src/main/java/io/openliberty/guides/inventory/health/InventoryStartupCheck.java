@@ -25,9 +25,9 @@
 
  import jakarta.enterprise.context.ApplicationScoped;
 
- // tag::Startup[]
+ 
  @Startup
- // end::Startup[]
+ 
  @ApplicationScoped
  public class InventoryStartupCheck implements HealthCheck {
 
@@ -43,4 +43,3 @@
      }
  }
 
- // end::InventoryStartupCheck[]

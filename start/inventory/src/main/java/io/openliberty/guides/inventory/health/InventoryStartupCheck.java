@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::InventoryStartupCheck[]
+
 package io.openliberty.guides.inventory.health;
 
 import java.lang.management.ManagementFactory;
@@ -25,9 +25,9 @@ import org.eclipse.microprofile.health.Startup;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-// tag::Startup[]
+
 @Startup
-// end::Startup[]
+
 @ApplicationScoped
 public class InventoryStartupCheck implements HealthCheck {
 
@@ -42,5 +42,3 @@ public class InventoryStartupCheck implements HealthCheck {
                                             .status(cpuUsed < 0.95).build();
     }
 }
-
-// end::InventoryStartupCheck[]
