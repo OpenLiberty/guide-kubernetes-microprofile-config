@@ -25,9 +25,9 @@
 
  import jakarta.enterprise.context.ApplicationScoped;
 
- 
+
  @Startup
- 
+
  @ApplicationScoped
  public class InventoryStartupCheck implements HealthCheck {
 
