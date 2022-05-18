@@ -126,7 +126,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: sys-app-credentials
-              key: password      
+              key: password
 ---
 apiVersion: v1
 kind: Service
