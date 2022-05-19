@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-
 package io.openliberty.guides.system.health;
 
 import io.openliberty.guides.system.SystemResource;
@@ -21,9 +20,7 @@ import org.eclipse.microprofile.health.Startup;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 
-
 @Startup
-
 @ApplicationScoped
 public class SystemStartupCheck implements HealthCheck {
 
