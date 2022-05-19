@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::InventoryStartupCheck[]
 package io.openliberty.guides.inventory.health;
 
 import java.lang.management.ManagementFactory;
