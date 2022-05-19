@@ -21,9 +21,7 @@ import org.eclipse.microprofile.health.Startup;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 
-
 @Startup
-
 @ApplicationScoped
 public class SystemStartupCheck implements HealthCheck {
 
