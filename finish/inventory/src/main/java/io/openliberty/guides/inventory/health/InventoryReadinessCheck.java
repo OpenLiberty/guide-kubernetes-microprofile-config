@@ -10,53 +10,49 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
- package io.openliberty.guides.inventory.health;
+package io.openliberty.guides.inventory.health;
 
- import org.eclipse.microprofile.config.inject.ConfigProperty;
- import org.eclipse.microprofile.health.HealthCheck;
- import org.eclipse.microprofile.health.HealthCheckResponse;
- import org.eclipse.microprofile.health.Readiness;
- import io.openliberty.guides.inventory.InventoryResource;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.health.HealthCheck;
+import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.Readiness;
+import io.openliberty.guides.inventory.InventoryResource;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
 
- import jakarta.enterprise.context.ApplicationScoped;
- import jakarta.inject.Inject;
- import jakarta.ws.rs.client.Client;
- import jakarta.ws.rs.client.ClientBuilder;
+@Readiness
+@ApplicationScoped
+public class InventoryReadinessCheck implements HealthCheck {
+    private static final String READINESS_CHECK = InventoryResource.class
+                                                  .getSimpleName()
+                                                  + " Readiness Check";
 
+    @Inject
+    @ConfigProperty(name = "SYS_APP_HOSTNAME")
+    private String hostname;
 
- @Readiness
+    public HealthCheckResponse call() {
+        if (isSystemServiceReachable()) {
+            return HealthCheckResponse.up(READINESS_CHECK);
+        } else {
+            return HealthCheckResponse.down(READINESS_CHECK);
+        }
+    }
 
- @ApplicationScoped
- public class InventoryReadinessCheck implements HealthCheck {
+    private boolean isSystemServiceReachable() {
+        try {
+            Client client = ClientBuilder.newClient();
+            client
+                .target("http://" + hostname + ":9080/system/properties")
+                .request()
+                .post(null);
 
-     private static final String READINESS_CHECK = InventoryResource.class
-                                                 .getSimpleName()
-                                                 + " Readiness Check";
-
-     @Inject
-     @ConfigProperty(name = "SYS_APP_HOSTNAME")
-     private String hostname;
-
-     public HealthCheckResponse call() {
-         if (isSystemServiceReachable()) {
-             return HealthCheckResponse.up(READINESS_CHECK);
-         } else {
-             return HealthCheckResponse.down(READINESS_CHECK);
-         }
-     }
-
-     private boolean isSystemServiceReachable() {
-         try {
-             Client client = ClientBuilder.newClient();
-             client
-                 .target("http://" + hostname + ":9080/system/properties")
-                 .request()
-                 .post(null);
-
-             return true;
-         } catch (Exception ex) {
-             return false;
-         }
-     }
- }
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+}

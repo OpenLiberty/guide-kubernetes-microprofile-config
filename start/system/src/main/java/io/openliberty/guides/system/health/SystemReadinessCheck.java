@@ -23,7 +23,6 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 @Readiness
 @ApplicationScoped
 public class SystemReadinessCheck implements HealthCheck {
-
     private static final int ALIVE_DELAY_SECONDS = 60;
     private static final String READINESS_CHECK = SystemResource.class.getSimpleName()
                                                  + " Readiness Check";
