@@ -22,10 +22,7 @@ import org.eclipse.microprofile.health.Liveness;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 
-
-
 @Liveness
-
 @ApplicationScoped
 public class InventoryLivenessCheck implements HealthCheck {
 
