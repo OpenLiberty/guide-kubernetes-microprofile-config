@@ -18,21 +18,18 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Readiness;
 import io.openliberty.guides.inventory.InventoryResource;
 
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 
-
 @Readiness
-
 @ApplicationScoped
 public class InventoryReadinessCheck implements HealthCheck {
 
     private static final String READINESS_CHECK = InventoryResource.class
-                                                .getSimpleName()
-                                                + " Readiness Check";
+                                                  .getSimpleName()
+                                                  + " Readiness Check";
 
     @Inject
     @ConfigProperty(name = "SYS_APP_HOSTNAME")
