@@ -19,6 +19,7 @@ spec:
         app: system
     spec:
       containers:
+      # tag::system-container[]
       - name: system-container
         image: system:1.0-SNAPSHOT
         ports:
@@ -116,6 +117,7 @@ spec:
         app: inventory
     spec:
       containers:
+      # tag::inventory-container[]
       - name: inventory-container
         image: inventory:1.0-SNAPSHOT
         ports:
@@ -142,9 +144,12 @@ spec:
           timeoutSeconds: 3
           failureThreshold: 1
         # Set the environment variables
+        # tag::env2[]
         env:
+        # end::env2[]
         - name: SYS_APP_HOSTNAME
           value: system-service
+        # tag::contextRoot2[]
         - name: CONTEXT_ROOT
           # tag::valueFrom4[]
           valueFrom:
@@ -190,7 +195,6 @@ spec:
             # end::secretRef4[]
         # end::sysPassword2[]
       # end::inventory-container[]
-
 ---
 apiVersion: v1
 kind: Service
