@@ -156,7 +156,7 @@ spec:
           # end::valueFrom4[]
             # tag::configRef2[]
             configMapKeyRef:
-               # tag::root2[]
+              # tag::root2[]
               name: sys-app-root
               # end::root2[]
               # tag::contextRootKey2[]
