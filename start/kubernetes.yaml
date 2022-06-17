@@ -8,6 +8,11 @@ spec:
   selector:
     matchLabels:
       app: system
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -18,6 +23,27 @@ spec:
         image: system:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
+        # system probes
+        startupProbe:
+          httpGet:
+            path: /health/started
+            port: 9080
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 9080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 1
+        readinessProbe:
+           httpGet:
+            path: /health/ready
+            port: 9080
+           initialDelaySeconds: 30
+           periodSeconds: 10
+           timeoutSeconds: 3
+           failureThreshold: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,6 +55,11 @@ spec:
   selector:
     matchLabels:
       app: inventory
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -39,6 +70,31 @@ spec:
         image: inventory:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
+        # inventory probes
+        startupProbe:
+          httpGet:
+            path: /health/started
+            port: 9080
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 9080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 9080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 1
+        # Set the environment variables
+        env:
+        - name: SYS_APP_HOSTNAME
+          value: system-service  
 ---
 apiVersion: v1
 kind: Service

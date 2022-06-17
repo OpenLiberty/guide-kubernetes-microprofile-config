@@ -34,6 +34,8 @@ sleep 120
 kubectl get pods
 
 minikube ip
+curl "http://$(minikube ip):31000/health"
+curl "http://$(minikube ip):32000/health"
 mvn -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
