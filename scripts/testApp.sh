@@ -9,10 +9,6 @@ set -euxo pipefail
 
 ../scripts/startMinikube.sh
 
-#SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-# shellcheck source=./scripts/startMinikube.sh
-#source "$SCRIPTPATH"/startMinikube.sh
-
 # Test app
 
 mvn -Dhttp.keepAlive=false \
@@ -49,5 +45,3 @@ kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{
 kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep inventory)"
 
 ../scripts/stopMinikube.sh
-# shellcheck source=./scripts/stopMinikube.sh
-#source "$SCRIPTPATH"/stopMinikube.sh
