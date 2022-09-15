@@ -36,7 +36,7 @@ public class SystemClient {
   private final String PROTOCOL = "http";
 
   @Inject
-  @ConfigProperty(name = "CONTEXT_ROOT", defaultValue = "")
+  @ConfigProperty(name = "context.root", defaultValue = "")
   String CONTEXT_ROOT;
 
   @Inject
@@ -47,13 +47,13 @@ public class SystemClient {
   // tag::credentials[]
   // tag::system-app-username[]
   @Inject
-  @ConfigProperty(name = "SYSTEM_APP_USERNAME")
+  @ConfigProperty(name = "sys.app.username")
   private String username;
   // end::system-app-username[]
 
   // tag::system-app-password[]
   @Inject
-  @ConfigProperty(name = "SYSTEM_APP_PASSWORD")
+  @ConfigProperty(name = "sys.app.password")
   private String password;
   // end::system-app-password[]
   // end::credentials[]
