@@ -47,7 +47,7 @@ spec:
            failureThreshold: 1
         volumeMounts:
         - name: context-root
-          mountPath: "/config/variables/context_root"
+          mountPath: "/config/variables/system_app_root"
         - name: system-app-credentials
           mountPath: "/config/variables/system_app_credentials"
           readOnly: true
@@ -115,7 +115,7 @@ spec:
           failureThreshold: 1
         volumeMounts:
         - name: context-root
-          mountPath: "/config/variables/context_root"
+          mountPath: "/config/variables/system_app_root"
         - name: system-app-credentials
           mountPath: "/config/variables/system_app_credentials"
           readOnly: true

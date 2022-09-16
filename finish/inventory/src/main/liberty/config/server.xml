@@ -13,7 +13,7 @@
   <variable name="default.https.port" defaultValue="9443"/>
   <variable name="sys.app.username" value="${system_app_credentials/username}"/>
   <variable name="sys.app.password" value="${system_app_credentials/password}"/>
-  <variable name="context.root" value="${context_root/contextRoot}"/>
+  <variable name="context.root" value="${system_app_root/contextRoot}"/>
 
   <httpEndpoint host="*" httpPort="${default.http.port}" 
     httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
