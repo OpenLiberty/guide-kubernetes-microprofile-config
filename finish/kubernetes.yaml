@@ -45,11 +45,17 @@ spec:
            periodSeconds: 10
            timeoutSeconds: 3
            failureThreshold: 1
+        # tag::volumeMounts[]
         volumeMounts:
+        # end::volumeMounts[]
         - name: context-root
+          # tag::mountPath1[]
           mountPath: "/config/variables/system_app_root"
+          # end::mountPath1[]
         - name: system-app-credentials
+          # tag::mountPath2[]
           mountPath: "/config/variables/system_app_credentials"
+          # end::mountPath2[]
           readOnly: true
         # Set the environment variables
         # tag::env1[]
@@ -57,7 +63,9 @@ spec:
         # end::env1[]
         - name: SYS_APP_HOSTNAME
           value: system-service
+      # tag::volumes[]
       volumes:
+      # end::volumes[]
       - name: context-root
         configMap: 
           name: sys-app-root
