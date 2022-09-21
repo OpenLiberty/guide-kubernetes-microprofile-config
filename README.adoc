@@ -228,62 +228,9 @@ curl -s http://localhost:$INVENTORY_NODEPORT/inventory/systems/system-service | 
 When you're done trying out the microservices, press **CTRL+C** in the command line sessions where you ran the ***kubectl port-forward*** commands to stop the port forwarding.
 endif::[]
 
-== Modifying system microservice
-
-The `system` service is hardcoded to use a single forward slash as the context root. The context root is set in the [hotspot=webApplication file=0]`webApplication`
-element, where the `contextRoot` attribute is specified as `"/"`. You'll make the value of the `contextRoot` attribute configurable by implementing it as a variable.
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Replace the `server.xml` file.#
-`system/src/main/liberty/config/server.xml`
-----
-
-// File 0
-server.xml
-[source, xml, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/system/src/main/liberty/config/server.xml[]
-----
-
-The `contextRoot` attribute in the [hotspot=webApplication file=0]`webApplication` element now gets its value from the [hotspot=context.root file=0]`context.root` variable. To find a value for the `context.root` variable, Open Liberty looks for the following environment variables, in order:
-
-// Static guide instruction
-ifndef::cloud-hosted[]
-* `context.root`
-* `context_root`
-* `CONTEXT_ROOT`
-endif::[]
-
-// Cloud hosted guide instruction
-ifdef::cloud-hosted[]
-* `context.root`
-* `context_root`
-* `CONTEXT_ROOT`
-endif::[]
-
-== Modifying inventory microservice
-
-The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service. You'll make these credentials configurable. 
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Replace the `SystemClient` class.#
-`inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
-----
-
-SystemClient.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
-----
-
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=system-app-username]`SYSTEM_APP_USERNAME` and [hotspot=system-app-password]`SYSTEM_APP_PASSWORD` into the [hotspot file=0]`SystemClient` class.
-
-
 == Creating a ConfigMap and Secret
 
-Several options exist to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable that you want to set for a specific container. With these options in mind, you're going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes as a way to provide configuration values to your containers. A benefit is that they can be reused across many different containers, even if they all require different environment variables to be set with the same value.
+Several options exist to configure an environment variable in a Docker container. You can set it directly in the [hotspot file=1]`Dockerfile` with the `ENV` command. You can also set it in your [hotspot file=0]`kubernetes.yaml` file by specifying a name and a value for the environment variable that you want to set for a specific container. With these options in mind, you're going to use a ConfigMap and Secret to set these values. These are resources provided by Kubernetes as a way to provide configuration values to your containers. A benefit is that they can be reused across many different containers, even if they all require different configuration variables to be set with the same value.
 
 Create a ConfigMap to configure the app name with the following `kubectl` command.
 [role='command']
@@ -317,7 +264,7 @@ include::finish/system/Dockerfile[]
 
 == Updating {kube} resources
 
-Next, you will update your {kube} deployments to set the environment variables in your containers based on the values that are configured in the ConfigMap and Secret that you created previously. 
+Next, you will update your {kube} deployments to mount each ConfigMap and Secret that you created previously to a volume in the pod definition.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -331,10 +278,67 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-The [hotspot=contextRoot1 hotspot=contextRoot2 file=0]`CONTEXT_ROOT`, [hotspot=sysUsername1 hotspot=sysUsername2 file=0]`SYSTEM_APP_USERNAME`, and [hotspot=sysPassword1 hotspot=sysPassword2 file=0]`SYSTEM_APP_PASSWORD` environment variables are set in the [hotspot=env1 hotspot=env2 file=0]`env` sections of [hotspot=system-container file=0]`system-container` and [hotspot=inventory-container file=0]`inventory-container`.
+The `sys-app-root` ConfigMap and the `sys-app-credentials` Secret are mounted in the [hotspot=env1 hotspot=volumes file=0]`volumes` sections of [hotspot=system-container file=0]`system-container` and [hotspot=inventory-container file=0]`inventory-container`.
 
-Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valueFrom4 hotspot=valueFrom5 hotspot=valueFrom6 file=0]`valueFrom` field, you can specify the value of an environment variable from various sources. These sources include a ConfigMap, a Secret, and information about the cluster. In this example [hotspot=configRef1 hotspot=configRef2 file=0]`configMapKeyRef` gets the value [hotspot=contextRootKey1 hotspot=contextRootKey2 file=0]`contextRoot` from the [hotspot=root1 hotspot=root2 file=0]`sys-app-root` ConfigMap. Similarly, [hotspot=secretRef1 hotspot=secretRef2 hotspot=secretRef3 hotspot=secretRef4 file=0]`secretKeyRef` gets the values [hotspot=username1 hotspot=username2 file=0]`username` and [hotspot=password1 hotspot=password2 file=0]`password` from the [hotspot=credentials1 hotspot=credentials2 hotspot=credentials3 hotspot=credentials4 file=0]`sys-app-credentials` Secret.
+Using the [hotspot=volumes file=0]`volumes` field, you can mount various sources into different volumes. These sources include a ConfigMap, a Secret, and information about the cluster. Then, you can specify the [hotspot=mountPath1 hotspot=mountPath2 file=0]`mountPath` for each volume mounted to where it will be mapped to in the file system under the [hotspot=volumeMounts file=0]`volumeMounts` field. Files will be read from the locations defined and the name of the file will be taken from the variable name, and the contents of the file will be the value. In this example the deployment definition will result in the files `/config/variables/system_app_root/contextRoot`, `/config/variables/system_app_credentials/username`, and `/config/variables/system_app_credentials/password` being created when the pod is created. Liberty will create variables from each file, where you can access using normal Liberty variable syntax, `${system_app_root/contextRoot}`, `${system_app_credentials/username}` and `${system_app_credentials/password}`. 
 
+== Modifying system microservice
+
+The `system` service is hardcoded to use a single forward slash as the context root and `bob` and `bobpwd` as the credentials of an user registry to authenticate against the microservice.
+
+The context root is set in the [hotspot=webApplication file=0]`webApplication`
+element, where the `contextRoot` attribute is specified as `"/"`. You'll make the value of the `contextRoot` attribute configurable by implementing it as a variable with value from the `sys-app-root` ConfigMap you created previously.
+
+You'll also update the value of the [hotspot=credentials file=0]`credentials` to take from the `sys-app-credentials` Secret.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Replace the `server.xml` file.#
+`system/src/main/liberty/config/server.xml`
+----
+
+// File 0
+server.xml
+[source, xml, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/system/src/main/liberty/config/server.xml[]
+----
+
+The `contextRoot` attribute in the [hotspot=webApplication file=0]`webApplication` element now gets its value from the [hotspot=context.root file=0]`context.root` variable. 
+
+Update the [hotspot=context.root file=0]`context.root` variable to get its value from the `sys-app-root` ConfigMap using Liberty variable syntax, `${system_app_root/contextRoot}`. Similarly, update the values of the [hotspot=username file=0]`system.app.username` to `${system_app_credentials/username}` and [hotspot=password file=0]`system.app.password` to `${system_app_credentials/password}`. 
+
+== Modifying inventory microservice
+
+The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service. You'll make these credentials configurable by implementing them as configuration variables. You'll also configure the `sys-app-root` ConfigMap as a variable to relect the new context root of the `system` service.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Replace the `server.xml` file.#
+`inventory/src/main/liberty/config/server.xml`
+----
+
+server.xml
+[source, XML, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/liberty/config/server.xml[]
+----
+
+Define the [hotspot=username file=0]`sys.app.username` and [hotspot=password file=0]`sys.app.password` variables with the values from the `sys-app-credentials` Secret. Similarly, define the [hotspot=context.root file=0]`context.root` variable with the value from the `sys-app-root` ConfigMap.
+
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Replace the `SystemClient` class.#
+`inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
+----
+
+SystemClient.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
+----
+
+The changes introduced here use MicroProfile Config and CDI to inject the value of the configuration variables [hotspot=system-app-username file=1]`sys.app.username`, [hotspot=system-app-password file=1]`sys.app.password`, and [hotspot=context.root file=1]`context.root` into the [hotspot file=1]`SystemClient` class.
 
 == Deploying your changes
 
