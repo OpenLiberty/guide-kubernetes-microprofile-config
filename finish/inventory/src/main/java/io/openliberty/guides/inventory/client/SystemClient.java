@@ -36,12 +36,14 @@ public class SystemClient {
   private final String PROTOCOL = "http";
 
   @Inject
-  @ConfigProperty(name = "context.root", defaultValue = "")
-  String CONTEXT_ROOT;
-
-  @Inject
   @ConfigProperty(name = "default.http.port")
   String DEFAULT_PORT;
+
+  // tag::context.root[]
+  @Inject
+  @ConfigProperty(name = "context.root", defaultValue = "")
+  String CONTEXT_ROOT;
+  // end::context.root[]
 
   // Basic Auth Credentials
   // tag::credentials[]
