@@ -280,7 +280,7 @@ include::finish/kubernetes.yaml[]
 
 The `sys-app-root` ConfigMap and the `sys-app-credentials` Secret are mounted in the [hotspot=env1 hotspot=volumes file=0]`volumes` sections of [hotspot=system-container file=0]`system-container` and [hotspot=inventory-container file=0]`inventory-container`.
 
-Using the [hotspot=volumes file=0]`volumes` field, you can mount various sources into different volumes. These sources include a ConfigMap, a Secret, and information about the cluster. Then, you can specify the [hotspot=mountPath1 hotspot=mountPath2 file=0]`mountPath` for each volume mounted to where it will be mapped to in the file system under the [hotspot=volumeMounts file=0]`volumeMounts` field. Files will be read from the locations defined and the name of the file will be taken from the variable name, and the contents of the file will be the value. In this example the deployment definition will result in the files `/config/variables/system_app_root/contextRoot`, `/config/variables/system_app_credentials/username`, and `/config/variables/system_app_credentials/password` being created when the pod is created. Liberty will create variables from each file, where you can access using normal Liberty variable syntax, `${system_app_root/contextRoot}`, `${system_app_credentials/username}` and `${system_app_credentials/password}`. 
+Using the [hotspot=volumes file=0]`volumes` field, you can mount various sources into different volumes. These sources include a ConfigMap, a Secret, and information about the cluster. Then, you can specify the [hotspot=mountPath1 hotspot=mountPath2 file=0]`mountPath` for each volume that is mounted to where it will be mapped to in the file system under the [hotspot=volumeMounts file=0]`volumeMounts` field. Files will be read from the locations defined and the name of the file will be taken from the variable name, and the contents of the file will be the value. In this example the deployment definition will result in the files `/config/variables/system_app_root/contextRoot`, `/config/variables/system_app_credentials/username`, and `/config/variables/system_app_credentials/password` being created when the pod is created. Liberty will create variables from each file, where you can access by using normal Liberty variable syntax, `${system_app_root/contextRoot}`, `${system_app_credentials/username}` and `${system_app_credentials/password}`. 
 
 == Modifying system microservice
 
@@ -306,7 +306,7 @@ include::finish/system/src/main/liberty/config/server.xml[]
 
 The `contextRoot` attribute in the [hotspot=webApplication file=0]`webApplication` element now gets its value from the [hotspot=context.root file=0]`context.root` variable. 
 
-Update the [hotspot=context.root file=0]`context.root` variable to get its value from the `sys-app-root` ConfigMap using Liberty variable syntax, `${system_app_root/contextRoot}`. Similarly, update the values of the [hotspot=username file=0]`system.app.username` to `${system_app_credentials/username}` and [hotspot=password file=0]`system.app.password` to `${system_app_credentials/password}`. 
+Set the value of variable [hotspot=context.root file=0]`context.root` to `${system_app_root/contextRoot}`. Similarly, update the values of [hotspot=username file=0]`system.app.username` to `${system_app_credentials/username}` and [hotspot=password file=0]`system.app.password` to `${system_app_credentials/password}`. 
 
 == Modifying inventory microservice
 
