@@ -11,9 +11,15 @@
 
   <variable name="default.http.port" defaultValue="9080"/>
   <variable name="default.https.port" defaultValue="9443"/>
+  <!-- tag::username[] -->
   <variable name="sys.app.username" value="${system_app_credentials/username}"/>
+  <!-- end::username[] -->
+  <!-- tag::password[] -->
   <variable name="sys.app.password" value="${system_app_credentials/password}"/>
+  <!-- end::password[] -->
+  <!-- tag::context.root[] -->
   <variable name="context.root" value="${system_app_root/contextRoot}"/>
+  <!-- end::context.root[] -->
 
   <httpEndpoint host="*" httpPort="${default.http.port}" 
     httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
