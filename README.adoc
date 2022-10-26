@@ -297,7 +297,7 @@ The `system` service is hardcoded to use a single forward slash as the context r
 ----
 
 // File 0
-server.xml
+system/server.xml
 [source, xml, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/system/src/main/liberty/config/server.xml[]
@@ -317,7 +317,7 @@ The `inventory` service is hardcoded to use a single forward slash as the contex
 `inventory/src/main/liberty/config/server.xml`
 ----
 
-server.xml
+inventory/server.xml
 [source, XML, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/inventory/src/main/liberty/config/server.xml[]
