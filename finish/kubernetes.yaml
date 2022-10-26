@@ -48,15 +48,19 @@ spec:
         # tag::volumeMounts[]
         volumeMounts:
         # end::volumeMounts[]
+        # tag::root-mount[]
         - name: context-root
           # tag::mountPath1[]
-          mountPath: "/config/variables/system_app_root"
+          mountPath: "/config/variables/sys_app_root"
           # end::mountPath1[]
+        # end::root-mount[]
+        # tag::credentials-mount[]
         - name: system-app-credentials
           # tag::mountPath2[]
-          mountPath: "/config/variables/system_app_credentials"
+          mountPath: "/config/variables/sys_app_credentials"
           # end::mountPath2[]
           readOnly: true
+        # end::credentials-mount[]
         # Set the environment variables
         # tag::env1[]
         env:
@@ -66,12 +70,16 @@ spec:
       # tag::volumes[]
       volumes:
       # end::volumes[]
+      # tag::context-root[]
       - name: context-root
         configMap: 
           name: sys-app-root
+      # end::context-root[]
+      # tag::system-app-credentials[]
       - name: system-app-credentials
         secret:
           secretName: sys-app-credentials
+      # end::system-app-credentials[]
       # end::system-container[]
 ---
 apiVersion: apps/v1
@@ -123,9 +131,9 @@ spec:
           failureThreshold: 1
         volumeMounts:
         - name: context-root
-          mountPath: "/config/variables/system_app_root"
+          mountPath: "/config/variables/sys_app_root"
         - name: system-app-credentials
-          mountPath: "/config/variables/system_app_credentials"
+          mountPath: "/config/variables/sys_app_credentials"
           readOnly: true
         # Set the environment variables
         env:

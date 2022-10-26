@@ -264,7 +264,7 @@ include::finish/system/Dockerfile[]
 
 == Updating {kube} resources
 
-Next, you will update your {kube} deployments to mount each ConfigMap and Secret that you created previously to a volume in the pod definition.
+Next, you will update your {kube} deployments to mount the ConfigMap and Secret that you created previously as volumes in the pod definition.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -278,20 +278,17 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-The `sys-app-root` ConfigMap and the `sys-app-credentials` Secret are mounted in the [hotspot=env1 hotspot=volumes file=0]`volumes` sections of [hotspot=system-container file=0]`system-container` and [hotspot=inventory-container file=0]`inventory-container`.
+Using the [hotspot=volumes file=0]`volumes` and [hotspot=volumeMounts file=0]`volumeMounts` fields, you can populate information from various sources into different volumes in the containers. These sources include a ConfigMap, a Secret, and information about the cluster.
 
-Using the [hotspot=volumes file=0]`volumes` field, you can mount various sources into different volumes. These sources include a ConfigMap, a Secret, and information about the cluster. Then, you can specify the [hotspot=mountPath1 hotspot=mountPath2 file=0]`mountPath` for each volume that is mounted to where it will be mapped to in the file system under the [hotspot=volumeMounts file=0]`volumeMounts` field. Files will be read from the locations defined and the name of the file will be taken from the variable name, and the contents of the file will be the value. 
+In this example, the `sys-app-root` ConfigMap and `sys-app-credentials` Secret are stored as the [hotspot=context-root file=0]`context-root` and [hotspot=system-app-credentials file=0]`system-app-credentials` volumes in the [hotspot=volumes file=0]`volumes` sections of [hotspot=system-container file=0]`system-container` and [hotspot=inventory-container file=0]`inventory-container`. The volumes are then mounted in the [hotspot=volumeMounts file=0]`volumeMounts` section.
 
-In this example, the deployment definition will result in the files `/config/variables/system_app_root/contextRoot`, `/config/variables/system_app_credentials/username`, and `/config/variables/system_app_credentials/password` being created when the pod is created. Liberty will create variables from each file, where you can access by using normal Liberty variable syntax, `${system_app_root/contextRoot}`, `${system_app_credentials/username}` and `${system_app_credentials/password}`. 
+Using the [hotspot=mountPath1 hotspot=mountPath2 file=0]`mountPath` field, you can specify the path to where a volume will be mapped to in the file system. The name of the file will be taken from the variable name, and the contents of the file will be the value. 
+
+In this case, the deployment definition will result in the files `/sys_app_root/contextRoot`, `/sys_app_credentials/username`, and `/sys_app_credentials/password` being created under the `/config/variables` folder when the pod is created. Liberty will create variables from each file, where you can access by using normal Liberty variable syntax, `${sys_app_root/contextRoot}`, `${sys_app_credentials/username}` and `${sys_app_credentials/password}`. 
 
 == Modifying system microservice
 
-The `system` service is hardcoded to use a single forward slash as the context root and `bob` and `bobpwd` as the credentials of an user registry to authenticate against the microservice.
-
-The context root is set in the [hotspot=webApplication file=0]`webApplication`
-element, where the `contextRoot` attribute is specified as `"/"`. You'll make the value of the `contextRoot` attribute configurable by implementing it as a variable with value from the `sys-app-root` ConfigMap you created previously.
-
-You'll also update the value of the [hotspot=credentials file=0]`credentials` to take from the `sys-app-credentials` Secret.
+The `system` service is hardcoded to use a single forward slash as the context root and `bob` and `bobpwd` as the credentials of the basic user registry. You'll make the value of the `contextRoot` attribute configurable by implementing it as a variable. Furthermore, you'll configure the value of the context root and credentials by using the ConfigMap and Secret you created previously.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -308,11 +305,11 @@ include::finish/system/src/main/liberty/config/server.xml[]
 
 The `contextRoot` attribute in the [hotspot=webApplication file=0]`webApplication` element now gets its value from the [hotspot=context.root file=0]`context.root` variable. 
 
-Set the value of variable [hotspot=context.root file=0]`context.root` to `${system_app_root/contextRoot}`. Similarly, update the values of [hotspot=username file=0]`system.app.username` to `${system_app_credentials/username}` and [hotspot=password file=0]`system.app.password` to `${system_app_credentials/password}`. 
+Set the value of the [hotspot=context.root file=0]`context.root` variable to `${system_app_root/contextRoot}`. Similarly, update the values of the [hotspot=username file=0]`system.app.username` variable to `${system_app_credentials/username}` and the [hotspot=password file=0]`system.app.password` variable to `${system_app_credentials/password}`. 
 
 == Modifying inventory microservice
 
-The `inventory` service is hardcoded to use `bob` and `bobpwd` as the credentials to authenticate against the `system` service. You'll make these credentials configurable by implementing them as configuration variables. You'll also configure the `sys-app-root` ConfigMap as a variable to relect the new context root of the `system` service.
+The `inventory` service is hardcoded to use a single forward slash as the context root to access the `system` service, and `bob` and `bobpwd` as the credentials to authenticate against the `system` service. You'll make these credentials configurable by implementing them as configuration variables.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----

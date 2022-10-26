@@ -14,14 +14,14 @@
   <variable name="default.https.port" defaultValue="9443"/>
   <!-- tag::credentials[] -->
   <!-- tag::username[] -->
-  <variable name="system.app.username" defaultValue="${system_app_credentials/username}"/>
+  <variable name="system.app.username" defaultValue="${sys_app_credentials/username}"/>
   <!-- end::username[] -->
   <!-- tag::password[] -->
-  <variable name="system.app.password" defaultValue="${system_app_credentials/password}"/>
+  <variable name="system.app.password" defaultValue="${sys_app_credentials/password}"/>
   <!-- end::password[] -->
   <!-- end::credentials[] -->
   <!-- tag::context.root[] -->
-  <variable name="context.root" defaultValue="${system_app_root/contextRoot}"/>
+  <variable name="context.root" defaultValue="${sys_app_root/contextRoot}"/>
   <!-- end::context.root[] -->
 
   <httpEndpoint host="*" httpPort="${default.http.port}" 
