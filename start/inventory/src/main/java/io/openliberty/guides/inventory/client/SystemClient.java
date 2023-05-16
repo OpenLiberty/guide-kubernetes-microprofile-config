@@ -2,12 +2,11 @@
 /*******************************************************************************
  * Copyright (c) 2017, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-2.0/
  *
- * Contributors:
- *     IBM Corporation - Initial implementation
+ * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 // end::copyright[]
 package io.openliberty.guides.inventory.client;
@@ -45,67 +44,41 @@ public class SystemClient {
 
   // Wrapper function that gets properties
   public Properties getProperties(String hostname) {
-    String url = buildUrl(PROTOCOL, hostname,
-                         Integer.valueOf(DEFAULT_PORT), SYSTEM_PROPERTIES);
-    Builder clientBuilder = buildClientBuilder(url);
-    return getPropertiesHelper(clientBuilder);
-  }
-
-  // tag::doc[]
-  /**
-   * Builds the URI string to the system service for a particular host.
-   * @param protocol
-   *          - http or https.
-   * @param host
-   *          - name of host.
-   * @param port
-   *          - port number.
-   * @param path
-   *          - Note that the path needs to start with a slash!!!
-   * @return String representation of the URI to the system properties service.
-   */
-  // end::doc[]
-  protected String buildUrl(String protocol, String host, int port, String path) {
+    Properties properties = null;
+    Client client = ClientBuilder.newClient();
     try {
-      URI uri = new URI(protocol, null, host, port, path, null, null);
-      return uri.toString();
+        Builder builder = getBuilder(hostname, client);
+        properties = getPropertiesHelper(builder);
     } catch (Exception e) {
-      System.err.println("Exception thrown while building the URL: " + e.getMessage());
-      return null;
+        System.err.println(
+        "Exception thrown while getting properties: " + e.getMessage());
+    } finally {
+        client.close();
     }
+    return properties;
   }
 
   // Method that creates the client builder
-  protected Builder buildClientBuilder(String urlString) {
-    try {
-      Client client = ClientBuilder.newClient();
-      Builder builder = client.target(urlString).request();
-      return builder
-        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-        .header(HttpHeaders.AUTHORIZATION, getAuthHeader());
-    } catch (Exception e) {
-      System.err.println("Exception thrown while building the client: "
-                         + e.getMessage());
-      return null;
-    }
+  private Builder getBuilder(String hostname, Client client) throws Exception {
+    URI uri = new URI(
+                  PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
+                  SYSTEM_PROPERTIES, null, null);
+    String urlString = uri.toString();
+    Builder builder = client.target(urlString).request();
+    builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+           .header(HttpHeaders.AUTHORIZATION, getAuthHeader());
+    return builder;
   }
 
   // Helper method that processes the request
-  protected Properties getPropertiesHelper(Builder builder) {
-    try {
-      Response response = builder.get();
-      if (response.getStatus() == Status.OK.getStatusCode()) {
+  private Properties getPropertiesHelper(Builder builder) throws Exception {
+    Response response = builder.get();
+    if (response.getStatus() == Status.OK.getStatusCode()) {
         return response.readEntity(Properties.class);
-      } else {
+    } else {
         System.err.println("Response Status is not OK.");
-      }
-    } catch (RuntimeException e) {
-      System.err.println("Runtime exception: " + e.getMessage());
-    } catch (Exception e) {
-      System.err.println("Exception thrown while invoking the request: "
-                        + e.getMessage());
+        return null;
     }
-    return null;
   }
 
   private String getAuthHeader() {
