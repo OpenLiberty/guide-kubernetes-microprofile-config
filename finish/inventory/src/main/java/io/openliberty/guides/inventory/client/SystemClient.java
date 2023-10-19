@@ -34,7 +34,6 @@ public class SystemClient {
   private final String SYSTEM_PROPERTIES = "/system/properties";
   private final String PROTOCOL = "http";
 
-  // tag::credentials[]
   // tag::context-root[]
   @Inject
   @ConfigProperty(name = "CONTEXT_ROOT", defaultValue = "")
@@ -47,6 +46,7 @@ public class SystemClient {
 
   // Basic Auth Credentials
   
+  // tag::credentials[]
   // tag::system-app-username[]
   @Inject
   @ConfigProperty(name = "SYSTEM_APP_USERNAME")
