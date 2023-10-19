@@ -45,7 +45,6 @@ public class SystemClient {
   String DEFAULT_PORT;
 
   // Basic Auth Credentials
-  
   // tag::credentials[]
   // tag::system-app-username[]
   @Inject
