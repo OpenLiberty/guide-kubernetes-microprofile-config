@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2022 IBM Corporation and others.
+// Copyright (c) 2018, 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -76,7 +76,7 @@ cd start
 mvn clean package
 ```
 
-include::{common-includes}/ol-icr-full-docker-pull.adoc[]
+
 
 Next, run the `docker build` commands to build container images for your application:
 [role='command']
@@ -278,7 +278,7 @@ SystemClient.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
 ----
 
-The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=system-app-username]`SYSTEM_APP_USERNAME` and [hotspot=system-app-password]`SYSTEM_APP_PASSWORD` into the [hotspot file=0]`SystemClient` class.
+The changes introduced here use MicroProfile Config and CDI to inject the value of the environment variables [hotspot=context-root hotspot=context-root1]`CONTEXT_ROOT`, [hotspot=system-app-username]`SYSTEM_APP_USERNAME` and [hotspot=system-app-password]`SYSTEM_APP_PASSWORD` into the [hotspot file=0]`SystemClient` class.
 
 
 == Creating a ConfigMap and Secret
