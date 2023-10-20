@@ -34,9 +34,11 @@ public class SystemClient {
   private final String SYSTEM_PROPERTIES = "/system/properties";
   private final String PROTOCOL = "http";
 
+  // tag::context-root[]
   @Inject
   @ConfigProperty(name = "CONTEXT_ROOT", defaultValue = "")
   String CONTEXT_ROOT;
+  // end::context-root[]
 
   @Inject
   @ConfigProperty(name = "default.http.port")
@@ -75,9 +77,11 @@ public class SystemClient {
 
   // Method that creates the client builder
   private Builder getBuilder(String hostname, Client client) throws Exception {
+    // tag::context-root1[]
     URI uri = new URI(
                   PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
                   CONTEXT_ROOT + SYSTEM_PROPERTIES, null, null);
+    // end::context-root1[]
     String urlString = uri.toString();
     Builder builder = client.target(urlString).request();
     builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
