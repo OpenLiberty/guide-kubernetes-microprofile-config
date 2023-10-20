@@ -77,9 +77,11 @@ public class SystemClient {
 
   // Method that creates the client builder
   private Builder getBuilder(String hostname, Client client) throws Exception {
+    // tag::context-root[]
     URI uri = new URI(
                   PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
                   CONTEXT_ROOT + SYSTEM_PROPERTIES, null, null);
+    // end::context-root[]
     String urlString = uri.toString();
     Builder builder = client.target(urlString).request();
     builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
