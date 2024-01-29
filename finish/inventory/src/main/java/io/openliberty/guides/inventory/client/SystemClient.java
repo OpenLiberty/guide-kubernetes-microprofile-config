@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2023 IBM Corporation and others.
+ * Copyright (c) 2017, 2024 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,8 @@ public class SystemClient {
   // end::context-root[]
 
   @Inject
-  @ConfigProperty(name = "default.http.port")
-  String DEFAULT_PORT;
+  @ConfigProperty(name = "http.port")
+  String HTTP_PORT;
 
   // Basic Auth Credentials
   // tag::credentials[]
@@ -79,7 +79,7 @@ public class SystemClient {
   private Builder getBuilder(String hostname, Client client) throws Exception {
     // tag::context-root1[]
     URI uri = new URI(
-                  PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
+                  PROTOCOL, null, hostname, Integer.valueOf(HTTP_PORT),
                   CONTEXT_ROOT + SYSTEM_PROPERTIES, null, null);
     // end::context-root1[]
     String urlString = uri.toString();
