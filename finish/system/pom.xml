@@ -18,8 +18,8 @@
         <system.service.root>localhost:31000</system.service.root>
         <system.appName>system</system.appName>
         <!-- Liberty configuration -->
-        <liberty.var.default.http.port>9080</liberty.var.default.http.port>
-        <liberty.var.default.https.port>9443</liberty.var.default.https.port>
+        <liberty.var.http.port>9090</liberty.var.http.port>
+        <liberty.var.https.port>9453</liberty.var.https.port>
     </properties>
 
     <dependencies>
