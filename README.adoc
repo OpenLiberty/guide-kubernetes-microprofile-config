@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2023 IBM Corporation and others.
+// Copyright (c) 2018, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -11,7 +11,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices.
-:page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
+:page-tags: ['kubernetes', 'docker', 'microprofile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
@@ -204,13 +204,13 @@ ifdef::cloud-hosted[]
 In this IBM cloud environment, you need to set up port forwarding to access the services. Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following commands to set up port forwarding to access the **system** service.
 ```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
-kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9080
+kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9090
 ```
 
 Then, open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following commands to set up port forwarding to access the **inventory** service.
 ```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
-kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9080
+kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9090
 ```
 
 Then use the following commands to access your **system** microservice. The ***-u*** option is used to pass in the username ***bob*** and the password ***bobpwd***.
@@ -441,14 +441,14 @@ Run the following commands to set up port forwarding to access the ***system*** 
 
 ```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
-kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9080
+kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9090
 ```
 
 Then, run the following commands to set up port forwarding to access the **inventory** service.
 
 ```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
-kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9080
+kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9090
 ```
 
 You now need to use the new username, ***alice***, and the new password, ***wonderland***, to log in. Access your application with the following commands:
