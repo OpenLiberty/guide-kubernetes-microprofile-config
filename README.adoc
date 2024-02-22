@@ -293,6 +293,12 @@ kubectl create configmap sys-app-root --from-literal contextRoot=/dev
 
 This command deploys a ConfigMap named `sys-app-root` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
+Run the following command to display details of the ConfigMap.
+[role='command']
+```
+kubectl describe configmaps sys-app-root
+```
+
 Create a Secret to configure the new credentials that `inventory` uses to authenticate against `system` with the following `kubectl` command.
 [role='command']
 ```
@@ -300,6 +306,12 @@ kubectl create secret generic sys-app-credentials --from-literal username=alice 
 ```
  
 This command looks similar to the command to create a ConfigMap, but one difference is the word `generic`. This word creates a Secret that doesn't store information in any specialized way. Different types of secrets are available, such as secrets to store Docker credentials and secrets to store public and private key pairs.
+
+Run the following command to display details of the Secret.
+[role='command']
+```
+kubectl describe secrets/sys-app-credentials
+```
 
 A Secret is similar to a ConfigMap. A key difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure. Encryption is not required for the application to run.
 
