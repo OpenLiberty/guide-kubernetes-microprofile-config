@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2023 IBM Corporation and others.
+// Copyright (c) 2018, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -11,7 +11,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-12
 :page-description: Externalize configuration and use Kubernetes ConfigMaps and Secrets to configure your microservices.
-:page-tags: ['Kubernetes', 'Docker', 'MicroProfile']
+:page-tags: ['kubernetes', 'docker', 'microprofile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'microprofile-config', 'cdi-intro', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
@@ -204,13 +204,13 @@ ifdef::cloud-hosted[]
 In this IBM cloud environment, you need to set up port forwarding to access the services. Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following commands to set up port forwarding to access the **system** service.
 ```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
-kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9080
+kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9090
 ```
 
 Then, open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following commands to set up port forwarding to access the **inventory** service.
 ```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
-kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9080
+kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9090
 ```
 
 Then use the following commands to access your **system** microservice. The ***-u*** option is used to pass in the username ***bob*** and the password ***bobpwd***.
@@ -293,6 +293,12 @@ kubectl create configmap sys-app-root --from-literal contextRoot=/dev
 
 This command deploys a ConfigMap named `sys-app-root` to your cluster. It has a key called `contextRoot` with a value of `/dev`. The `--from-literal` flag allows you to specify individual key-value pairs to store in this ConfigMap. Other available options, such as `--from-file` and `--from-env-file`, provide more versatility as to what you want to configure. Details about these options can be found in the https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-configmap-em-[{kube} CLI documentation^].
 
+Run the following command to display details of the ConfigMap.
+[role='command']
+```
+kubectl describe configmaps sys-app-root
+```
+
 Create a Secret to configure the new credentials that `inventory` uses to authenticate against `system` with the following `kubectl` command.
 [role='command']
 ```
@@ -300,6 +306,12 @@ kubectl create secret generic sys-app-credentials --from-literal username=alice 
 ```
  
 This command looks similar to the command to create a ConfigMap, but one difference is the word `generic`. This word creates a Secret that doesn't store information in any specialized way. Different types of secrets are available, such as secrets to store Docker credentials and secrets to store public and private key pairs.
+
+Run the following command to display details of the Secret.
+[role='command']
+```
+kubectl describe secrets/sys-app-credentials
+```
 
 A Secret is similar to a ConfigMap. A key difference is that a Secret is used for confidential information such as credentials. One of the main differences is that you must explicitly tell `kubectl` to show you the contents of a Secret. Additionally, when it does show you the information, it only shows you a Base64 encoded version so that a casual onlooker doesn't accidentally see any sensitive data. Secrets don't provide any encryption by default, that is something you'll either need to do yourself or find an alternate option to configure. Encryption is not required for the application to run.
 
@@ -441,14 +453,14 @@ Run the following commands to set up port forwarding to access the ***system*** 
 
 ```bash
 SYSTEM_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services system-service`
-kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9080
+kubectl port-forward svc/system-service $SYSTEM_NODEPORT:9090
 ```
 
 Then, run the following commands to set up port forwarding to access the **inventory** service.
 
 ```bash
 INVENTORY_NODEPORT=`kubectl get -o jsonpath="{.spec.ports[0].nodePort}" services inventory-service`
-kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9080
+kubectl port-forward svc/inventory-service $INVENTORY_NODEPORT:9090
 ```
 
 You now need to use the new username, ***alice***, and the new password, ***wonderland***, to log in. Access your application with the following commands:
