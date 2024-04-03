@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2022 IBM Corporation and others.
+ * Copyright (c) 2017, 2024 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,8 @@ public class SystemClient {
   private final String PROTOCOL = "http";
 
   @Inject
-  @ConfigProperty(name = "default.http.port")
-  String DEFAULT_PORT;
+  @ConfigProperty(name = "http.port")
+  String HTTP_PORT;
 
   // Basic Auth Credentials
   private String username = "bob";
@@ -61,7 +61,7 @@ public class SystemClient {
   // Method that creates the client builder
   private Builder getBuilder(String hostname, Client client) throws Exception {
     URI uri = new URI(
-                  PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
+                  PROTOCOL, null, hostname, Integer.valueOf(HTTP_PORT),
                   SYSTEM_PROPERTIES, null, null);
     String urlString = uri.toString();
     Builder builder = client.target(urlString).request();
