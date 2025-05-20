@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2024 IBM Corporation and others.
+// Copyright (c) 2018, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -375,7 +375,7 @@ Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valu
 
 // Static guide instruction
 ifndef::cloud-hosted[]
-Rebuild the application using `mvn clean package`.
+Rebuild the application using Maven `clean package`.
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section]
@@ -405,7 +405,7 @@ endif::[]
 
 // Cloud hosted guide instruction
 ifdef::cloud-hosted[]
-Rebuild the application using ***mvn clean package***.
+Rebuild the application using Maven ***clean package***.
 ```bash
 cd /home/project/guide-kubernetes-microprofile-config/start
 ./mvnw clean package
