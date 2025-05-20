@@ -70,11 +70,34 @@ endif::[]
 
 The two microservices you will deploy are called `system` and `inventory`. The `system` microservice returns the JVM system properties of the running container. The `inventory` microservice adds the properties from the `system` microservice to the inventory. This demonstrates how communication can be established between pods inside a cluster. To build these applications, navigate to the `start` directory and run the following command.
 
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
 cd start
-mvn clean package
+mvnw.cmd clean package
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+cd start
+./mvnw clean package
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+cd start
+./mvnw clean package
+```
+--
 
 
 
@@ -353,10 +376,31 @@ Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valu
 // Static guide instruction
 ifndef::cloud-hosted[]
 Rebuild the application using `mvn clean package`.
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
-mvn clean package
+mvnw.cmd clean package
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw clean package
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw clean package
+```
+--
 endif::[]
 
 // Cloud hosted guide instruction
@@ -364,7 +408,7 @@ ifdef::cloud-hosted[]
 Rebuild the application using ***mvn clean package***.
 ```bash
 cd /home/project/guide-kubernetes-microprofile-config/start
-mvn clean package
+./mvnw clean package
 ```
 endif::[]
 
@@ -497,12 +541,21 @@ ifndef::cloud-hosted[]
 
 include::{common-includes}/os-tabs.adoc[]
 
-[.tab_content.windows_section.mac_section]
+[.tab_content.windows_section]
 --
 Run the integration tests:
 [role='command']
 ```
-mvn failsafe:integration-test -Dsystem.context.root=/dev
+mvnw.cmd failsafe:integration-test -Dsystem.context.root=/dev
+```
+--
+
+[.tab_content.mac_section]
+--
+Run the integration tests:
+[role='command']
+```
+./mvnw failsafe:integration-test -Dsystem.context.root=/dev
 ```
 --
 
@@ -511,7 +564,7 @@ mvn failsafe:integration-test -Dsystem.context.root=/dev
 Run the integration tests against a cluster running at Minikube's IP address:
 [role='command']
 ```
-mvn failsafe:integration-test -Dsystem.context.root=/dev -Dsystem.service.root=$(minikube ip):31000 -Dinventory.service.root=$(minikube ip):32000
+./mvnw failsafe:integration-test -Dsystem.context.root=/dev -Dsystem.service.root=$(minikube ip):31000 -Dinventory.service.root=$(minikube ip):32000
 
 ```
 --
@@ -535,7 +588,7 @@ sed -i 's=localhost:31000='"localhost:$SYSTEM_NODEPORT"'=g' system/pom.xml
 Run the integration tests by using the following command:
 
 ```bash
-mvn failsafe:integration-test \
+./mvnw failsafe:integration-test \
     -Dsystem.service.root=localhost:$SYSTEM_NODEPORT \
     -Dsystem.context.root=/dev \
     -Dinventory.service.root=localhost:$INVENTORY_NODEPORT
