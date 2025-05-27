@@ -375,7 +375,7 @@ Using the [hotspot=valueFrom1 hotspot=valueFrom2 hotspot=valueFrom3 hotspot=valu
 
 // Static guide instruction
 ifndef::cloud-hosted[]
-Rebuild the application using Maven `clean package`.
+Rebuild the application using Maven `clean` and `package` goals.
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section]
