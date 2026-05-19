@@ -44,16 +44,14 @@ curl "http://$(minikube ip):31000/health"
 curl "http://$(minikube ip):32000/health"
 
 # Debug
-kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
+kubectl logs "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)"
 
-kubectl exec $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system) -- env | grep SYSTEM_APP
-
-kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
+kubectl exec "$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)" -- env | grep SYSTEM_APP
 
 kubectl get secret sys-app-credentials -o jsonpath='{.data.username}' | base64 -d
 kubectl get secret sys-app-credentials -o jsonpath='{.data.password}' | base64 -d
 
-curl -v -u alice:wonderland http://$(minikube ip):31000/dev/system/properties/
+curl -v -u alice:wonderland "http://$(minikube ip):31000/dev/system/properties/"
 
 
 ./mvnw -ntp -Dhttp.keepAlive=false \
