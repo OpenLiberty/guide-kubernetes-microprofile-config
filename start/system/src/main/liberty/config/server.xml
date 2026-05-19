@@ -25,5 +25,6 @@
   <basicRegistry id="basic" realm="BasicRegistry">
     <user name="${system.app.username}" password="${system.app.password}" />
   </basicRegistry>
+  <ltpa keysPassword="defaultLTPAKeysPassword" />
 
 </server>
